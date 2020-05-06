@@ -41,6 +41,9 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES GNU)
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall")
 endif()
 
+if(CMAKE_Fortran_COMPILER_ID MATCHES NAG)
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -C=all")
+endif()
 set(CMAKE_Fortran_MODULE_DIRECTORY "${PROJECT_BINARY_DIR}/mod")
 
 foreach(directory src tests)
