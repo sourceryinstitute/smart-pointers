@@ -20,6 +20,4 @@ program main
       write(error_unit,fmt='(a)') "End Result: TEST FAILED" ;
    end if
 
-   end subroutine run
-
 end program main

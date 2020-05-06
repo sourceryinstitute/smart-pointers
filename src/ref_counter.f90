@@ -29,7 +29,9 @@ contains
     end if; end subroutine
   subroutine release(this)
     class (ref_counter), intent(inout) :: this
+     print*,'release:  associated?',associated(this%count)
     if (associated(this%count)) then
+       print*,'release:  count:',this%count
       this%count = this%count - 1
       if (this%count == 0) then
         call this%obj%cpp_delete; deallocate (this%count, this%obj)
