@@ -3,7 +3,7 @@ Reference-Counter
 
 Overview
 --------
-An object-oriented, extensible reference-counting utility for Fortran.
+An extensible, object-oriented reference-counting utility for Fortran.
 
 This archive contains the classes presented in the following two papers:
 
