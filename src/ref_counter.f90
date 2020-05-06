@@ -43,6 +43,7 @@ contains
     lhs%count => rhs%count; lhs%obj => rhs%obj
     call lhs%grab; end subroutine
   recursive subroutine finalize_ref_counter (this)
-    type(ref_counter), intent(inout) :: this
+     type(ref_counter), intent(inout) :: this
+     print*,'called FINAL'
     if (associated(this%count)) call this%release; end subroutine
 end module
