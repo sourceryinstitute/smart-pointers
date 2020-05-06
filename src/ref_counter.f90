@@ -29,7 +29,9 @@ contains
     end if; end subroutine
   subroutine release(this)
     class (ref_counter), intent(inout) :: this
+     print*,'release:  associated?',associated(this%count)
     if (associated(this%count)) then
+       print*,'release:  count:',this%count
       this%count = this%count - 1
       if (this%count == 0) then
         call this%obj%cpp_delete; deallocate (this%count, this%obj)
@@ -40,9 +42,11 @@ contains
   subroutine assign (lhs, rhs)
     class (ref_counter), intent(inout) :: lhs
     class (ref_counter), intent(in) :: rhs
+    print*, 'assign in ref_counter'
     lhs%count => rhs%count; lhs%obj => rhs%obj
     call lhs%grab; end subroutine
   recursive subroutine finalize_ref_counter (this)
-    type(ref_counter), intent(inout) :: this
+     type(ref_counter), intent(inout) :: this
+     print*,'called FINAL'
     if (associated(this%count)) call this%release; end subroutine
 end module

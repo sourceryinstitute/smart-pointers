@@ -13,11 +13,6 @@ This archive contains the classes presented in the following two papers:
   C++ Objects with Modern Fortran." _Computing in Science & Engineering_
   *14*(2), 46-54.
 
-This purpose of this repository is to demonstrate and explore solutions to
-a minor memory leak that affects only a shadow object's `ref_counter` component,
-each instance of which contains only a small amount of information: an
-default-integer pointer and polymorphic pointer to an abstratype with a
-`ref_counter` as its only component.
 
 Downloading and Building
 ------------------------
@@ -33,8 +28,6 @@ cmake ..
 make
 ctest
 ```
-Currently, the one test fails to demonstrate the issue motivating this
-repository.
 
 [Rouson, Xia & Xu (2010)]: https://doi.org/10.1016/j.procs.2010.04.166
 [Rouson, Morris & Xia (2012)]: https://doi.org/10.1109/MCSE.2012.33
