@@ -32,10 +32,9 @@ contains
      print*,'release:  associated?',associated(this%count)
     if (associated(this%count)) then
        print*,'release:  count:',this%count
-      this%count = this%count - 1
+       this%count = this%count - 1
       if (this%count == 0) then
         call this%obj%cpp_delete; deallocate (this%count, this%obj)
-      else; this%count => null(); this%obj => null()
       end if
     else; stop 'Error in release: count not associated'
     end if; end subroutine
@@ -43,6 +42,7 @@ contains
     class (ref_counter), intent(inout) :: lhs
     class (ref_counter), intent(in) :: rhs
     print*, 'assign in ref_counter'
+    if(.not. associated(rhs%count)) return
     lhs%count => rhs%count; lhs%obj => rhs%obj
     call lhs%grab; end subroutine
   recursive subroutine finalize_ref_counter (this)
