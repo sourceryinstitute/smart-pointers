@@ -35,6 +35,7 @@ contains
        this%count = this%count - 1
       if (this%count == 0) then
         call this%obj%cpp_delete; deallocate (this%count, this%obj)
+      else; this%count => null(); this%obj => null()
       end if
     else; stop 'Error in release: count not associated'
     end if; end subroutine
