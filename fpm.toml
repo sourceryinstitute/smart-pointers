@@ -1,0 +1,6 @@
+name = "reference-counter"
+version = "1.0.0"
+license = "BSD"
+author = ["Damian Rouson"]
+maintainer = "damian@archaeologic.codes"
+copyright = "2020-2022 Sourcery Institute"
