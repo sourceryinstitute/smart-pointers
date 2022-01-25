@@ -17,8 +17,10 @@ module ref_counter_implementation
 contains
   function new_ref_counter(object)
     class(hermetic), intent(in) :: object
-    type(ref_counter), allocatable :: new_ref_counter
-    allocate (new_ref_counter); allocate (new_ref_counter%count, source=0)
+    type(ref_counter) new_ref_counter
+    !type(ref_counter), allocatable :: new_ref_counter
+    !allocate (new_ref_counter)
+    allocate (new_ref_counter%count, source=0)
     allocate (new_ref_counter%obj, source=object)
     call new_ref_counter%grab; end function
   subroutine grab(this)
