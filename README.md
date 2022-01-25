@@ -14,19 +14,13 @@ This archive contains the classes presented in the following two papers:
   *14*(2), 46-54.
 
 
-Downloading and Building
-------------------------
+Downloading, Building, and Testing
+----------------------------------
 On Linux, macOS, or Windows Subsystem for Linux,
 ```
 git clone git@github.com:sourceryinstitute/reference-counter
-mkdir reference-counter/build
-cd reference-counter/build
-export FC=$(which gfortran)
-export CC=$(which gcc)
-export CXX=$(which g++)
-cmake ..
-make
-ctest
+cd reference-counter
+fpm test
 ```
 
 [Rouson, Xia & Xu (2010)]: https://doi.org/10.1016/j.procs.2010.04.166
