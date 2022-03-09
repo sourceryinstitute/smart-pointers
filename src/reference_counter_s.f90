@@ -11,22 +11,22 @@ contains
   end procedure
 
   module procedure grab
-    call assert(associated(this%count_),"reference_counter_t%grab: associated(this%count_)")
-    this%count_ = this%count_ + 1
+    call assert(associated(self%count_),"reference_counter_t%grab: associated(self%count_)")
+    self%count_ = self%count_ + 1
   end procedure
 
   module procedure release
 
-    call assert(associated(this%count_),"reference_counter_t%grab: associated(this%count_)")
+    call assert(associated(self%count_),"reference_counter_t%grab: associated(self%count_)")
 
-    this%count_ = this%count_ - 1
+    self%count_ = self%count_ - 1
 
-    if (this%count_ == 0) then
-      call this%object_%free_resource
-      deallocate (this%count_, this%object_)
+    if (self%count_ == 0) then
+      call self%object_%free_resource
+      deallocate (self%count_, self%object_)
     else
-      this%count_ => null()
-      this%object_ => null()
+      self%count_ => null()
+      self%object_ => null()
     end if
   end procedure
 
@@ -37,7 +37,7 @@ contains
   end procedure
 
   module procedure finalize
-    if (associated(this%count_)) call this%release
+    if (associated(self%count_)) call self%release
   end procedure
 
 end submodule reference_counter_s

@@ -29,14 +29,14 @@ module reference_counter_m
 
   interface
 
-    module subroutine grab(this)
+    module subroutine grab(self)
       implicit none
-      class(reference_counter_t), intent(inout) :: this
+      class(reference_counter_t), intent(inout) :: self
     end subroutine
 
-    module subroutine release(this)
+    module subroutine release(self)
       implicit none
-      class (reference_counter_t), intent(inout) :: this
+      class (reference_counter_t), intent(inout) :: self
     end subroutine
 
     module subroutine assign_reference_counter(lhs, rhs)
@@ -45,9 +45,9 @@ module reference_counter_m
       class(reference_counter_t), intent(in) :: rhs
     end subroutine
 
-    module subroutine finalize(this)
+    module subroutine finalize(self)
       implicit none
-      type(reference_counter_t), intent(inout) :: this
+      type(reference_counter_t), intent(inout) :: self
     end subroutine
 
   end interface
