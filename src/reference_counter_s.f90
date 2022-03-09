@@ -31,7 +31,8 @@ contains
   end procedure
 
   module procedure assign_reference_counter
-    lhs%count_ => rhs%count_; lhs%object_ => rhs%object_
+    lhs%count_ => rhs%count_
+    lhs%object_ => rhs%object_
     call lhs%grab
   end procedure
 

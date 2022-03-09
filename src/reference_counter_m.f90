@@ -13,8 +13,8 @@ module reference_counter_m
     procedure, non_overridable :: grab
     procedure, non_overridable :: release
     procedure :: assign_reference_counter
-    final :: finalize
     generic :: assignment(=) => assign_reference_counter
+    final :: finalize
   end type
 
   interface reference_counter_t
@@ -45,7 +45,7 @@ module reference_counter_m
       class(reference_counter_t), intent(in) :: rhs
     end subroutine
 
-    recursive module subroutine finalize(this)
+    module subroutine finalize(this)
       implicit none
       type(reference_counter_t), intent(inout) :: this
     end subroutine
