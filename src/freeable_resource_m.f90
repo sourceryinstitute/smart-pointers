@@ -6,12 +6,12 @@ module freeable_resource_m
 
   type, abstract :: freeable_resource_t
   contains
-      procedure(free_memory), deferred :: cpp_delete
+      procedure(free_interface), deferred :: free_resource
   end type
 
   abstract interface
 
-     subroutine free_memory (this)
+     subroutine free_interface(this)
         import :: freeable_resource_t
         class(freeable_resource_t), intent(inout) :: this
      end subroutine

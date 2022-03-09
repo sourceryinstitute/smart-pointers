@@ -7,14 +7,14 @@ module reference_counter_m
 
   type reference_counter_t
     private
-    integer, pointer :: count => null()
-    class(freeable_resource_t), pointer :: obj => null()
+    integer, pointer :: count_ => null()
+    class(freeable_resource_t), pointer :: object_ => null()
   contains
     procedure, non_overridable :: grab
     procedure, non_overridable :: release
-    procedure :: assign
+    procedure :: assign_reference_counter
     final :: finalize
-    generic :: assignment(=) => assign
+    generic :: assignment(=) => assign_reference_counter
   end type
 
   interface reference_counter_t
@@ -39,7 +39,7 @@ module reference_counter_m
       class (reference_counter_t), intent(inout) :: this
     end subroutine
 
-    module subroutine assign (lhs, rhs)
+    module subroutine assign_reference_counter(lhs, rhs)
       implicit none
       class(reference_counter_t), intent(inout) :: lhs
       class(reference_counter_t), intent(in) :: rhs

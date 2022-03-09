@@ -9,18 +9,18 @@ module reference_counted_resource_m
   type, abstract, extends(freeable_resource_t) :: reference_counted_resource_t
     type(reference_counter_t) :: counter
   contains
-    procedure, non_overridable :: force_finalize
-    procedure, non_overridable :: register_self
+    procedure, non_overridable :: release_handle
+    procedure, non_overridable :: start_counter
   end type
 
   interface
 
-    module subroutine force_finalize (this)
+    module subroutine release_handle(this)
       implicit none
       class(reference_counted_resource_t), intent(inout) :: this
     end subroutine
 
-    module subroutine register_self (this)
+    module subroutine start_counter(this)
       implicit none
       class(reference_counted_resource_t), intent(inout) :: this
     end subroutine
