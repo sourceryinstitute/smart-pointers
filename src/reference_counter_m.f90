@@ -1,5 +1,5 @@
 module reference_counter_m
-  use hermetic_interface, only : hermetic
+  use freeable_resource_m, only : freeable_resource_t
   implicit none
 
   private
@@ -8,7 +8,7 @@ module reference_counter_m
   type reference_counter_t
     private
     integer, pointer :: count => null()
-    class(hermetic), pointer :: obj => null()
+    class(freeable_resource_t), pointer :: obj => null()
   contains
     procedure, non_overridable :: grab
     procedure, non_overridable :: release
@@ -21,7 +21,7 @@ module reference_counter_m
 
     module function construct(object) result(reference_counter)
       implicit none
-      class(hermetic), intent(in) :: object
+      class(freeable_resource_t), intent(in) :: object
       type(reference_counter_t) reference_counter
      end function
 

@@ -4,7 +4,7 @@ submodule(reference_counter_m) reference_counter_s
 contains
 
   module function construct(object) result(reference_counter)
-    class(hermetic), intent(in) :: object
+    class(freeable_resource_t), intent(in) :: object
     type(reference_counter_t) reference_counter
     !type(ref_counter), allocatable :: new_ref_counter
     !allocate (new_ref_counter)
