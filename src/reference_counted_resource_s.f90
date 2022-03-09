@@ -3,14 +3,12 @@ submodule(reference_counted_resource_m) reference_counted_resource_s
 
 contains
 
-  module subroutine release_handle(this)
-    class(reference_counted_resource_t), intent(inout) :: this
+  module procedure release_handle
     call this%counter%release
-  end subroutine
+  end procedure
 
-  module subroutine start_counter(this)
-    class(reference_counted_resource_t), intent(inout) :: this
+  module procedure start_counter
     this%counter = reference_counter_t(this)
-  end subroutine
+  end procedure
 
 end submodule
