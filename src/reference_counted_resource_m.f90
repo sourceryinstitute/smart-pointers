@@ -1,13 +1,13 @@
 module reference_counted_resource_m
-  use hermetic_interface ,only: hermetic
-  use ref_counter_implementation ,only: ref_counter
+  use hermetic_interface, only: hermetic
+  use reference_counter_m, only: reference_counter_t
   implicit none
 
   private
   public :: reference_counted_resource_t
 
   type, abstract, extends(hermetic) :: reference_counted_resource_t
-    type(ref_counter) :: counter
+    type(reference_counter_t) :: counter
   contains
     procedure, non_overridable :: force_finalize
     procedure, non_overridable :: register_self

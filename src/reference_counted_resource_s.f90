@@ -10,7 +10,7 @@ contains
 
   module subroutine register_self (this)
     class(reference_counted_resource_t), intent(inout) :: this
-    this%counter = ref_counter(this)
+    this%counter = reference_counter_t(this)
   end subroutine
 
 end submodule
