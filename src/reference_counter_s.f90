@@ -1,4 +1,5 @@
 submodule(reference_counter_m) reference_counter_s
+  use assert_m, only : assert
   implicit none
 
 contains
@@ -10,21 +11,22 @@ contains
   end procedure
 
   module procedure grab
-    if (associated(this%count_)) then
-      this%count_ = this%count_ + 1
-    else; stop 'Error in grab: count not associated'
-    end if
+    call assert(associated(this%count_),"reference_counter_t%grab: associated(this%count_)")
+    this%count_ = this%count_ + 1
   end procedure
 
   module procedure release
-    if (associated(this%count_)) then
-      this%count_ = this%count_ - 1
-      if (this%count_ == 0) then
-        call this%object_%free_resource
-        deallocate (this%count_, this%object_)
-      else; this%count_ => null(); this%object_ => null()
-      end if
-    else; stop 'Error in release: count not associated'
+
+    call assert(associated(this%count_),"reference_counter_t%grab: associated(this%count_)")
+
+    this%count_ = this%count_ - 1
+
+    if (this%count_ == 0) then
+      call this%object_%free_resource
+      deallocate (this%count_, this%object_)
+    else
+      this%count_ => null()
+      this%object_ => null()
     end if
   end procedure
 
