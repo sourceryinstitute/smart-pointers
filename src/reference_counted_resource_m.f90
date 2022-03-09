@@ -15,14 +15,14 @@ module reference_counted_resource_m
 
   interface
 
-    module subroutine release_handle(this)
+    module subroutine release_handle(self)
       implicit none
-      class(reference_counted_resource_t), intent(inout) :: this
+      class(reference_counted_resource_t), intent(inout) :: self
     end subroutine
 
-    module subroutine start_counter(this)
+    module subroutine start_counter(self)
       implicit none
-      class(reference_counted_resource_t), intent(inout) :: this
+      class(reference_counted_resource_t), intent(inout) :: self
     end subroutine
 
   end interface

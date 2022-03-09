@@ -4,11 +4,11 @@ submodule(reference_counted_resource_m) reference_counted_resource_s
 contains
 
   module procedure release_handle
-    call this%counter%release
+    call self%counter%release
   end procedure
 
   module procedure start_counter
-    this%counter = reference_counter_t(this)
+    self%counter = reference_counter_t(self)
   end procedure
 
 end submodule
