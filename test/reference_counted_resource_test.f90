@@ -41,7 +41,7 @@ contains
     tests = &
       describe( &
         "A reference_counted_resource", &
-        [ it("does not leak", check_for_leaks) &
+        [ it("does not leak constructed, assigned, and then explicitly freed", check_for_leaks) &
       ])
   end function
 
