@@ -5,9 +5,9 @@ program main
     call run()
 contains
     subroutine run()
-        use reference_counted_resource_test, only: &
-                reference_counted_resource_reference_counted_resource => &
-                    test_reference_counted_resource
+        use shadow_test, only: &
+                shadow_shadow => &
+                    test_shadow
         use vegetables, only: test_item_t, test_that, run_tests
 
 
@@ -15,7 +15,7 @@ contains
         type(test_item_t) :: tests
         type(test_item_t) :: individual_tests(1)
 
-        individual_tests(1) = reference_counted_resource_reference_counted_resource()
+        individual_tests(1) = shadow_shadow()
         tests = test_that(individual_tests)
 
 

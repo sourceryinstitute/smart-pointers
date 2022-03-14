@@ -1,4 +1,4 @@
-submodule(reference_counted_resource_m) reference_counted_resource_s
+submodule(shadow_m) shadow_s
   implicit none
 
 contains
@@ -8,7 +8,7 @@ contains
   end procedure
 
   module procedure start_counter
-    self%counter = reference_counter_t(self)
+    self%counter = counter_t(self)
   end procedure
 
 end submodule
