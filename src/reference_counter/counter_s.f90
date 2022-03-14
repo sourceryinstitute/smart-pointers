@@ -1,23 +1,23 @@
-submodule(reference_counter_m) reference_counter_s
+submodule(counter_m) counter_s
   use assert_m, only : assert
   implicit none
 
 contains
 
   module procedure construct
-    allocate(reference_counter%count_, source=0)
-    allocate(reference_counter%object_, source=object)
-    call reference_counter%grab
+    allocate(counter%count_, source=0)
+    allocate(counter%object_, source=object)
+    call counter%grab
   end procedure
 
   module procedure grab
-    call assert(associated(self%count_),"reference_counter_t%grab: associated(self%count_)")
+    call assert(associated(self%count_),"counter_t%grab: associated(self%count_)")
     self%count_ = self%count_ + 1
   end procedure
 
   module procedure release
 
-    call assert(associated(self%count_),"reference_counter_t%grab: associated(self%count_)")
+    call assert(associated(self%count_),"counter_t%grab: associated(self%count_)")
 
     self%count_ = self%count_ - 1
 
@@ -30,7 +30,7 @@ contains
     end if
   end procedure
 
-  module procedure assign_reference_counter
+  module procedure assign_counter
     lhs%count_ => rhs%count_
     lhs%object_ => rhs%object_
     call lhs%grab
@@ -40,4 +40,4 @@ contains
     if (associated(self%count_)) call self%release
   end procedure
 
-end submodule reference_counter_s
+end submodule counter_s

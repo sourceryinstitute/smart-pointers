@@ -1,12 +1,12 @@
-module reference_counted_resource_test
-  use reference_counted_resource_m, only : reference_counted_resource_t
+module shadow_test
+  use shadow_m, only : shadow_t
   use vegetables, only: result_t, test_item_t, assert_that, describe, it, assert_equals
 
   implicit none
   private
-  public :: test_reference_counted_resource
+  public :: test_shadow
 
-  type, extends(reference_counted_resource_t) :: resource_t
+  type, extends(shadow_t) :: resource_t
   contains
     procedure :: free_resource
   end type
@@ -35,12 +35,12 @@ contains
     class(resource_t), intent(inout) :: self
   end subroutine
 
-  function test_reference_counted_resource() result(tests)
+  function test_shadow() result(tests)
     type(test_item_t) :: tests
 
     tests = &
       describe( &
-        "A reference_counted_resource", &
+        "A shadow", &
         [ it("does not leak constructed, assigned, and then explicitly freed", check_for_leaks) &
       ])
   end function
@@ -59,4 +59,4 @@ contains
     end associate
   end function
 
-end module reference_counted_resource_test
+end module shadow_test
