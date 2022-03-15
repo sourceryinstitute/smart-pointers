@@ -45,11 +45,13 @@ module counter_m
       class(counter_t), intent(in) :: rhs
     end subroutine
 
-    module subroutine finalize(self)
-      implicit none
-      type(counter_t), intent(inout) :: self
-    end subroutine
-
   end interface
+
+contains
+
+  subroutine finalize(self)
+    type(counter_t), intent(inout) :: self
+    if (associated(self%count_)) call self%release
+  end subroutine
 
 end module counter_m

@@ -36,8 +36,4 @@ contains
     call lhs%grab
   end procedure
 
-  module procedure finalize
-    if (associated(self%count_)) call self%release
-  end procedure
-
 end submodule counter_s
