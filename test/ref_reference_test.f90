@@ -1,14 +1,14 @@
-module shadow_test
-  use shadow_m, only : shadow_t
+module ref_reference_test
+  use ref_reference_m, only : ref_reference_t
   use vegetables, only: result_t, test_item_t, assert_that, describe, it, assert_equals
 
   implicit none
   private
-  public :: test_shadow
+  public :: test_ref_reference
 
-  type, extends(shadow_t) :: resource_t
+  type, extends(ref_reference_t) :: resource_t
   contains
-    procedure :: free_resource
+    procedure :: free
   end type
 
   interface resource_t
@@ -28,19 +28,19 @@ contains
 
   module function construct() result(resource)
     type(resource_t) resource
-    call resource%start_counter
+    call resource%start_ref_counter
   end function
 
-  subroutine free_resource(self)
+  subroutine free(self)
     class(resource_t), intent(inout) :: self
   end subroutine
 
-  function test_shadow() result(tests)
+  function test_ref_reference() result(tests)
     type(test_item_t) :: tests
 
     tests = &
       describe( &
-        "A shadow", &
+        "A ref_reference", &
         [ it("does not leak constructed, assigned, and then explicitly freed", check_for_leaks) &
       ])
   end function
@@ -50,7 +50,7 @@ contains
     type(resource_t) resource
 
     resource = resource_t()
-    call resource%free_resource
+    call resource%free
 
     associate(num_never_referenced => count( ref_status == never_referenced ), num_freed => count( ref_status == freed ))
      associate(num_leaks => max_resources - (num_never_referenced + num_freed))
@@ -59,4 +59,4 @@ contains
     end associate
   end function
 
-end module shadow_test
+end module ref_reference_test

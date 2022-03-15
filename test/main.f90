@@ -5,9 +5,9 @@ program main
     call run()
 contains
     subroutine run()
-        use shadow_test, only: &
-                shadow_shadow => &
-                    test_shadow
+        use ref_reference_test, only: &
+                ref_reference_ref_reference => &
+                    test_ref_reference
         use vegetables, only: test_item_t, test_that, run_tests
 
 
@@ -15,7 +15,7 @@ contains
         type(test_item_t) :: tests
         type(test_item_t) :: individual_tests(1)
 
-        individual_tests(1) = shadow_shadow()
+        individual_tests(1) = ref_reference_ref_reference()
         tests = test_that(individual_tests)
 
 
