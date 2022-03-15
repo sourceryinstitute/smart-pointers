@@ -1,12 +1,13 @@
 module ref_reference_test
   use ref_reference_m, only : ref_reference_t
-  use vegetables, only: result_t, test_item_t, assert_that, describe, it, assert_equals
+  use vegetables, only: result_t, test_item_t, describe, it, assert_equals
 
   implicit none
   private
   public :: test_ref_reference
 
   type, extends(ref_reference_t) :: resource_t
+    integer dummy
   contains
     procedure :: free
   end type
@@ -21,7 +22,8 @@ module ref_reference_test
   enum, bind(C)
     enumerator :: never_referenced, not_freed, freed
   end enum
-  integer, parameter :: max_resources=1000
+
+  integer, parameter :: max_resources=1000, avoid_unused_variable_warning = 0
   integer :: ref_status(max_resources) = never_referenced
   
 contains
@@ -33,6 +35,7 @@ contains
 
   subroutine free(self)
     class(resource_t), intent(inout) :: self
+    self%dummy = avoid_unused_variable_warning
   end subroutine
 
   function test_ref_reference() result(tests)

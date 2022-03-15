@@ -5,6 +5,9 @@ program main
     call run()
 contains
     subroutine run()
+        use compiler_test, only: &
+                compiler_ref_reference => &
+                    test_ref_reference
         use ref_reference_test, only: &
                 ref_reference_ref_reference => &
                     test_ref_reference
@@ -13,9 +16,10 @@ contains
 
 
         type(test_item_t) :: tests
-        type(test_item_t) :: individual_tests(1)
+        type(test_item_t) :: individual_tests(2)
 
-        individual_tests(1) = ref_reference_ref_reference()
+        individual_tests(1) = compiler_ref_reference()
+        individual_tests(2) = ref_reference_ref_reference()
         tests = test_that(individual_tests)
 
 
