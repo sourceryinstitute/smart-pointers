@@ -1,18 +1,15 @@
-Reference-Counter
+Reference Counter
 =================
 
 Overview
 --------
-An extensible, object-oriented reference-counting utility for Fortran.
-
-This archive contains the classes presented in [Rouson, Xia & Xu (2010)] and [Rouson, Morris & Xia (2012)] refactored to use use more descriptive naming conventions and to separate interface bodies into modules and procedure definitions into submodules.
-The 
+Reference Counter is an extensible, object-oriented reference-counting utility for Fortran.  This repository contains the classes presented in [Rouson, Xia & Xu (2010)] and [Rouson, Morris & Xia (2012)] refactored to use more descriptive naming conventions and to separate interface bodies into modules and procedure definitions into submodules.  This repository also adds
+1. A Fortran Package Manager build system and
+2. A test suite based on the Vegetables unit-testing software,
 
 Compilers
 ---------
-This library uses features form the Fortran 2018 standard and depends critically on the type finalization rules that became part of Fortran in the 2003 standard.
-The Reference-Counter test suite identifies possible type finalization bugs in each of the compilers that we have tested recently.
-This README.md document will be updated with additional information after the issues have been reported on the respective compilers.
+This library uses features form the Fortran 2018 standard and depends critically on the type finalization rules that became part of Fortran in the 2003 standard.  The Reference-Counter test suite identifies possible type finalization bugs in each of the compilers that we have tested recently.  This README.md document will be updated with additional information after the issues have been reported on the respective compilers.
 
 Downloading, Building, and Testing
 ----------------------------------
