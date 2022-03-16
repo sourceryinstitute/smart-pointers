@@ -6,13 +6,16 @@ Overview
 Reference Counter offers semi-automatic counting of references to program resources
 such as memory.  A user accesses the provided reference-counting capability simply
 by defining a non-abstract derived type that 
+
 1. Extends Reference Counter's `ref_reference_t` type and
 2. Implements the so-inherited `free` deferred binding.
-For efficient execution, the user type should be some form of lightweight proxy
-for a more stateful entity stored elsewhere.  For example, the user type might 
+
+Because the reference-counting algorithm involves copying references in certain
+circumstances, the user type that extends s`ref_reference_t` should be a lightweight
+proxy for a more stateful entity stored elsewhere.  For example, the user type might 
 contain a Fortran `pointer` associated with some other object or it might contain
-a "shadow" object that is essentially an identifier for a larger object being a
-allocated in C or C++.
+a "shadow" object that serves as an identity tag for a larger object allocated 
+(and later freed) in C or C++ at the direction of the user's Fortran program.
 
 For more background in the design philosophy and internal mechanics of Reference
 Counter, see the papers by [Rouson, Xia & Xu (2010)] and [Rouson, Morris & Xia (2012)].
