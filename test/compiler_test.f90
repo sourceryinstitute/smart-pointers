@@ -36,7 +36,6 @@ contains
          ,it("finalizes an object upon explicit deallocation", check_finalize_on_deallocate) &
          ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
-         ,it("finalizes an object deallocated inside an associate block", check_finalize_inside_associate) &
       ])  
   end function
 
@@ -74,20 +73,6 @@ contains
     associate(final_tally => finalizations - initial_tally)
       result_ = assert_equals(1, final_tally)
     end associate
-  end function
-
-  function check_finalize_inside_associate() result(result_)
-    type(object_t), allocatable  :: object
-    type(result_t) result_
-    integer delta
-
-    associate(initial_tally => finalizations)
-      allocate(object)
-      object%dummy = 1
-      deallocate(object)          ! finalizes object
-      delta = finalizations - initial_tally
-    end associate
-    result_ = assert_equals(1, delta)
   end function
 
   function check_intent_out_finalization() result(result_)
