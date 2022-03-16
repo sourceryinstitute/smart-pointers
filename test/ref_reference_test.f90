@@ -44,7 +44,7 @@ contains
     tests = &
       describe( &
         "A ref_reference", &
-        [ it("does not leak constructed, assigned, and then explicitly freed", check_for_leaks) &
+        [ it("does not leak when constructed, assigned, and then explicitly freed", check_for_leaks) &
       ])
   end function
 
