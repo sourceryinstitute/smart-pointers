@@ -12,7 +12,7 @@ Compilers
 ---------
 This library uses features form the Fortran 2018 standard and depends critically on the type finalization rules that became part of Fortran in the 2003 standard.
 The Reference-Counter test suite identifies possible type finalization bugs in each of the compilers that we have tested recently.
-This README.md document will be updated with additional information after 
+This README.md document will be updated with additional information after the issues have been reported on the respective compilers.
 
 Downloading, Building, and Testing
 ----------------------------------
