@@ -32,12 +32,12 @@ contain a Fortran `pointer` associated with some other object or it might contai
 a "shadow" object that serves as an identity tag for a larger object allocated 
 (and later freed) in C or C++ at the direction of the user's `free` procedure.
 
-For more background in the design philosophy and internal mechanics of Reference
-Counter, see the papers by [Rouson, Xia & Xu (2010)] and [Rouson, Morris & Xia (2012)].
-This repository's code originated from refactoring the code in those two publications
-to use more descriptive and general nomenclature and more up-to-date coding conventions.
-For example, this repository separates interface bodies into modules and procedure
-definitions into submodules.
+For more background on the design philosophy and the internal mechanics of Reference
+Counter, see Rouson et al. (see [[1]], [[2]], [[3]]).  This repository's code
+originated from refactoring the code in those publications to use more descriptive
+and more general nomenclature and more up-to-date coding conventions.  For example,
+this repository separates interface bodies into modules and procedure definitions
+into submodules.
 
 As compared to the original code, this repository also adds
 1. A [Fortran Package Manager] build system,
@@ -93,8 +93,10 @@ fpm test --compiler nagfor --flag -fpp
 fpm test --compiler ifort --flag -coarray=shared
 ```
 
-[Rouson, Xia & Xu (2010)]: https://doi.org/10.1016/j.procs.2010.04.166
-[Rouson, Morris & Xia (2012)]: https://doi.org/10.1109/MCSE.2012.33
+
+[1]: https://doi.org/10.1016/j.procs.2010.04.166
+[2]: https://doi.org/10.1017/cbo9780511977381 
+[3]: https://doi.org/10.1109/MCSE.2012.33
 [Fortran Package Manager]: https://github.com/fortran-lang/fpm
 [Vegetables]: https://gitlab.com/everythingfunctional/vegetables
 [FORD]: https://github.com/Fortran-FOSS-Programmers/ford
