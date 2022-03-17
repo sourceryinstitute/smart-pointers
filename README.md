@@ -30,7 +30,7 @@ circumstances, the user type that extends s`ref_reference_t` should be a lightwe
 proxy for a more stateful entity stored elsewhere.  For example, the user type might 
 contain a Fortran `pointer` associated with some other object or it might contain
 a "shadow" object that serves as an identity tag for a larger object allocated 
-(and later freed) in C or C++ at the direction of the user's Fortran program.
+(and later freed) in C or C++ at the direction of the user's `free` procedure.
 
 For more background in the design philosophy and internal mechanics of Reference
 Counter, see the papers by [Rouson, Xia & Xu (2010)] and [Rouson, Morris & Xia (2012)].
