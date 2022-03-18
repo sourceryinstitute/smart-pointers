@@ -57,11 +57,13 @@ includes language standard-conformance tests that verify correct compiler behavi
 across a few common use cases.  The table below summarizes the observes compiler
 behaviors:
 
-| _ Compiler _ | _ Test failures _ | _ Version tested _                        |
-| :---         |       :---:       | :---                                      |
-| NAG          |         0         | `nagfor` 7.1                              |
-| GCC          |         1         | `gfortran` 11.2.0 (Homebrew GCC 11.2.0\_3)|
-| Intel        |         2         | `ifort` 2021.5.0 Build 20211109\_000000   |
+| _Compiler_   | _Test failures_      | _Version tested_                                    |
+| :---         |       :---:          | :---                                                |
+| NAG          |         0            | `nagfor` 7.1                                        |
+| GCC          |         1            | `gfortran` 11.2.0 (Homebrew GCC 11.2.0\_3)          |
+| Intel        |         2            | `ifort` 2021.5.0 Build 20211109\_000000             |
+| NVIDIA       | Fails to build (ICE) | `nvfortran` 2022.2                                  |
+| AMD          | Fails to build (ICE) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
 
 The current compiler tests are based on early user feedback and are therefore 
 _ad hoc_ with no attempt at being exhaustive.  Please submit an issue if you
@@ -93,6 +95,15 @@ fpm test --compiler nagfor --flag -fpp
 fpm test --compiler ifort --flag -coarray=shared
 ```
 
+### NVIDIA (`nvfortran`)
+```
+fpm test --compiler nvfortran --flag -Mpreprocess
+```
+
+### AMD (`flang`)
+```
+fpm test --compiler flang --flag -cpp
+```
 
 [1]: https://doi.org/10.1016/j.procs.2010.04.166
 [2]: https://doi.org/10.1017/cbo9780511977381 
