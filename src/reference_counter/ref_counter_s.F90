@@ -4,11 +4,22 @@ submodule(ref_counter_m) ref_counter_s
 
 contains
 
+#if (defined(__GNUC__) && __GNUC__ < 13)
+
+  module procedure construct
+    allocate(ref_counter%count_, source=0)
+    ref_counter%object_ => object
+  end procedure
+
+#else
+
   module procedure construct
     allocate(ref_counter%count_, source=0)
     allocate(ref_counter%object_, source=object)
     call ref_counter%grab
   end procedure
+
+#endif 
 
   module procedure grab
     call assert(associated(self%count_),"ref_counter_t%grab: associated(self%count_)")

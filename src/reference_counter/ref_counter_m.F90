@@ -19,11 +19,23 @@ module ref_counter_m
 
   interface ref_counter_t
 
+#if (defined(__GNUC__) && __GNUC__ < 13)
+
+    module function construct(object) result(ref_counter)
+      implicit none
+      class(ref_resource_t), intent(in), target :: object
+      type(ref_counter_t) ref_counter
+    end function
+
+#else
+
     module function construct(object) result(ref_counter)
       implicit none
       class(ref_resource_t), intent(in) :: object
       type(ref_counter_t) ref_counter
-     end function
+    end function
+
+#endif
 
   end interface
 
