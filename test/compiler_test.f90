@@ -15,11 +15,11 @@ module compiler_test
   type wrapper_t
     private
     type(object_t), allocatable  :: object
-  end type 
+  end type
 
   interface object_t
     module procedure  construct
-  end interface 
+  end interface
 
   integer :: finalizations = 0
   integer, parameter :: avoid_unused_variable_warning = 1
@@ -29,14 +29,14 @@ contains
   function test_ref_reference() result(tests)
     type(test_item_t) :: tests
 
-    tests = & 
+    tests = &
       describe( &
         "The compiler", &
         [ it("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization) &
          ,it("finalizes an object upon explicit deallocation", check_finalize_on_deallocate) &
          ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
-      ])  
+      ])
   end function
 
   function construct() result(object)
@@ -46,11 +46,12 @@ contains
 
   subroutine count_finalizations(self)
     type(object_t), intent(inout) :: self
-    finalizations = finalizations + 1 
+    finalizations = finalizations + 1
     self%dummy = avoid_unused_variable_warning
   end subroutine
 
   function check_rhs_function_reference() result(result_)
+    !! Tests 7.5.6.3 case 1 (intrinsic assignment with allocated variable)
     type(object_t), allocatable  :: object
     type(result_t) result_
     integer initial_tally, delta
@@ -62,6 +63,7 @@ contains
   end function
 
   function check_finalize_on_deallocate() result(result_)
+    !! Tests 7.5.6.3 case 2 (explicit deallocation on allocatable entity)
     type(object_t), allocatable  :: object
     type(result_t) result_
     integer initial_tally
@@ -76,6 +78,7 @@ contains
   end function
 
   function check_intent_out_finalization() result(result_)
+    !! Tests 7.5.6.3 case 7 (non-pointer non-allocatable INTENT(OUT) dummy argument)
     type(result_t) result_
     type(object_t) object
     integer initial_tally
@@ -94,6 +97,7 @@ contains
   end function
 
   function check_allocatable_component_finalization() result(result_)
+    !! Tests 7.5.6.3 cases 2 (allocatable entity) & 7
     type(wrapper_t), allocatable  :: wrapper
     type(result_t) result_
     integer initial_tally, delta
@@ -115,5 +119,5 @@ contains
     end subroutine
 
   end function
-  
+
 end module compiler_test
