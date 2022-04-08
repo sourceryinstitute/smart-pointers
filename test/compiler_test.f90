@@ -34,6 +34,7 @@ contains
         "The compiler", &
         [ it("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization) &
          ,it("finalizes an object upon explicit deallocation", check_finalize_on_deallocate) &
+         ,it("finalizes a non-allocatable object on the RHS of an intrinsic assignment", check_rhs_object_assignment) &
          ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
       ])
@@ -49,6 +50,19 @@ contains
     finalizations = finalizations + 1
     self%dummy = avoid_unused_variable_warning
   end subroutine
+
+  function check_rhs_object_assignment() result(result_)
+    !! Tests 7.5.6.3 case 1 (intrinsic assignment with non-allocatable variable)
+    type(object_t) :: lhs, rhs
+    type(result_t) result_
+    integer initial_tally, delta
+
+    rhs%dummy = avoid_unused_variable_warning
+    initial_tally = finalizations
+    lhs = rhs ! finalizes rhs
+    delta = finalizations - initial_tally
+    result_ = assert_equals(1, delta)
+  end function
 
   function check_rhs_function_reference() result(result_)
     !! Tests 7.5.6.3 case 1 (intrinsic assignment with allocated variable)
