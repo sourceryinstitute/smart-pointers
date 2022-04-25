@@ -1,0 +1,28 @@
+@startuml
+
+title Reference Counter Class Diagram
+
+hide empty members
+
+abstract class resource_t {
+  {abstract} free()
+}
+
+class counter_t {
+  - count_ : integer, pointer
+  - object_ : resource_t
+  grab()
+  release()
+}
+
+abstract class reference_t {
+  - counter_ : counter_t
+  release_handle()
+  start_ref_counter()
+}
+
+reference_t -up-|> resource_t
+reference_t *- counter_t
+counter_t *- resource_t
+
+@enduml
