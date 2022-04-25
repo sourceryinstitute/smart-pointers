@@ -1,5 +1,6 @@
 # Generated documentation
 doc/html
+*.png
 
 # Build directory
 build
