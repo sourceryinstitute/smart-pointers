@@ -12,14 +12,14 @@ module compiler_test
     final :: count_finalizations
   end type
 
+  interface object_t
+    module procedure construct_object
+  end interface
+
   type wrapper_t
     private
     type(object_t), allocatable :: object
   end type
-
-  interface object_t
-    module procedure  construct
-  end interface
 
   integer :: finalizations = 0
   integer, parameter :: avoid_unused_variable_warning = 1
@@ -40,16 +40,18 @@ contains
       ])
   end function
 
-  function construct() result(object)
+  function construct_object() result(object)
+    !! Constructor for object_t
     type(object_t) :: object
-    object%dummy = avoid_unused_variable_warning
+    object % dummy = avoid_unused_variable_warning
   end function
 
   subroutine count_finalizations(self)
+    !! Destructor for object_t
     type(object_t), intent(inout) :: self
     print *, 'Finalizing...'
     finalizations = finalizations + 1
-    self%dummy = avoid_unused_variable_warning
+    self % dummy = avoid_unused_variable_warning
   end subroutine
 
   function check_rhs_object_assignment() result(result_)
@@ -62,6 +64,20 @@ contains
     rhs%dummy = avoid_unused_variable_warning
     initial_tally = finalizations
     lhs = rhs ! finalizes rhs
+    delta = finalizations - initial_tally
+    result_ = assert_equals(1, delta)
+  end function
+
+  function check_block_finalization() result(result_)
+    !! Tests 7.5.6.3 case 4
+    type(result_t) :: result_
+    integer :: initial_tally, delta
+
+    initial_tally = finalizations
+    block
+      type(object_t) :: object
+      object % dummy = avoid_unused_variable_warning
+    end block ! Finalizes object
     delta = finalizations - initial_tally
     result_ = assert_equals(1, delta)
   end function
