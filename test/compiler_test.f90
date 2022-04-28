@@ -57,7 +57,7 @@ contains
     !! Expected: 1; gfortran 11.2: 0
     type(object_t) :: lhs, rhs
     type(result_t) result_
-    integer initial_tally, delta
+    integer :: initial_tally, delta
 
     rhs%dummy = avoid_unused_variable_warning
     initial_tally = finalizations
@@ -71,7 +71,7 @@ contains
     !! Expected: 1; gfortran 11.2: 0
     type(object_t), allocatable  :: object
     type(result_t) result_
-    integer initial_tally, delta
+    integer :: initial_tally, delta
 
     initial_tally = finalizations
     object = object_t() ! finalizes object_t result
@@ -117,7 +117,7 @@ contains
     !! Tests 7.5.6.3 cases 2 (allocatable entity) & 7
     type(wrapper_t), allocatable  :: wrapper
     type(result_t) result_
-    integer initial_tally, delta
+    integer :: initial_tally, delta
 
     initial_tally = finalizations
 
