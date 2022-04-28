@@ -7,14 +7,14 @@ module compiler_test
 
   type object_t
     private
-    integer dummy
+    integer :: dummy
   contains
     final :: count_finalizations
   end type
 
   type wrapper_t
     private
-    type(object_t), allocatable  :: object
+    type(object_t), allocatable :: object
   end type
 
   interface object_t
