@@ -41,7 +41,7 @@ contains
   end function
 
   function construct() result(object)
-    type(object_t) object
+    type(object_t) :: object
     object%dummy = avoid_unused_variable_warning
   end function
 
@@ -56,7 +56,7 @@ contains
     !! Tests 7.5.6.3 case 1 (intrinsic assignment with non-allocatable variable)
     !! Expected: 1; gfortran 11.2: 0
     type(object_t) :: lhs, rhs
-    type(result_t) result_
+    type(result_t) :: result_
     integer :: initial_tally, delta
 
     rhs%dummy = avoid_unused_variable_warning
@@ -70,7 +70,7 @@ contains
     !! Tests 7.5.6.3 case 1 (intrinsic assignment with allocated variable)
     !! Expected: 1; gfortran 11.2: 0
     type(object_t), allocatable  :: object
-    type(result_t) result_
+    type(result_t) :: result_
     integer :: initial_tally, delta
 
     initial_tally = finalizations
@@ -82,8 +82,8 @@ contains
   function check_finalize_on_deallocate() result(result_)
     !! Tests 7.5.6.3 case 2 (explicit deallocation on allocatable entity)
     type(object_t), allocatable  :: object
-    type(result_t) result_
-    integer initial_tally
+    type(result_t) :: result_
+    integer :: initial_tally
 
     initial_tally = finalizations
     allocate(object)
@@ -96,9 +96,9 @@ contains
 
   function check_intent_out_finalization() result(result_)
     !! Tests 7.5.6.3 case 7 (non-pointer non-allocatable INTENT(OUT) dummy argument)
-    type(result_t) result_
-    type(object_t) object
-    integer initial_tally
+    type(result_t) :: result_
+    type(object_t) :: object
+    integer :: initial_tally
 
     initial_tally = finalizations
     call finalize_intent_out_arg(object)
@@ -116,7 +116,7 @@ contains
   function check_allocatable_component_finalization() result(result_)
     !! Tests 7.5.6.3 cases 2 (allocatable entity) & 7
     type(wrapper_t), allocatable  :: wrapper
-    type(result_t) result_
+    type(result_t) :: result_
     integer :: initial_tally, delta
 
     initial_tally = finalizations
