@@ -21,6 +21,17 @@ module compiler_test
     type(object_t), allocatable :: object
   end type
 
+  type elem_t
+    private
+    integer :: dummy
+  contains
+    final :: count_elemental_finalizations
+  end type
+
+  interface elem_t
+    module procedure construct_elem
+  end interface elem_t
+
   integer :: finalizations = 0
   integer, parameter :: avoid_unused_variable_warning = 1
 
@@ -38,6 +49,7 @@ contains
          ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
          ,it("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization) &
+         ,it("finalizes a non-pointer non-allocatable array object at the END statement", check_finalize_on_end) &
       ])
   end function
 
@@ -50,8 +62,24 @@ contains
   subroutine count_finalizations(self)
     !! Destructor for object_t
     type(object_t), intent(inout) :: self
-    print *, 'Finalizing...'
+    print *, 'Finalizing object...'
     finalizations = finalizations + 1
+    self % dummy = avoid_unused_variable_warning
+  end subroutine
+
+  elemental function construct_elem() result(elem)
+    !! Constructor for elem_t
+    type(elem_t) :: elem
+    elem % dummy = avoid_unused_variable_warning
+  end function
+
+  elemental subroutine count_elemental_finalizations(self)
+    !! Destructor for elem_t
+    type(elem_t), intent(out) :: self
+    print *, 'Finalizing element...'
+    !$omp atomic update
+    finalizations = finalizations + 1
+    !$omp end atomic
     self % dummy = avoid_unused_variable_warning
   end subroutine
 
@@ -72,7 +100,7 @@ contains
   function check_rhs_function_reference() result(result_)
     !! Tests 7.5.6.3 case 1 (intrinsic assignment with allocated variable)
     !! Expected: 1; gfortran 11.2: 0
-    type(object_t), allocatable  :: object
+    type(object_t), allocatable :: object
     type(result_t) :: result_
     integer :: initial_tally, delta
 
@@ -84,7 +112,7 @@ contains
 
   function check_finalize_on_deallocate() result(result_)
     !! Tests 7.5.6.3 case 2 (explicit deallocation on allocatable entity)
-    type(object_t), allocatable  :: object
+    type(object_t), allocatable :: object
     type(result_t) :: result_
     integer :: initial_tally
 
@@ -95,6 +123,27 @@ contains
     associate(final_tally => finalizations - initial_tally)
       result_ = assert_equals(1, final_tally)
     end associate
+  end function
+
+  function check_finalize_on_end() result(result_)
+    !! Tests 7.5.6.3 case 3
+    type(result_t) :: result_
+    integer :: initial_tally
+    integer, parameter :: nelems = 2
+
+    initial_tally = finalizations
+    call finalize_on_end_subroutine()
+    associate(final_tally => finalizations - initial_tally)
+      result_ = assert_equals(nelems, final_tally)
+    end associate
+
+  contains
+
+    subroutine finalize_on_end_subroutine()
+      type(elem_t) :: array(nelems)
+      array(:) % dummy = avoid_unused_variable_warning
+    end subroutine
+
   end function
 
   function check_block_finalization() result(result_)
