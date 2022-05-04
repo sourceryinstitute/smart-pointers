@@ -75,7 +75,7 @@ contains
 
   elemental subroutine count_elemental_finalizations(self)
     !! Destructor for elem_t
-    type(elem_t), intent(out) :: self
+    type(elem_t), intent(inout) :: self
     !$omp atomic update
     finalizations = finalizations + 1
     !$omp end atomic
