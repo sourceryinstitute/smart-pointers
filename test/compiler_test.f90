@@ -34,6 +34,9 @@ module compiler_test
 
   integer :: finalizations = 0
   integer, parameter :: avoid_unused_variable_warning = 1
+  integer, parameter :: toggled_state = -1
+
+  integer, parameter :: nelems = 2
 
 contains
 
@@ -76,10 +79,8 @@ contains
   elemental subroutine count_elemental_finalizations(self)
     !! Destructor for elem_t
     type(elem_t), intent(inout) :: self
-    !$omp atomic update
-    finalizations = finalizations + 1
-    !$omp end atomic
-    self % dummy = avoid_unused_variable_warning
+    integer, intent(out) :: count
+    self % dummy = toggled_state
   end subroutine
 
   function check_rhs_object_assignment() result(result_)
@@ -127,19 +128,22 @@ contains
   function check_finalize_on_end() result(result_)
     !! Tests 7.5.6.3 case 3
     type(result_t) :: result_
-    integer :: initial_tally
-    integer, parameter :: nelems = 2
+    type(elem_t) :: array(nelems)
+    logical :: finalized(nelems)
+    integer :: initial_tally, delta
+    intrinsic :: count
 
     initial_tally = finalizations
+    finalized(:) = .FALSE.
     call finalize_on_end_subroutine()
-    associate(final_tally => finalizations - initial_tally)
-      result_ = assert_equals(nelems, final_tally)
-    end associate
+    where (array%dummy == toggled_state) finalized = .TRUE.
+    delta = count(finalized)
+    result_ = assert_equals(nelems, delta)
+    finalizations = finalizations + delta
 
   contains
 
     subroutine finalize_on_end_subroutine()
-      type(elem_t) :: array(nelems)
       array(:) % dummy = avoid_unused_variable_warning
     end subroutine
 
@@ -180,7 +184,7 @@ contains
 
   function check_allocatable_component_finalization() result(result_)
     !! Tests 7.5.6.3 cases 2 (allocatable entity) & 7
-    type(wrapper_t), allocatable  :: wrapper
+    type(wrapper_t), allocatable :: wrapper
     type(result_t) :: result_
     integer :: initial_tally, delta
 
