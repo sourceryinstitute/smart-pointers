@@ -80,6 +80,11 @@ contains
     !! Destructor for elem_t
     type(elem_t), intent(inout) :: self
     self % dummy = toggled_state
+    call increment_finalizations()
+  end subroutine
+
+  subroutine increment_finalizations()
+    finalizations = finalizations + 1
   end subroutine
 
   function check_rhs_object_assignment() result(result_)
@@ -127,23 +132,20 @@ contains
   function check_finalize_on_end() result(result_)
     !! Tests 7.5.6.3 case 3
     type(result_t) :: result_
-    type(elem_t) :: array(nelems)
-    logical :: finalized(nelems)
-    integer :: initial_tally, delta
+    integer :: initial_tally
     intrinsic :: count
 
     initial_tally = finalizations
-    finalized(:) = .FALSE.
-    call finalize_on_end_subroutine()
-    where (array%dummy == toggled_state) finalized = .TRUE.
-    delta = count(finalized)
-    result_ = assert_equals(nelems, delta)
-    finalizations = finalizations + delta
+    call finalize_on_end_subroutine() ! Finalizes local_array
+    associate(final_tally => finalizations - initial_tally)
+      result_ = assert_equals(nelems, final_tally)
+    end associate
 
   contains
 
     subroutine finalize_on_end_subroutine()
-      array(:) % dummy = avoid_unused_variable_warning
+      type(elem_t) :: local_array(nelems)
+      local_array % dummy = avoid_unused_variable_warning
     end subroutine
 
   end function
