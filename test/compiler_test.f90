@@ -21,22 +21,8 @@ module compiler_test
     type(object_t), allocatable :: object
   end type
 
-  type elem_t
-    private
-    integer :: dummy
-  contains
-    final :: count_elemental_finalizations
-  end type
-
-  interface elem_t
-    module procedure construct_elem
-  end interface elem_t
-
   integer :: finalizations = 0
   integer, parameter :: avoid_unused_variable_warning = 1
-  integer, parameter :: toggled_state = -1
-
-  integer, parameter :: nelems = 2
 
 contains
 
@@ -68,24 +54,6 @@ contains
     print *, 'Finalizing object...'
     finalizations = finalizations + 1
     self % dummy = avoid_unused_variable_warning
-  end subroutine
-
-  elemental function construct_elem() result(elem)
-    !! Constructor for elem_t
-    type(elem_t) :: elem
-    elem % dummy = avoid_unused_variable_warning
-  end function
-
-  elemental subroutine count_elemental_finalizations(self)
-    !! Destructor for elem_t
-    type(elem_t), intent(inout) :: self
-    self % dummy = toggled_state
-    call increment(finalizations)
-  end subroutine
-
-  pure subroutine increment(counter)
-    integer, intent(inout) :: counter
-    counter = counter + 1
   end subroutine
 
   function check_rhs_object_assignment() result(result_)
@@ -137,16 +105,16 @@ contains
     intrinsic :: count
 
     initial_tally = finalizations
-    call finalize_on_end_subroutine() ! Finalizes local_array
+    call finalize_on_end_subroutine() ! Finalizes local_obj
     associate(final_tally => finalizations - initial_tally)
-      result_ = assert_equals(nelems, final_tally)
+      result_ = assert_equals(1, final_tally)
     end associate
 
   contains
 
     subroutine finalize_on_end_subroutine()
-      type(elem_t) :: local_array(nelems)
-      local_array % dummy = avoid_unused_variable_warning
+      type(object_t) :: local_obj
+      local_obj % dummy = avoid_unused_variable_warning
     end subroutine
 
   end function
