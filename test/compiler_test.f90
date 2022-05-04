@@ -79,7 +79,6 @@ contains
   elemental subroutine count_elemental_finalizations(self)
     !! Destructor for elem_t
     type(elem_t), intent(inout) :: self
-    integer, intent(out) :: count
     self % dummy = toggled_state
   end subroutine
 
