@@ -80,11 +80,12 @@ contains
     !! Destructor for elem_t
     type(elem_t), intent(inout) :: self
     self % dummy = toggled_state
-    call increment_finalizations()
+    call increment(finalizations)
   end subroutine
 
-  subroutine increment_finalizations()
-    finalizations = finalizations + 1
+  pure subroutine increment(counter)
+    integer, intent(inout) :: counter
+    counter = counter + 1
   end subroutine
 
   function check_rhs_object_assignment() result(result_)
