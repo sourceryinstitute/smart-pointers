@@ -34,12 +34,12 @@ contains
         "The compiler", &
         [ it("finalizes a non-allocatable object on the LHS of an intrinsic assignment", check_lhs_object) & 
          ,it("finalizes an allocated allocatable LHS of an intrinsic assignment", check_allocated_allocatable_lhs) &
-         ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes an object upon explicit deallocation", check_finalize_on_deallocate) &
-         ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
-         ,it("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization) &
          ,it("finalizes a non-pointer non-allocatable array object at the END statement", check_finalize_on_end) &
+         ,it("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization) &
+         ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization) &
+         ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
       ])
   end function
 
@@ -57,8 +57,7 @@ contains
   end subroutine
 
   function check_lhs_object() result(result_)
-    !! Tests 7.5.6.3, paragraph 1 (intrinsic assignment with non-allocatable LHS variable)
-    !! Expected: 1; gfortran 11.2: 0
+    !! Verify Fortran 2018 clause 7.5.6.3, paragraph 1 behavior
     type(object_t) lhs, rhs
     type(result_t) result_
     integer initial_tally
@@ -72,8 +71,7 @@ contains
   end function
 
   function check_allocated_allocatable_lhs() result(result_)
-    !! Tests 7.5.6.3, paragraph 1 (intrinsic assignment with non-allocatable LHS variable)
-    !! Expected: 1; gfortran 11.2: 0
+    !! Verify Fortran 2018 clause 7.5.6.3, paragraph 1 behavior
     type(object_t), allocatable :: lhs
     type(object_t) rhs
     type(result_t) result_
@@ -86,19 +84,6 @@ contains
     associate(delta => finalizations - initial_tally)
       result_ = assert_equals(1, delta)
     end associate
-  end function
-
-  function check_rhs_function_reference() result(result_)
-    !! Tests 7.5.6.3, paragraph 5 
-    !! Expected: 1; gfortran 11.2: 0
-    type(object_t), allocatable :: object
-    type(result_t) result_
-    integer initial_tally, delta
-
-    initial_tally = finalizations
-    object = object_t() ! finalizes object_t result
-    delta = finalizations - initial_tally
-    result_ = assert_equals(1, delta)
   end function
 
   function check_finalize_on_deallocate() result(result_)
@@ -146,6 +131,18 @@ contains
       type(object_t) object
       object % dummy = avoid_unused_variable_warning
     end block ! Finalizes object
+    delta = finalizations - initial_tally
+    result_ = assert_equals(1, delta)
+  end function
+
+  function check_rhs_function_reference() result(result_)
+    !! Verify Fortran 2018 clause 7.5.6.3, paragraph 5 behavior
+    type(object_t), allocatable :: object
+    type(result_t) result_
+    integer initial_tally, delta
+
+    initial_tally = finalizations
+    object = object_t() ! finalizes object_t result
     delta = finalizations - initial_tally
     result_ = assert_equals(1, delta)
   end function
