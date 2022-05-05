@@ -6,15 +6,10 @@ module compiler_test
   public :: test_ref_reference
 
   type object_t
-    private
     integer dummy
   contains
     final :: count_finalizations
   end type
-
-  interface object_t
-    module procedure construct_object
-  end interface
 
   type wrapper_t
     private
@@ -38,6 +33,7 @@ contains
          ,it("finalizes a non-pointer non-allocatable array object at the END statement", check_finalize_on_end) &
          ,it("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization) &
          ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
+         ,it("finalizes a specification expression function result", check_specification_expression) &
          ,it("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization) &
          ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
       ])
@@ -124,27 +120,49 @@ contains
   function check_block_finalization() result(result_)
     !! Tests 7.5.6.3, paragraph 4
     type(result_t) result_
-    integer initial_tally, delta
+    integer initial_tally
 
     initial_tally = finalizations
     block
       type(object_t) object
       object % dummy = avoid_unused_variable_warning
     end block ! Finalizes object
-    delta = finalizations - initial_tally
-    result_ = assert_equals(1, delta)
+    associate(delta => finalizations - initial_tally)
+      result_ = assert_equals(1, delta)
+    end associate
   end function
 
   function check_rhs_function_reference() result(result_)
     !! Verify Fortran 2018 clause 7.5.6.3, paragraph 5 behavior
     type(object_t), allocatable :: object
     type(result_t) result_
-    integer initial_tally, delta
+    integer initial_tally
 
     initial_tally = finalizations
-    object = object_t() ! finalizes object_t result
-    delta = finalizations - initial_tally
-    result_ = assert_equals(1, delta)
+    object = construct_object() ! finalizes object_t result
+    associate(delta => finalizations - initial_tally)
+      result_ = assert_equals(1, delta)
+    end associate
+  end function
+
+  function check_specification_expression() result(result_)
+    !! Tests 7.5.6.3, paragraph 6 
+    type(result_t) result_
+    integer initial_tally
+
+    initial_tally = finalizations
+    call finalize_specification_expression
+    associate(delta => finalizations - initial_tally)
+      result_ = assert_equals(1, delta)
+    end associate
+
+  contains
+
+    subroutine finalize_specification_expression
+      type(object_t) :: object = object_t(dummy=0) ! Finalizes RHS function reference
+      object%dummy = avoid_unused_variable_warning
+    end subroutine
+
   end function
 
   function check_intent_out_finalization() result(result_)
@@ -155,30 +173,30 @@ contains
 
     initial_tally = finalizations
     call finalize_intent_out_arg(object)
-    result_ = assert_equals(initial_tally+1, finalizations)
-
+    associate(delta => finalizations - initial_tally)
+      result_ = assert_equals(1, delta)
+    end associate
   contains
-
     subroutine finalize_intent_out_arg(output)
       type(object_t), intent(out) :: output ! finalizes output
       output%dummy = avoid_unused_variable_warning
     end subroutine
-
   end function
 
   function check_allocatable_component_finalization() result(result_)
     !! Tests 7.5.6.3, paragraph 2 (allocatable entity) & 7
     type(wrapper_t), allocatable :: wrapper
     type(result_t) result_
-    integer initial_tally, delta
+    integer initial_tally
 
     initial_tally = finalizations
 
     allocate(wrapper)
     allocate(wrapper%object)
     call finalize_intent_out_component(wrapper)
-    delta = finalizations - initial_tally
-    result_ = assert_equals(1, delta)
+    associate(delta => finalizations - initial_tally)
+      result_ = assert_equals(1, delta)
+    end associate
 
   contains
 
