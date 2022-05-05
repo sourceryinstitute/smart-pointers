@@ -7,7 +7,7 @@ module compiler_test
 
   type object_t
     private
-    integer :: dummy
+    integer dummy
   contains
     final :: count_finalizations
   end type
@@ -27,7 +27,7 @@ module compiler_test
 contains
 
   function test_ref_reference() result(tests)
-    type(test_item_t) :: tests
+    type(test_item_t) tests
 
     tests = &
       describe( &
@@ -44,7 +44,7 @@ contains
 
   function construct_object() result(object)
     !! Constructor for object_t
-    type(object_t) :: object
+    type(object_t) object
     object % dummy = avoid_unused_variable_warning
   end function
 
@@ -59,9 +59,9 @@ contains
   function check_rhs_object_assignment() result(result_)
     !! Tests 7.5.6.3 case 1 (intrinsic assignment with non-allocatable variable)
     !! Expected: 1; gfortran 11.2: 0
-    type(object_t) :: lhs, rhs
-    type(result_t) :: result_
-    integer :: initial_tally, delta
+    type(object_t) lhs, rhs
+    type(result_t) result_
+    integer initial_tally, delta
 
     rhs%dummy = avoid_unused_variable_warning
     initial_tally = finalizations
@@ -74,8 +74,8 @@ contains
     !! Tests 7.5.6.3 case 1 (intrinsic assignment with allocated variable)
     !! Expected: 1; gfortran 11.2: 0
     type(object_t), allocatable :: object
-    type(result_t) :: result_
-    integer :: initial_tally, delta
+    type(result_t) result_
+    integer initial_tally, delta
 
     initial_tally = finalizations
     object = object_t() ! finalizes object_t result
@@ -86,8 +86,8 @@ contains
   function check_finalize_on_deallocate() result(result_)
     !! Tests 7.5.6.3 case 2 (explicit deallocation on allocatable entity)
     type(object_t), allocatable :: object
-    type(result_t) :: result_
-    integer :: initial_tally
+    type(result_t) result_
+    integer initial_tally
 
     initial_tally = finalizations
     allocate(object)
@@ -100,9 +100,8 @@ contains
 
   function check_finalize_on_end() result(result_)
     !! Tests 7.5.6.3 case 3
-    type(result_t) :: result_
-    integer :: initial_tally
-    intrinsic :: count
+    type(result_t) result_
+    integer initial_tally
 
     initial_tally = finalizations
     call finalize_on_end_subroutine() ! Finalizes local_obj
@@ -113,7 +112,7 @@ contains
   contains
 
     subroutine finalize_on_end_subroutine()
-      type(object_t) :: local_obj
+      type(object_t) local_obj
       local_obj % dummy = avoid_unused_variable_warning
     end subroutine
 
@@ -121,12 +120,12 @@ contains
 
   function check_block_finalization() result(result_)
     !! Tests 7.5.6.3 case 4
-    type(result_t) :: result_
-    integer :: initial_tally, delta
+    type(result_t) result_
+    integer initial_tally, delta
 
     initial_tally = finalizations
     block
-      type(object_t) :: object
+      type(object_t) object
       object % dummy = avoid_unused_variable_warning
     end block ! Finalizes object
     delta = finalizations - initial_tally
@@ -135,9 +134,9 @@ contains
 
   function check_intent_out_finalization() result(result_)
     !! Tests 7.5.6.3 case 7 (non-pointer non-allocatable INTENT(OUT) dummy argument)
-    type(result_t) :: result_
-    type(object_t) :: object
-    integer :: initial_tally
+    type(result_t) result_
+    type(object_t) object
+    integer initial_tally
 
     initial_tally = finalizations
     call finalize_intent_out_arg(object)
@@ -155,8 +154,8 @@ contains
   function check_allocatable_component_finalization() result(result_)
     !! Tests 7.5.6.3 cases 2 (allocatable entity) & 7
     type(wrapper_t), allocatable :: wrapper
-    type(result_t) :: result_
-    integer :: initial_tally, delta
+    type(result_t) result_
+    integer initial_tally, delta
 
     initial_tally = finalizations
 
