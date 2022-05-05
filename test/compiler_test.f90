@@ -51,7 +51,6 @@ contains
   subroutine count_finalizations(self)
     !! Destructor for object_t
     type(object_t), intent(inout) :: self
-    print *, 'Finalizing object...'
     finalizations = finalizations + 1
     self % dummy = avoid_unused_variable_warning
   end subroutine
