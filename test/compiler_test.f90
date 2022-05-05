@@ -34,7 +34,7 @@ contains
         "The compiler", &
         [ it("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization) &
          ,it("finalizes an object upon explicit deallocation", check_finalize_on_deallocate) &
-         ,it("finalizes a non-allocatable object on the RHS of an intrinsic assignment", check_rhs_object_assignment) &
+         ,it("finalizes a non-allocatable object on the LHS of an intrinsic assignment", check_lhs_object) &
          ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
          ,it("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization) &
@@ -55,22 +55,23 @@ contains
     self % dummy = avoid_unused_variable_warning
   end subroutine
 
-  function check_rhs_object_assignment() result(result_)
-    !! Tests 7.5.6.3 case 1 (intrinsic assignment with non-allocatable variable)
+  function check_lhs_object() result(result_)
+    !! Tests 7.5.6.3, paragraph 1 (intrinsic assignment with non-allocatable LHS variable)
     !! Expected: 1; gfortran 11.2: 0
     type(object_t) lhs, rhs
     type(result_t) result_
-    integer initial_tally, delta
+    integer initial_tally
 
     rhs%dummy = avoid_unused_variable_warning
     initial_tally = finalizations
-    lhs = rhs ! finalizes rhs
-    delta = finalizations - initial_tally
-    result_ = assert_equals(1, delta)
+    lhs = rhs ! finalizes lhs
+    associate(delta => finalizations - initial_tally)
+      result_ = assert_equals(1, delta)
+    end associate
   end function
 
   function check_rhs_function_reference() result(result_)
-    !! Tests 7.5.6.3 case 1 (intrinsic assignment with allocated variable)
+    !! Tests 7.5.6.3, paragraph 5 
     !! Expected: 1; gfortran 11.2: 0
     type(object_t), allocatable :: object
     type(result_t) result_
@@ -83,7 +84,7 @@ contains
   end function
 
   function check_finalize_on_deallocate() result(result_)
-    !! Tests 7.5.6.3 case 2 (explicit deallocation on allocatable entity)
+    !! Tests 7.5.6.3, paragraph 2 (explicit deallocation on allocatable entity)
     type(object_t), allocatable :: object
     type(result_t) result_
     integer initial_tally
@@ -98,7 +99,7 @@ contains
   end function
 
   function check_finalize_on_end() result(result_)
-    !! Tests 7.5.6.3 case 3
+    !! Tests 7.5.6.3, paragraph 3
     type(result_t) result_
     integer initial_tally
 
@@ -118,7 +119,7 @@ contains
   end function
 
   function check_block_finalization() result(result_)
-    !! Tests 7.5.6.3 case 4
+    !! Tests 7.5.6.3, paragraph 4
     type(result_t) result_
     integer initial_tally, delta
 
@@ -132,7 +133,7 @@ contains
   end function
 
   function check_intent_out_finalization() result(result_)
-    !! Tests 7.5.6.3 case 7 (non-pointer non-allocatable INTENT(OUT) dummy argument)
+    !! Tests 7.5.6.3, paragraph 7 (non-pointer non-allocatable INTENT(OUT) dummy argument)
     type(result_t) result_
     type(object_t) object
     integer initial_tally
@@ -151,7 +152,7 @@ contains
   end function
 
   function check_allocatable_component_finalization() result(result_)
-    !! Tests 7.5.6.3 cases 2 (allocatable entity) & 7
+    !! Tests 7.5.6.3, paragraph 2 (allocatable entity) & 7
     type(wrapper_t), allocatable :: wrapper
     type(result_t) result_
     integer initial_tally, delta
