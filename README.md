@@ -66,8 +66,8 @@ behaviors:
 
 | _Compiler_   | _Test failures_      | _Version tested_                                    |
 | :---         |       :---:          | :---                                                |
-| NAG          |         0            | `nagfor` 7.1                                        |
-| GCC          |         1            | `gfortran` 11.2.0 (Homebrew GCC 11.2.0\_3)          |
+| NAG          |         1            | `nagfor` 7.1                                        |
+| GCC          |         4            | `gfortran` 11.3.0.                                  |
 | Intel        |         2            | `ifort` 2021.5.0 Build 20211109\_000000             |
 | NVIDIA       | Fails to build (ICE) | `nvfortran` 2022.2                                  |
 | AMD          | Fails to build (ICE) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
