@@ -200,8 +200,8 @@ contains
   contains
 
     subroutine finalize_specification_expression
-      type(object_t) :: object = object_t(dummy=0) ! Finalizes RHS function reference
-      object%dummy = avoid_unused_variable_warning
+      integer :: size_object = size([object_t(dummy=0)]) ! Finalizes RHS function reference
+      size_object = avoid_unused_variable_warning
     end subroutine
 
   end function
