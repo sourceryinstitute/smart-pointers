@@ -8,9 +8,9 @@ contains
         use compiler_test, only: &
                 compiler_ref_reference => &
                     test_ref_reference
-        use ref_reference_test, only: &
-                ref_reference_ref_reference => &
-                    test_ref_reference
+        use usage_test, only: &
+                usage_usage => &
+                    test_usage
         use vegetables, only: test_item_t, test_that, run_tests
 
 
@@ -19,7 +19,7 @@ contains
         type(test_item_t) :: individual_tests(2)
 
         individual_tests(1) = compiler_ref_reference()
-        individual_tests(2) = ref_reference_ref_reference()
+        individual_tests(2) = usage_usage()
         tests = test_that(individual_tests)
 
 
