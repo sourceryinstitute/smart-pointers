@@ -27,11 +27,11 @@ contains
     tests = &
       describe( &
         "The compiler", &
-        [ it("finalizes a non-allocatable object on the LHS of an intrinsic assignment", check_lhs_object) & 
+        [ it("finalizes a non-allocatable object on the LHS of an intrinsic assignment", check_lhs_object) &
          ,it("finalizes an allocated allocatable LHS of an intrinsic assignment", check_allocated_allocatable_lhs) &
          ,it("finalizes a target when the associated pointer is deallocated", check_target_deallocation) &
          ,it("finalizes an object upon explicit deallocation", check_finalize_on_deallocate) &
-         ,it("finalizes a non-pointer non-allocatable array object at the END statement", check_finalize_on_end) &
+         ,it("finalizes a non-pointer non-allocatable object at the END statement", check_finalize_on_end) &
          ,it("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization) &
          ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
          ,it("finalizes a specification expression function result", check_specification_expression) &
@@ -98,7 +98,7 @@ contains
   end function
 
   function check_allocatable_component_finalization() result(result_)
-    !! Tests 7.5.6.3, para. 2 ("allocatable entity is deallocated") 
+    !! Tests 7.5.6.3, para. 2 ("allocatable entity is deallocated")
     !! + 9.7.3.2, para. 6 ("INTENT(OUT) allocatable dummy argument is deallocated")
     type(wrapper_t), allocatable :: wrapper
     type(result_t) result_
