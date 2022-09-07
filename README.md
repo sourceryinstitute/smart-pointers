@@ -26,7 +26,7 @@ by defining a non-abstract derived type that
 2. Implements the so-inherited `free` deferred binding.
 
 Because the reference-counting algorithm involves copying references in certain
-circumstances, the user type that extends s`ref_reference_t` should be a lightweight
+circumstances, the user type that extends `ref_reference_t` should be a lightweight
 proxy for a more stateful entity stored elsewhere.  For example, the user type might 
 contain a Fortran `pointer` associated with some other object or it might contain
 a "shadow" object that serves as an identity tag for a larger object allocated 
