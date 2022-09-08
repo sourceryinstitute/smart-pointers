@@ -1,6 +1,6 @@
 module usage_test
     use reference_counter_m, only: ref_reference_t
-    use vegetables, only: &
+    use veggies, only: &
             result_t, &
             test_item_t, &
             assert_equals, &

@@ -1,5 +1,5 @@
 module compiler_test
-  use vegetables, only: result_t, test_item_t, describe, it, assert_equals
+  use veggies, only: result_t, test_item_t, describe, it, assert_equals
   implicit none
 
   private
