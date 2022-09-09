@@ -9,6 +9,7 @@ module usage_test
             describe, &
             fail, &
             it
+    use shallow_m, only : shallow_t, resource_freed
 
     implicit none
     private
@@ -47,10 +48,11 @@ contains
         type(test_item_t) :: tests
 
         tests = describe( &
-                "Using a reference-counted object", &
+                "A reference-counted object", &
                 [ it("creates a resource when constructed", check_creation) &
-                , it("removes the resource when it goes out of scope", check_deletion) &
-                , it("a copy points to the same resource", check_copy) &
+                , it("removes the resource when the object goes out of scope", check_deletion) &
+                , it("copy points to the same resource as the original", check_copy) &
+                , it("has zero references afrer a shallow copy goes out of scope", check_shallow_copy) &
                 ])
     end function
 
@@ -86,5 +88,19 @@ contains
         object1 = object_t()
         object2 = object1
         result_ = assert_that(associated(object2%ref, object1%ref))
+    end function
+    
+    function check_shallow_copy() result(result_)
+      type(result_t) :: result_
+      
+      block 
+        type(shallow_t) shallow_copy
+
+        associate(original => shallow_t())
+          shallow_copy = original
+        end associate
+      end block
+
+      result_ = assert_that(resource_freed)
     end function
 end module
