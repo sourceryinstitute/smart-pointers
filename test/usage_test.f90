@@ -52,7 +52,7 @@ contains
                 [ it("creates a resource when constructed", check_creation) &
                 , it("removes the resource when the object goes out of scope", check_deletion) &
                 , it("copy points to the same resource as the original", check_copy) &
-                , it("has zero references afrer a shallow copy goes out of scope", check_shallow_copy) &
+                , it("has zero references after a shallow copy goes out of scope", check_shallow_copy) &
                 ])
     end function
 
