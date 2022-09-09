@@ -1,5 +1,7 @@
 module compiler_test
-  use veggies, only: result_t, test_item_t, describe, it, assert_equals
+  !! Test compiler conformance with each scenario in which the Fortran 2018
+  !! standard mandates type finalization.
+  use veggies, only: result_t, test_item_t, describe, it, assert_equals, assert_that
   implicit none
 
   private
@@ -54,7 +56,8 @@ contains
   end subroutine
 
   function check_lhs_object() result(result_)
-    !! Verify Fortran 2018 clause 7.5.6.3, paragraph 1 behavior: "not an unallocated allocatable variable"
+    !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 1 behavior:
+    !! "not an unallocated allocatable variable"
     type(object_t) lhs, rhs
     type(result_t) result_
     integer initial_tally
@@ -68,7 +71,8 @@ contains
   end function
 
   function check_allocated_allocatable_lhs() result(result_)
-    !! Verify Fortran 2018 clause 7.5.6.3, paragraph 1 behavior: "allocated allocatable variable"
+    !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 1 behavior:
+    !! "allocated allocatable variable"
     type(object_t), allocatable :: lhs
     type(object_t) rhs
     type(result_t) result_
@@ -84,7 +88,8 @@ contains
   end function
 
   function check_target_deallocation() result(result_)
-    !! Verify Fortran 2018 clause 7.5.6.3, paragraph 2 behavior: "pointer is deallocated"
+    !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 2 behavior:
+    !! "pointer is deallocated"
     type(object_t), pointer :: object_ptr => null()
     type(result_t) result_
     integer initial_tally
@@ -98,7 +103,7 @@ contains
   end function
 
   function check_allocatable_component_finalization() result(result_)
-    !! Tests 7.5.6.3, para. 2 ("allocatable entity is deallocated")
+    !! Test conformance with Fortran 2018 clause 7.5.6.3, para. 2 ("allocatable entity is deallocated")
     !! + 9.7.3.2, para. 6 ("INTENT(OUT) allocatable dummy argument is deallocated")
     type(wrapper_t), allocatable :: wrapper
     type(result_t) result_
@@ -124,7 +129,8 @@ contains
   end function
 
   function check_finalize_on_deallocate() result(result_)
-    !! Tests 7.5.6.3, paragraph 2: "allocatable entity is deallocated"
+    !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 2:
+    !! "allocatable entity is deallocated"
     type(object_t), allocatable :: object
     type(result_t) result_
     integer initial_tally
@@ -139,7 +145,8 @@ contains
   end function
 
   function check_finalize_on_end() result(result_)
-    !! Tests 7.5.6.3, paragraph 3: "before return or END statement"
+    !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 3:
+    !! "before return or END statement"
     type(result_t) result_
     integer initial_tally
 
@@ -159,7 +166,8 @@ contains
   end function
 
   function check_block_finalization() result(result_)
-    !! Tests 7.5.6.3, paragraph 4: "termination of the BLOCK construct"
+    !! Test conformance with Fortran 2018 clause  7.5.6.3, paragraph 4:
+    !! "termination of the BLOCK construct"
     type(result_t) result_
     integer initial_tally
 
@@ -174,7 +182,8 @@ contains
   end function
 
   function check_rhs_function_reference() result(result_)
-    !! Verify Fortran 2018 clause 7.5.6.3, paragraph 5 behavior: "nonpointer function result"
+    !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 5 behavior:
+    !! "nonpointer function result"
     type(object_t), allocatable :: object
     type(result_t) result_
     integer initial_tally
@@ -187,27 +196,25 @@ contains
   end function
 
   function check_specification_expression() result(result_)
-    !! Tests 7.5.6.3, paragraph 6: "specification expression function result"
+    !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6: 
+    !! "specification expression function result"
     type(result_t) result_
-    integer initial_tally
-
-    initial_tally = finalizations
-    call finalize_specification_expression
-    associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
-    end associate
-
-  contains
-
-    subroutine finalize_specification_expression
-      character(len=size([object_t(dummy=this_image())])) :: string ! Finalizes RHS function reference
-      string = ""
-    end subroutine
+    integer exit_status
+    logical error_termination_occurred
+  
+    call execute_command_line( &
+      command = "fpm run --example specification_expression_finalization > /dev/null 2>&1", &
+      wait = .true., &
+      exitstat = exit_status &
+    )
+    error_termination_occurred = exit_status /=0
+    result_ = assert_that(error_termination_occurred)
 
   end function
 
   function check_intent_out_finalization() result(result_)
-    !! Tests 7.5.6.3, paragraph 7: "nonpointer, nonallocatable, INTENT (OUT) dummy argument"
+    !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 7:
+    !! "nonpointer, nonallocatable, INTENT (OUT) dummy argument"
     type(result_t) result_
     type(object_t) object
     integer initial_tally
