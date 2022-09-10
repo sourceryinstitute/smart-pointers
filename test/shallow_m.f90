@@ -8,8 +8,6 @@ module shallow_m
     type, extends(ref_reference_t) :: shallow_t
         integer, pointer :: ref => null()
     contains
-        procedure :: shallow_copy
-        generic :: assignment(=) => shallow_copy
         procedure :: free
     end type
 
@@ -35,12 +33,6 @@ contains
         deallocate(resource)
         nullify(self%ref)
         resource_freed = .true.
-    end subroutine
-
-    subroutine shallow_copy(lhs, rhs)
-       class(shallow_t), intent(inout) :: lhs
-       type(shallow_t), intent(in) :: rhs
-       lhs%ref => rhs%ref
     end subroutine
 
 end module
