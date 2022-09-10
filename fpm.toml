@@ -1,4 +1,4 @@
-name = "reference-counter"
+name = "reference_counter"
 version = "1.0.0"
 license = "BSD"
 author = ["Damian Rouson, Karla Morris, and Jim Xia"]
