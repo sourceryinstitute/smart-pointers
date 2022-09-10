@@ -66,12 +66,14 @@ to finalize objects.  The table below summarizes the observed compiler behaviors
 
 | _Compiler_   | _Test failures_      | _Version tested_                                    |
 | :---         |       :---:          | :---                                                |
-| NAG          |         1            | `nagfor` 7.1                                        |
-| GCC          |         4            | `gfortran` 11.3.0, 12.1.0                           |
+| NAG          |         0            | `nagfor` 7.1 Build 7113                             |
+| GCC          |         6            | `gfortran` 12.2.0                                   |
 | Intel        |         2            | `ifort` 2021.5.0 Build 20211109\_000000             |
 | NVIDIA       | Fails to build (ICE) | `nvfortran` 2022.2                                  |
 | AMD          | Fails to build (ICE) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
 
+See the [test suite README.md](./test/README.md) for more details on each compiler's test
+failures.
 
 Downloading, Building, and Testing
 ----------------------------------
