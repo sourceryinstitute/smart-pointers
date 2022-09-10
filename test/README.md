@@ -12,7 +12,7 @@ to occur.
 
 `nagfor` 7.1.0 
 --------------
-:trophy: The Numerical Algorithms Group [(NAG]) Fortran compiler] passes all
+:trophy: The Numerical Algorithms Group (NAG) Fortran [compiler] passes all
 reference-counter tests. 
 
 `gfortran` 12.2.0
@@ -38,4 +38,4 @@ test description.
 1. copy points to the same resource as the original
 2. has zero references after a shallow copy goes out of scope
 
-[(NAG) Fortran compiler]: https://www.nag.com/content/nag-fortran-compiler
+[compiler]: https://www.nag.com/content/nag-fortran-compiler
