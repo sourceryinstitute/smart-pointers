@@ -4,6 +4,10 @@ submodule(ref_counter_m) ref_counter_s
 
 contains
 
+  module procedure reference_count
+    counter = self%count_
+  end procedure
+
   module procedure construct
     allocate(ref_counter%count_, source=0)
     allocate(ref_counter%object_, source=object)

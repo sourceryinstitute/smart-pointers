@@ -10,6 +10,7 @@ module ref_counter_m
     integer, pointer :: count_ => null()
     class(ref_resource_t), pointer :: object_ => null()
   contains
+    procedure :: reference_count
     procedure, non_overridable :: grab
     procedure, non_overridable :: release
     procedure :: assign_ref_counter
@@ -28,6 +29,12 @@ module ref_counter_m
   end interface
 
   interface
+
+    pure module function reference_count(self) result(counter)
+      implicit none
+      class(ref_counter_t), intent(in) :: self
+      integer counter
+    end function
 
     module subroutine grab(self)
       implicit none
