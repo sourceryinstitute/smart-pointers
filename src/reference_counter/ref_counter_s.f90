@@ -36,4 +36,8 @@ contains
     call lhs%grab
   end procedure
 
+  module procedure counter
+    reference_count = self%count_
+  end procedure
+
 end submodule ref_counter_s

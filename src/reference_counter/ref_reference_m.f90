@@ -9,6 +9,7 @@ module ref_reference_m
   type, abstract, extends(ref_resource_t) :: ref_reference_t
     type(ref_counter_t) :: ref_counter
   contains
+    procedure :: reference_count
     procedure, non_overridable :: release_handle
     procedure, non_overridable :: start_ref_counter
   end type
@@ -24,6 +25,12 @@ module ref_reference_m
       implicit none
       class(ref_reference_t), intent(inout) :: self
     end subroutine
+
+    pure module function reference_count(self) result(counter)
+      implicit none
+      class(ref_reference_t), intent(in) :: self
+      integer counter
+    end function
 
   end interface
 
