@@ -1,6 +1,7 @@
 module compiler_test
   !! Test compiler conformance with each scenario in which the Fortran 2018
   !! standard mandates type finalization.
+  use for_use_in_spec_expr_m, only: finalizable_t, component, was_finalized
   use veggies, only: result_t, test_item_t, describe, it, assert_equals, assert_that
   implicit none
 
@@ -196,20 +197,16 @@ contains
   end function
 
   function check_specification_expression() result(result_)
-    !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6: 
+    !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
     type(result_t) result_
-    integer exit_status
-    logical error_termination_occurred
-  
-    call execute_command_line( &
-      command = "fpm run --example specification_expression_finalization > /dev/null 2>&1", &
-      wait = .true., &
-      exitstat = exit_status &
-    )
-    error_termination_occurred = exit_status /=0
-    result_ = assert_that(error_termination_occurred)
 
+    call try_it
+    result_ = assert_that(was_finalized)
+  contains
+    subroutine try_it
+      real tmp(component(finalizable_t(component=0))) !! Finalizes the finalizable_t function result
+    end subroutine
   end function
 
   function check_intent_out_finalization() result(result_)
