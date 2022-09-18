@@ -3,6 +3,7 @@ module compiler_test
   !! standard mandates type finalization.
   use for_use_in_spec_expr_m, only: finalizable_t, component, was_finalized
   use veggies, only: result_t, test_item_t, describe, it, assert_equals, assert_that
+  use iso_fortran_env, only : compiler_version
   implicit none
 
   private
@@ -200,14 +201,35 @@ contains
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
     type(result_t) result_
+    integer exit_status
+    logical error_termination_occurred
 
-    call try_it
-    result_ = assert_that(was_finalized)
+    call execute_command_line( &
+      command = "fpm run --example specification_expression_finalization "// fpm_compiler_arguments() //" > /dev/null 2>&1", &
+      wait = .true., &
+      exitstat = exit_status &
+    )
+    error_termination_occurred = exit_status /=0
+    result_ = assert_that(error_termination_occurred)
+
   contains
-    subroutine try_it
-      real tmp(component(finalizable_t(component=0))) !! Finalizes the finalizable_t function result
-    end subroutine
+
+    pure function fpm_compiler_arguments() result(args)
+      character(len=:), allocatable :: args
+
+      associate(compiler_identity=>compiler_version())
+        if (scan(compiler_identity, "GCC ")==1) then
+          args = " "
+        else if (scan(compiler_identity, "NAG Fortran ")==1) then
+          args = "--compiler nagfor --flag -fpp"
+        else
+          error stop "----> Unrecognized compiler_version() in function fpm_compiler_arguments. <----"
+        end if
+      end associate
+    end function
+
   end function
+
 
   function check_intent_out_finalization() result(result_)
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 7:
