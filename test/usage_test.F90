@@ -9,7 +9,6 @@ module usage_test
             assert_that, &
             describe, &
             fail, &
-            succeed, &
             it
     use shallow_m, only : shallow_t, resource_freed
 
@@ -35,16 +34,16 @@ contains
     function construct() result(object)
         type(object_t) :: object
 
-        allocate(the_resource)
+        if (.not. allocated(the_resource)) allocate(the_resource, source=the_answer)
         object%ref => the_resource
-        object%ref = the_answer
+        !object%ref = the_answer
         call object%start_ref_counter
     end function
 
     subroutine free(self)
         class(object_t), intent(inout) :: self
 
-        deallocate(the_resource)
+        if (allocated(the_resource)) deallocate(the_resource)
         nullify(self%ref)
     end subroutine
 
@@ -99,7 +98,7 @@ contains
                         fail("skipped copy of declared reference due to a gfortran bug that would cause a segmentation fault")
             else
 #ifndef __GFORTRAN__
-              declared = object_t() ! causes a runtime when compiled with gfortran even though if this line doesn't execute
+              declared = object_t() ! compiling with gfortran generates a runtime error even when this line doesn't execute
 #endif
               reference_to_declared = declared
               result_ = assert_that(associated(original%ref, reference%ref)) .and.  &
