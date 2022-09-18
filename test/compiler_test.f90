@@ -1,7 +1,6 @@
 module compiler_test
   !! Test compiler conformance with each scenario in which the Fortran 2018
   !! standard mandates type finalization.
-  use for_use_in_spec_expr_m, only: finalizable_t, component, was_finalized
   use veggies, only: result_t, test_item_t, describe, it, assert_equals, assert_that
   use iso_fortran_env, only : compiler_version
   implicit none
