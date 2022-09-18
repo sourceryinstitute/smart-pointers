@@ -31,8 +31,7 @@ test description.
 1. finalizes a non-allocatable object on the LHS of an intrinsic assignment
 2. finalizes an allocated allocatable LHS of an intrinsic assignment
 3. finalizes a function reference on the RHS of an intrinsic assignment
-4. finalizes a function reference on the RHS of an intrinsic assignment
-5. finalizes a specification expression function result
+4. finalizes a specification expression function result
 
 ### Failing checks in `usage_test.f90`
 1. copy points to the same resource as the original
