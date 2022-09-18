@@ -1,4 +1,5 @@
 module usage_test
+    use iso_fortran_env, only : compiler_version
     use reference_counter_m, only: ref_reference_t
     use veggies, only: &
             result_t, &
@@ -8,6 +9,7 @@ module usage_test
             assert_that, &
             describe, &
             fail, &
+            succeed, &
             it
     use shallow_m, only : shallow_t, resource_freed
 
@@ -82,12 +84,17 @@ contains
 
     function check_copy() result(result_)
         type(result_t) :: result_
-
         type(object_t) :: object1, object2
 
-        object1 = object_t()
-        object2 = object1
-        result_ = assert_that(associated(object2%ref, object1%ref))
+        if (scan(compiler_version(),"GCC ")==1) then
+          result_ = fail("skipped due to known gfortran bug that causes a segmenation fault")
+        else
+#ifndef __GFORTRAN__
+          object1 = object_t()
+          object2 = object1
+          result_ = assert_that(associated(object2%ref, object1%ref))
+#endif
+        end if
     end function
     
     function check_shallow_copy() result(result_)
