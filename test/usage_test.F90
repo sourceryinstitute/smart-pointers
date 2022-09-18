@@ -9,7 +9,6 @@ module usage_test
             assert_that, &
             describe, &
             fail, &
-            succeed, &
             it
     use shallow_m, only : shallow_t, resource_freed
 
@@ -29,20 +28,22 @@ module usage_test
 
     integer, allocatable, target :: the_resource
     integer, parameter :: the_answer = 42
+
 contains
+
     function construct() result(object)
         type(object_t) :: object
 
-        allocate(the_resource)
+        if (.not. allocated(the_resource)) allocate(the_resource, source=the_answer)
         object%ref => the_resource
-        object%ref = the_answer
+        !object%ref = the_answer
         call object%start_ref_counter
     end function
 
     subroutine free(self)
         class(object_t), intent(inout) :: self
 
-        deallocate(the_resource)
+        if (allocated(the_resource)) deallocate(the_resource)
         nullify(self%ref)
     end subroutine
 
@@ -84,17 +85,28 @@ contains
 
     function check_copy() result(result_)
         type(result_t) :: result_
-        type(object_t) :: object1, object2
+        type(object_t) :: reference
 
-        if (scan(compiler_version(),"GCC ")==1) then
-          result_ = fail("skipped due to known gfortran bug that causes a segmenation fault")
-        else
+        associate(original => object_t())
+          reference = original
+
+          block 
+            type(object_t) declared, reference_to_declared
+
+            if (scan(compiler_version(),"GCC ")==1) then
+              result_ = assert_that(associated(original%ref, reference%ref)) .and. &
+                        fail("skipped copy of declared reference due to a gfortran bug that would cause a segmentation fault")
+            else
 #ifndef __GFORTRAN__
-          object1 = object_t()
-          object2 = object1
-          result_ = assert_that(associated(object2%ref, object1%ref))
+              declared = object_t() ! compiling with gfortran generates a runtime error even when this line doesn't execute
 #endif
-        end if
+              reference_to_declared = declared
+              result_ = assert_that(associated(original%ref, reference%ref)) .and.  &
+                        assert_that(associated(declared%ref, reference_to_declared%ref))
+            end if
+          end block
+        end associate
+
     end function
     
     function check_shallow_copy() result(result_)
