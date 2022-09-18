@@ -1,6 +1,7 @@
 module compiler_test
   !! Test compiler conformance with each scenario in which the Fortran 2018
   !! standard mandates type finalization.
+  use for_use_in_spec_expr_m, only: finalizable_t, component, was_finalized
   use veggies, only: result_t, test_item_t, describe, it, assert_equals, assert_that
   use iso_fortran_env, only : compiler_version
   implicit none
@@ -197,7 +198,7 @@ contains
   end function
 
   function check_specification_expression() result(result_)
-    !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6: 
+    !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
     type(result_t) result_
     integer exit_status
