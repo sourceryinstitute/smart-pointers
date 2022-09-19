@@ -24,6 +24,8 @@ by defining a non-abstract derived type that
 
 1. Extends Reference Counter's `ref_reference_t` type and
 2. Implements the so-inherited `free` deferred binding.
+3. Calls the inherited `start_ref_counter` type-bound procedure inside the constructors
+   of any instances of a type that extends `ref_refrence_t`.
 
 Because the reference-counting algorithm involves copying references in certain
 circumstances, the user type that extends `ref_reference_t` should be a lightweight
@@ -69,6 +71,7 @@ to finalize objects.  The table below summarizes the observed compiler behaviors
 | NAG          |         0            | `nagfor` 7.1 Build 7113                             |
 | GCC          |         6            | `gfortran` 12.2.0                                   |
 | Intel        |         2            | `ifort` 2021.5.0 Build 20211109\_000000             |
+| Cray         |         3            | `ftn` 13.0.1                                        |
 | NVIDIA       | Fails to build (ICE) | `nvfortran` 2022.2                                  |
 | AMD          | Fails to build (ICE) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
 
