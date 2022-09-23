@@ -6,8 +6,8 @@ program main
 contains
     function run() result(passed)
         use compiler_test, only: &
-                compiler_ref_reference => &
-                    test_ref_reference
+                compiler_sp_smart_pointer => &
+                    test_sp_smart_pointer
         use usage_test, only: &
                 usage_usage => &
                     test_usage
@@ -20,7 +20,7 @@ contains
         type(test_item_t) :: tests
         type(test_item_t) :: individual_tests(2)
 
-        individual_tests(1) = compiler_ref_reference()
+        individual_tests(1) = compiler_sp_smart_pointer()
         individual_tests(2) = usage_usage()
         tests = test_that(individual_tests)
 

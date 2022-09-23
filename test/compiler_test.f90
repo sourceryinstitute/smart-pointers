@@ -6,7 +6,7 @@ module compiler_test
   implicit none
 
   private
-  public :: test_ref_reference
+  public :: test_sp_smart_pointer
 
   type object_t
     integer dummy
@@ -24,7 +24,7 @@ module compiler_test
 
 contains
 
-  function test_ref_reference() result(tests)
+  function test_sp_smart_pointer() result(tests)
     type(test_item_t) tests
 
     tests = &

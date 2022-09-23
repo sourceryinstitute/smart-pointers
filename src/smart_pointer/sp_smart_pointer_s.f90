@@ -1,4 +1,4 @@
-submodule(ref_reference_m) ref_reference_s
+submodule(sp_smart_pointer_m) sp_smart_pointer_s
   implicit none
 
 contains

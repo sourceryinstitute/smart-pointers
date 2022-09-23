@@ -1,5 +1,5 @@
 module user_object_m
-  use reference_counter_m, only: ref_reference_t
+  use smart_pointer_m, only: sp_smart_pointer_t
   implicit none
 
   private
@@ -8,7 +8,7 @@ module user_object_m
   type user_object_t
   end type
 
-  type, extends(ref_reference_t) :: user_object_ptr_t
+  type, extends(sp_smart_pointer_t) :: user_object_ptr_t
     type(user_object_t), pointer :: ref => null()
   contains
     procedure :: free

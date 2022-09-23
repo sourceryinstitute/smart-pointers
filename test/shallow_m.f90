@@ -1,11 +1,11 @@
 module shallow_m
-    use reference_counter_m, only: ref_reference_t
+    use smart_pointer_m, only: sp_smart_pointer_t
 
     implicit none
     private
     public :: shallow_t, resource_freed
 
-    type, extends(ref_reference_t) :: shallow_t
+    type, extends(sp_smart_pointer_t) :: shallow_t
         integer, pointer :: ref => null()
     contains
         procedure :: free
