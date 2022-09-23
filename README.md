@@ -1,5 +1,5 @@
-Reference Counter 
-=================
+Smart Pointers
+==============
 
 ```
   _________                      __                 
@@ -30,11 +30,11 @@ To use Smart-Pointers, define a non-abstract derived type that
 
 1. Extends Smart Pointer's `sp_smart_pointer_t` type,
 2. Implements the inherited `free` deferred binding, and
-3. Invokes the inherited `start_reference_count` procedure inside object constructors.
+3. Invokes the inherited `start_count` procedure inside object constructors.
 
 You can then use intrinsic assignments to copy instances of a `sp_smart_pointer_t`
 child type, resulting in a [shallow copy] with the advantage that the target
-will be finalized only when it becomes safe to do so.
+will be finalized only when it becomes safe to do so.  
 
 Example
 -------
@@ -60,9 +60,9 @@ Supported Compilers
 -------------------
 Correct execution of the Reference Counter library code requires comprehensive
 compiler support for Fortran's type finalization semantics.  The unit test suite
-includes compiler standard-conformance tests.  We have attempted to include at least
-one example of each scenario in which the Fortran 2018 standard requires compilers
-to finalize objects.  The table below summarizes the observed compiler behaviors:
+includes compiler standard-conformance tests that include a test for each scenario
+in which the Fortran 2018 standard requires that an object be finalized.
+The table below summarizes the observed compiler behaviors:
 
 | _Compiler_   | _Test failures_      | _Version tested_                                    |
 | :---         |       :---:          | :---                                                |
