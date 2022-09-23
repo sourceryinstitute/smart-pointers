@@ -1,28 +1,28 @@
-submodule(ref_counter_m) ref_counter_s
+submodule(sp_reference_counter_m) sp_reference_counter_s
   use assert_m, only : assert
   implicit none
 
 contains
 
   module procedure reference_count
-    call assert(associated(self%count_),"ref_counter_t%grab: associated(self%count_)")
+    call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
     counter = self%count_
   end procedure
 
   module procedure construct
-    allocate(ref_counter%count_, source=0)
-    allocate(ref_counter%object_, source=object)
-    call ref_counter%grab
+    allocate(sp_reference_counter%count_, source=0)
+    allocate(sp_reference_counter%object_, source=object)
+    call sp_reference_counter%grab
   end procedure
 
   module procedure grab
-    call assert(associated(self%count_),"ref_counter_t%grab: associated(self%count_)")
+    call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
     self%count_ = self%count_ + 1
   end procedure
 
   module procedure release
 
-    call assert(associated(self%count_),"ref_counter_t%grab: associated(self%count_)")
+    call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
 
     self%count_ = self%count_ - 1
 
@@ -35,10 +35,10 @@ contains
     end if
   end procedure
 
-  module procedure assign_ref_counter
+  module procedure assign_sp_reference_counter
     lhs%count_ => rhs%count_
     lhs%object_ => rhs%object_
     call lhs%grab
   end procedure
 
-end submodule ref_counter_s
+end submodule sp_reference_counter_s

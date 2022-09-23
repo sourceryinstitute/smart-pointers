@@ -91,57 +91,58 @@ https://github.com/sourceryinstitute/reference-counter" role="button">GitHub</a>
       <div class="row" id='text'>
         <div class="col-md-8">
           <h1></h1>
-          <h1 id="reference-counter">Reference Counter</h1>
-<div class="codehilite"><pre><span></span><code>__________        _____                                          
-\______   \ _____/ ____\___________   ____   ____   ____  ____   
- |       _// __ \   __\/ __ \_  __ \_/ __ \ /    \_/ ___\/ __ \  
- |    |   \  ___/|  | \  ___/|  | \/\  ___/|   |  \  \__\  ___/  
- |____|_  /\___&gt; |__|  \___&gt; |__|    \___&gt; |___|  /\____&gt;\___&gt;
-                                                \/            
- _________                      __
- \_   ___ \  ____  __ __  _____/  |_  ___________
- /    \  \/ /  _ \|  |  \/    \   __\/ __ \_  __ \
- \     \___(  &lt;_&gt; )  |  /   |  \  | \  ___/|  | \/
-  \_______/ \____/|____/|___|  /__|  \___&gt;  __|
+          <h1 id="smart-pointers">Smart Pointers</h1>
+<div class="codehilite"><pre><span></span><code>  _________                      __                 
+ /   _____/ _____ _____ ________/  |_               
+ \_____  \ /     \\__  \\_  __ \   __\              
+ /        \  Y Y  \/ __ \|  | \/|  |                
+/_______  /__|_|  (____  /__|   |__|                
+        \/      \/     \/                           
+__________      .__        __                       
+\______   \____ |__| _____/  |_  ___________  ______
+ |     ___/  _ \|  |/    \   __\/ __ \_  __ \/  ___/
+ |    |  (  &lt;_&gt; )  |   |  \  | \  ___/|  | \/\___ \ 
+ |____|   \____/|__|___|  /__|  \___  &gt;__|  /____  &gt;
+                        \/          \/           \/ 
                              \/            
 </code></pre></div>
 
 <h2 id="overview">Overview</h2>
-<p>Reference Counter offers semi-automatic counting of references to program resources
-such as memory.  A user accesses the provided reference-counting capability simply
-by defining a non-abstract derived type that </p>
+<p>The Smart-Pointers library tracks references to program resources and automates
+the freeing of those resources if and only if the reference count drops to zero.
+Most commonly, the reference is a pointer and the resource is memory.  In that
+context, Smart-Pointers help to prevent memory leaks and dangling pointers, which
+commonly causes programs to crash due to memory limitations or segmentation faults, 
+respectively.</p>
+<p>To use Smart-Pointers, define a non-abstract derived type that </p>
 <ol>
-<li>Extends Reference Counter's <code>ref_reference_t</code> type and</li>
-<li>Implements the so-inherited <code>free</code> deferred binding.</li>
+<li>Extends Smart Pointer's <code>sp_smart_pointer_t</code> type,</li>
+<li>Implements the inherited <code>free</code> deferred binding, and</li>
+<li>Invokes the inherited <code>start_count</code> procedure inside object constructors.</li>
 </ol>
-<p>Because the reference-counting algorithm involves copying references in certain
-circumstances, the user type that extends <code>ref_reference_t</code> should be a lightweight
-proxy for a more stateful entity stored elsewhere.  For example, the user type might 
-contain a Fortran <code>pointer</code> associated with some other object or it might contain
-a "shadow" object that serves as an identity tag for a larger object allocated 
-(and later freed) in C or C++ at the direction of the user's <code>free</code> procedure.</p>
+<p>You can then use intrinsic assignments to copy instances of a <code>sp_smart_pointer_t</code>
+child type, resulting in a <a href="https://en.wikipedia.org/wiki/Object_copying#Shallow_copy">shallow copy</a> with the advantage that the target
+will be finalized only when it becomes safe to do so.  </p>
+<h2 id="example">Example</h2>
+<p>See the <a href="./example">example</a> folder for a demonstration of the use of Smart-Pointers.</p>
+<h2 id="background">Background</h2>
 <p>For more background on the design philosophy and the internal mechanics of Reference
 Counter, see Rouson et al. (see <a>1</a>, <a>2</a>, <a>3</a>).  This repository's code
 originated from refactoring the code in those publications to use more descriptive
-and more general nomenclature and more up-to-date coding conventions.  For example,
-this repository separates interface bodies into modules and procedure definitions
-into submodules.</p>
-<p>As compared to the original code, this repository also adds
+more up-to-date coding conventions.  For example, this repository separates interface
+bodies into modules and procedure definitions into submodules. This repository also
+uses more descriptive nomenclature for the types and procedures.</p>
+<p>This repository also adds
 1. A <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a> build system,
-2. Tests based on the <a href="https://gitlab.com/everythingfunctional/vegetables">Vegetables</a> unit-testing software,
+2. Tests based on the [Veggies] unit-testing framework,
 3. Documentation generated by [<code>ford</code>] and deployed to the web via GitHub Actions, and
 4. Quality control via continuous integration testing using GitHub Actions.</p>
-<h2 id="documentation">Documentation</h2>
-<p>See <a href="https://sourceryinstitute.github.io/reference-counter">Reference Counter's GitHub Pages site</a> for HTML documentation generated with [<code>ford</code>].</p>
-<p>See the <a href="./doc">doc/</a> subdirectory for a <a href="https://plantuml.com">PlantUML</a> script that generates the Unified Modeling Langauge (UML) class diagram below of the three derived types in reference-counter.  </p>
-<p><img alt="class_diagram" src="https://user-images.githubusercontent.com/13108868/165135689-4d2e85fe-6946-472f-a154-aaabebf6d4f5.png"></p>
-<p>The above image was created with the PlantuML package in the <a href="https://atom.io">Atom</a> editor.</p>
-<h2 id="compiler-status">Compiler Status</h2>
+<h2 id="supported-compilers">Supported Compilers</h2>
 <p>Correct execution of the Reference Counter library code requires comprehensive
 compiler support for Fortran's type finalization semantics.  The unit test suite
-includes compiler standard-conformance tests.  We have attempted to include at least
-one example of each scenario in which the Fortran 2018 standard requires compilers
-to finalize objects.  The table below summarizes the observed compiler behaviors:</p>
+includes compiler standard-conformance tests that include a test for each scenario
+in which the Fortran 2018 standard requires that an object be finalized.
+The table below summarizes the observed compiler behaviors:</p>
 <table>
 <thead>
 <tr>
@@ -157,14 +158,19 @@ to finalize objects.  The table below summarizes the observed compiler behaviors
 <td align="left"><code>nagfor</code> 7.1 Build 7113</td>
 </tr>
 <tr>
-<td align="left">GCC</td>
-<td align="center">6</td>
-<td align="left"><code>gfortran</code> 12.2.0</td>
-</tr>
-<tr>
 <td align="left">Intel</td>
 <td align="center">2</td>
 <td align="left"><code>ifort</code> 2021.5.0 Build 20211109_000000</td>
+</tr>
+<tr>
+<td align="left">Cray</td>
+<td align="center">3</td>
+<td align="left"><code>ftn</code> 13.0.1</td>
+</tr>
+<tr>
+<td align="left">GCC</td>
+<td align="center">6</td>
+<td align="left"><code>gfortran</code> 12.2.0</td>
 </tr>
 <tr>
 <td align="left">NVIDIA</td>
@@ -183,17 +189,17 @@ failures.</p>
 <h2 id="downloading-building-and-testing">Downloading, Building, and Testing</h2>
 <p>On Linux, macOS, or Windows Subsystem for Linux, download, build, and test with
 the following shell commands:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="nl">com</span><span class="p">:</span><span class="n">sourceryinstitute</span><span class="o">/</span><span class="n">reference</span><span class="o">-</span><span class="n">counter</span><span class="w"></span>
-<span class="n">cd</span><span class="w"> </span><span class="n">reference</span><span class="o">-</span><span class="n">counter</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code>git clone https://github.com/sourceryinstitute/smart-pointer
+cd smart-pointer
 </code></pre></div>
 
-<p>followed by one of the commands below depending on your compiler choice.</p>
-<h3 id="gcc-gfortran">GCC (<code>gfortran</code>)</h3>
-<div class="codehilite"><pre><span></span><code>fpm test
-</code></pre></div>
-
+<p>followed by one of the commands below corresponding to your compiler choice.</p>
 <h3 id="numerical-algorithms-group-nagfor">Numerical Algorithms Group (<code>nagfor</code>)</h3>
 <div class="codehilite"><pre><span></span><code>fpm test --compiler nagfor --flag -fpp
+</code></pre></div>
+
+<h3 id="gcc-gfortran">GCC (<code>gfortran</code>)</h3>
+<div class="codehilite"><pre><span></span><code>fpm test
 </code></pre></div>
 
 <h3 id="intel-ifort">Intel (<code>ifort</code>)</h3>
@@ -207,6 +213,11 @@ the following shell commands:</p>
 <h3 id="amd-flang">AMD (<code>flang</code>)</h3>
 <div class="codehilite"><pre><span></span><code>fpm test --compiler flang --flag -cpp
 </code></pre></div>
+
+<h2 id="documentation">Documentation</h2>
+<p>See <a href="https://sourceryinstitute.github.io/reference-counter">Reference Counter's GitHub Pages site</a> for HTML documentation generated with [<code>ford</code>].
+See the <a href="./doc">doc/</a> subdirectory for a <a href="https://plantuml.com">PlantUML</a> script that generates the Unified Modeling Langauge (UML) 
+class diagram below of the three derived types in reference-counter.</p>
         </div>
         <div class="col-md-4">
 	  <div class="well">
@@ -222,40 +233,40 @@ the following shell commands:</p>
       <div class="row">
         <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
-              <ul>                    <li><a href='./sourcefile/ref_counter_m.f90.html'>ref_counter_m.f90</a></li>
-                    <li><a href='./sourcefile/ref_counter_s.f90.html'>ref_counter_s.f90</a></li>
-                    <li><a href='./sourcefile/ref_reference_m.f90.html'>ref_reference_m.f90</a></li>
-                    <li><a href='./sourcefile/ref_reference_s.f90.html'>ref_reference_s.f90</a></li>
-                    <li><a href='./sourcefile/ref_resource_m.f90.html'>ref_resource_m.f90</a></li>
-                    <li><a href='./sourcefile/reference_counter_m.f90.html'>reference_counter_m.f90</a></li>
+              <ul>                    <li><a href='./sourcefile/smart_pointer_m.f90.html'>smart_pointer_m.f90</a></li>
+                    <li><a href='./sourcefile/sp_reference_counter_m.f90.html'>sp_reference_counter_m.f90</a></li>
+                    <li><a href='./sourcefile/sp_reference_counter_s.f90.html'>sp_reference_counter_s.f90</a></li>
+                    <li><a href='./sourcefile/sp_resource_m.f90.html'>sp_resource_m.f90</a></li>
+                    <li><a href='./sourcefile/sp_smart_pointer_m.f90.html'>sp_smart_pointer_m.f90</a></li>
+                    <li><a href='./sourcefile/sp_smart_pointer_s.f90.html'>sp_smart_pointer_s.f90</a></li>
 </ul>
           </div>
 		  <div class="col-xs-6 col-sm-3">
               <h3>Modules</h3>
-              <ul>                    <li><a href='./module/ref_counter_m.html'>ref_counter_m</a></li>
-                    <li><a href='./module/ref_reference_m.html'>ref_reference_m</a></li>
-                    <li><a href='./module/ref_resource_m.html'>ref_resource_m</a></li>
-                    <li><a href='./module/reference_counter_m.html'>reference_counter_m</a></li>
+              <ul>                    <li><a href='./module/smart_pointer_m.html'>smart_pointer_m</a></li>
+                    <li><a href='./module/sp_reference_counter_m.html'>sp_reference_counter_m</a></li>
+                    <li><a href='./module/sp_resource_m.html'>sp_resource_m</a></li>
+                    <li><a href='./module/sp_smart_pointer_m.html'>sp_smart_pointer_m</a></li>
 </ul>
           </div>
 		  <div class="col-xs-6 col-sm-3">
               <h3>Procedures</h3>
-              <ul>                    <li><a href='./interface/assign_ref_counter.html'>assign_ref_counter</a></li>
+              <ul>                    <li><a href='./interface/assign_sp_reference_counter.html'>assign_sp_reference_counter</a></li>
                     <li><a href='./proc/finalize.html'>finalize</a></li>
                     <li><a href='./interface/grab.html'>grab</a></li>
-                    <li><a href='./interface/ref_counter_t.html'>ref_counter_t</a></li>
                     <li><a href='./interface/reference_count.html'>reference_count</a></li>
                     <li><a href='./interface/reference_count~2.html'>reference_count</a></li>
                     <li><a href='./interface/release.html'>release</a></li>
                     <li><a href='./interface/release_handle.html'>release_handle</a></li>
-                    <li><a href='./interface/start_ref_counter.html'>start_ref_counter</a></li>
+                    <li><a href='./interface/sp_reference_counter_t.html'>sp_reference_counter_t</a></li>
+                    <li><a href='./interface/start_counter.html'>start_counter</a></li>
 </ul>
           </div>
 		  <div class="col-xs-6 col-sm-3">
               <h3>Derived Types</h3>
-              <ul>                    <li><a href='./type/ref_counter_t.html'>ref_counter_t</a></li>
-                    <li><a href='./type/ref_reference_t.html'>ref_reference_t</a></li>
-                    <li><a href='./type/ref_resource_t.html'>ref_resource_t</a></li>
+              <ul>                    <li><a href='./type/sp_reference_counter_t.html'>sp_reference_counter_t</a></li>
+                    <li><a href='./type/sp_resource_t.html'>sp_resource_t</a></li>
+                    <li><a href='./type/sp_smart_pointer_t.html'>sp_smart_pointer_t</a></li>
 </ul>
           </div>
       </div>
@@ -271,7 +282,7 @@ the following shell commands:</p>
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2022-09-18 23:52            </p>
+ on 2022-09-23 07:58            </p>
         </div>
       </div>
       <br>
