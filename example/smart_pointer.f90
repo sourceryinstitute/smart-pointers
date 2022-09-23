@@ -1,34 +1,25 @@
-module foo_m
+module user_object_m
+  use reference_counter_m, only: ref_reference_t
   implicit none
 
   private
-  public :: foo_t
+  public :: user_object_t, user_object_ptr_t
 
-  type foo_t
+  type user_object_t
   end type
 
-end module
-
-module smart_pointer_m
-  use reference_counter_m, only: ref_reference_t
-  use foo_m, only : foo_t
-
-  implicit none
-  private
-  public :: smart_pointer_t
-
-  type, extends(ref_reference_t) :: smart_pointer_t
-    type(foo_t), pointer :: ref => null()
+  type, extends(ref_reference_t) :: user_object_ptr_t
+    type(user_object_t), pointer :: ref => null()
   contains
     procedure :: free
   end type
 
-  interface smart_pointer_t
+  interface user_object_ptr_t
 
-    module function construct(foo) result(smart_pointer)
+    module function construct(user_object) result(user_object_ptr)
       implicit none
-      type(foo_t), intent(in), pointer:: foo
-      type(smart_pointer_t) :: smart_pointer
+      type(user_object_t), intent(in), pointer:: user_object
+      type(user_object_ptr_t) :: user_object_ptr
     end function
 
   end interface
@@ -37,65 +28,73 @@ module smart_pointer_m
 
     module subroutine free(self)
       implicit none
-      class(smart_pointer_t), intent(inout) :: self
+      class(user_object_ptr_t), intent(inout) :: self
     end subroutine
 
   end interface
 
 end module
 
-submodule(smart_pointer_m) smart_pointer_s
+submodule(user_object_m) user_object_ptr_s
   use assert_m, only : assert
   implicit none
 
 contains
 
   module procedure construct
-    call assert(associated(foo), "construct_from_pointer: associated(foo)")
-    smart_pointer%ref => foo
-    call smart_pointer%start_ref_counter
+    call assert(associated(user_object), "construct_from_pointer: associated(user_object)")
+    user_object_ptr%ref => user_object
+    call user_object_ptr%start_ref_counter
   end procedure
 
   module procedure free
     if (associated(self%ref)) then
       deallocate(self%ref)
       nullify(self%ref)
-      print *,"free(): foo deallocated"
+      print *,"free(): user_object deallocated"
     end if
   end procedure
 
 end submodule
 
 program main
-  use smart_pointer_m, only : smart_pointer_t
-  use foo_m, only : foo_t
+  use user_object_m, only : user_object_t, user_object_ptr_t
+  use assert_m, only : assert
   implicit none
 
   block 
+    type(user_object_ptr_t) smart_pointer_1, smart_pointer_2
+    type(user_object_t), pointer :: user_object => null()
 
-    type(smart_pointer_t) ptr_1, ptr_2
-    type(foo_t), pointer :: foo => null()
+    print *, "Allocating user_object pointer."
+    allocate(user_object, source = user_object_t())
 
-    allocate(foo, source = foo_t())
-    ptr_1 = smart_pointer_t(foo)  ! 1st reference
-    print *, ptr_1%reference_count() 
-    ptr_2 = ptr_1 ! 2nd reference
-    print *, ptr_2%reference_count()
-    call new_reference(ptr_2)
-    print *, ptr_2%reference_count() ! 2 remaining references
+    print *, "Defining smart_pointer_1."
+    smart_pointer_1 = user_object_ptr_t(user_object)
+    print *, "Reference count = ", smart_pointer_1%reference_count()
+    print *, "Copying smart_pointer_1 into smart_pointer_2."
 
-  end block ! ref_reference_counter frees the memory after the 2 remaining references go out of scope
+    smart_pointer_2 = smart_pointer_1
+    print *, "Reference count = ", smart_pointer_1%reference_count()
+    call assert(smart_pointer_1%reference_count()==smart_pointer_2%reference_count(), "consistent counts")
 
-  print *,"All references gone"
+    call new_reference(smart_pointer_2)
+    call assert(smart_pointer_1%reference_count()==smart_pointer_2%reference_count(), "consistent counts")
+    print *, "Reference count = ", smart_pointer_1%reference_count()
+    print *, "smart_pointer_1 and smart_pointer_2 going out of scope"
+  end block
 
 contains
 
-  subroutine new_reference(obj)
-    type(smart_pointer_t), intent(in) :: obj
-    type(smart_pointer_t) local_ptr
+  subroutine new_reference(dummy_argument)
+    type(user_object_ptr_t), intent(in) :: dummy_argument
+    type(user_object_ptr_t) smart_pointer_3 
 
-    local_ptr = obj                     ! 3rd reference
-    print *, local_ptr%reference_count()
+    print *, "Copying smart_pointer_2 into smart_pointer_3."
+    smart_pointer_3 = dummy_argument
+    call assert(dummy_argument%reference_count()==smart_pointer_3%reference_count(), "consistent counts")
+    print *, "Reference count = ", smart_pointer_3%reference_count()
+    print *, "smart_pointer_3 going out of scope."
   end subroutine
 
 end program
