@@ -7,6 +7,7 @@ module sp_smart_pointer_m
   public :: sp_smart_pointer_t
 
   type, abstract, extends(sp_resource_t) :: sp_smart_pointer_t
+    private
     type(sp_reference_counter_t) :: counter
   contains
     procedure :: reference_count

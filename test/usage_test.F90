@@ -36,8 +36,8 @@ contains
 
         if (.not. allocated(the_resource)) allocate(the_resource, source=the_answer)
         object%ref => the_resource
-        !object%ref = the_answer
-        call object%start_ref_counter
+        object%ref = the_answer
+        call object%start_counter
     end function
 
     subroutine free(self)

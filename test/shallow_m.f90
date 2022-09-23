@@ -24,7 +24,7 @@ contains
 
         resource = 42
         shallow%ref => resource
-        call shallow%start_ref_counter
+        call shallow%start_counter
     end function
 
     subroutine free(self)
