@@ -18,7 +18,7 @@ module user_object_m
 
     module function construct(user_object) result(user_object_ptr)
       implicit none
-      type(user_object_t), intent(in), pointer:: user_object
+      type(user_object_t), intent(inout), pointer:: user_object
       type(user_object_ptr_t) :: user_object_ptr
     end function
 
@@ -44,6 +44,7 @@ contains
   module procedure construct
     call assert(associated(user_object), "construct_from_pointer: associated(user_object)")
     user_object_ptr%ref => user_object
+    nullify(user_object)
     call user_object_ptr%start_counter
   end procedure
 
@@ -71,15 +72,16 @@ program main
 
     print *, "Defining smart_pointer_1."
     smart_pointer_1 = user_object_ptr_t(user_object)
+    call assert(.not. associated(user_object), "main: .not. associated(user_object)")
     print *, "Reference count = ", smart_pointer_1%reference_count()
     print *, "Copying smart_pointer_1 into smart_pointer_2."
 
     smart_pointer_2 = smart_pointer_1
     print *, "Reference count = ", smart_pointer_1%reference_count()
-    call assert(smart_pointer_1%reference_count()==smart_pointer_2%reference_count(), "consistent counts")
+    call assert(smart_pointer_1%reference_count()==smart_pointer_2%reference_count(), "main: consistent counts")
 
     call new_reference(smart_pointer_2)
-    call assert(smart_pointer_1%reference_count()==smart_pointer_2%reference_count(), "consistent counts")
+    call assert(smart_pointer_1%reference_count()==smart_pointer_2%reference_count(), "main: consistent counts")
     print *, "Reference count = ", smart_pointer_1%reference_count()
     print *, "smart_pointer_1 and smart_pointer_2 going out of scope"
   end block
