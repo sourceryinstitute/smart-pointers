@@ -1,12 +1,12 @@
 module sp_smart_pointer_m
-  use ref_resource_m, only: ref_resource_t
+  use sp_resource_m, only: sp_resource_t
   use ref_counter_m, only: ref_counter_t
   implicit none
 
   private
   public :: sp_smart_pointer_t
 
-  type, abstract, extends(ref_resource_t) :: sp_smart_pointer_t
+  type, abstract, extends(sp_resource_t) :: sp_smart_pointer_t
     type(ref_counter_t) :: ref_counter
   contains
     procedure :: reference_count

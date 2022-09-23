@@ -1,5 +1,5 @@
 module ref_counter_m
-  use ref_resource_m, only : ref_resource_t
+  use sp_resource_m, only : sp_resource_t
   implicit none
 
   private
@@ -8,7 +8,7 @@ module ref_counter_m
   type ref_counter_t
     private
     integer, pointer :: count_ => null()
-    class(ref_resource_t), pointer :: object_ => null()
+    class(sp_resource_t), pointer :: object_ => null()
   contains
     procedure :: reference_count
     procedure, non_overridable :: grab
@@ -22,7 +22,7 @@ module ref_counter_m
 
     module function construct(object) result(ref_counter)
       implicit none
-      class(ref_resource_t), intent(in) :: object
+      class(sp_resource_t), intent(in) :: object
       type(ref_counter_t) ref_counter
      end function
 
