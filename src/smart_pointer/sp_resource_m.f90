@@ -1,10 +1,10 @@
-module ref_resource_m
+module sp_resource_m
   implicit none
 
   private
-  public :: ref_resource_t
+  public :: sp_resource_t
 
-  type, abstract :: ref_resource_t
+  type, abstract :: sp_resource_t
   contains
       procedure(free_interface), deferred :: free
   end type
@@ -12,8 +12,8 @@ module ref_resource_m
   abstract interface
 
     subroutine free_interface(self)
-      import ref_resource_t
-      class(ref_resource_t), intent(inout) :: self
+      import sp_resource_t
+      class(sp_resource_t), intent(inout) :: self
     end subroutine
 
   end interface

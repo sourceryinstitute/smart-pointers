@@ -1,6 +1,6 @@
 module usage_test
     use iso_fortran_env, only : compiler_version
-    use reference_counter_m, only: ref_reference_t
+    use sp_smart_pointer_m, only: sp_smart_pointer_t
     use veggies, only: &
             result_t, &
             test_item_t, &
@@ -16,7 +16,7 @@ module usage_test
     private
     public :: test_usage
 
-    type, extends(ref_reference_t) :: object_t
+    type, extends(sp_smart_pointer_t) :: object_t
         integer, pointer :: ref => null()
     contains
         procedure :: free
@@ -36,8 +36,8 @@ contains
 
         if (.not. allocated(the_resource)) allocate(the_resource, source=the_answer)
         object%ref => the_resource
-        !object%ref = the_answer
-        call object%start_ref_counter
+        object%ref = the_answer
+        call object%start_counter
     end function
 
     subroutine free(self)
