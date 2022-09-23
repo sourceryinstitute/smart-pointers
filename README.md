@@ -43,11 +43,11 @@ See the [example](./example) folder for a demonstration of the use of Smart-Poin
 Background
 ----------
 
-For more background on the design philosophy and the internal mechanics of Reference
-Counter, see Rouson et al. (see [[1]], [[2]], [[3]]).  This repository's code
-originated from refactoring the code in those publications to use more descriptive
-more up-to-date coding conventions.  For example, this repository separates interface
-bodies into modules and procedure definitions into submodules. This repository also
+For more background on the design philosophy and the internal mechanics of Smart
+Pointers, see Rouson et al. (see [[1]], [[2]], [[3]]).  This repository's code
+originated from refactoring the code in those publications to use more up-to-date
+coding conventions.  For example, this repository separates interface bodies
+into modules and procedure definitions into submodules.  This repository also
 uses more descriptive nomenclature for the types and procedures.
 
 This repository also adds
@@ -58,10 +58,10 @@ This repository also adds
 
 Supported Compilers
 -------------------
-Correct execution of the Reference Counter library code requires comprehensive
-compiler support for Fortran's type finalization semantics.  The unit test suite
-includes compiler standard-conformance tests that include a test for each scenario
-in which the Fortran 2018 standard requires that an object be finalized.
+Correct execution of the Smart Pointers library code requires comprehensive
+compiler support for Fortran's type finalization feature.  The unit test suite
+verifies the relevant compiler standard-conformance, including a test for each 
+scenario in which the Fortran 2018 standard requires that an object be finalized.
 The table below summarizes the observed compiler behaviors:
 
 | _Compiler_   | _Test failures_      | _Version tested_                                    |
