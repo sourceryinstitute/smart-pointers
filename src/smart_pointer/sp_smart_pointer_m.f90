@@ -1,17 +1,17 @@
 module sp_smart_pointer_m
   use sp_resource_m, only: sp_resource_t
-  use ref_counter_m, only: ref_counter_t
+  use sp_reference_counter_m, only: sp_reference_counter_t
   implicit none
 
   private
   public :: sp_smart_pointer_t
 
   type, abstract, extends(sp_resource_t) :: sp_smart_pointer_t
-    type(ref_counter_t) :: ref_counter
+    type(sp_reference_counter_t) :: counter
   contains
     procedure :: reference_count
     procedure, non_overridable :: release_handle
-    procedure, non_overridable :: start_ref_counter
+    procedure, non_overridable :: start_counter
   end type
 
   interface
@@ -27,7 +27,7 @@ module sp_smart_pointer_m
       class(sp_smart_pointer_t), intent(inout) :: self
     end subroutine
 
-    module subroutine start_ref_counter(self)
+    module subroutine start_counter(self)
       implicit none
       class(sp_smart_pointer_t), intent(inout) :: self
     end subroutine

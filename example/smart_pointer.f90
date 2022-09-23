@@ -44,7 +44,7 @@ contains
   module procedure construct
     call assert(associated(user_object), "construct_from_pointer: associated(user_object)")
     user_object_ptr%ref => user_object
-    call user_object_ptr%start_ref_counter
+    call user_object_ptr%start_counter
   end procedure
 
   module procedure free
