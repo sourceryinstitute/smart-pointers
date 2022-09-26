@@ -64,15 +64,19 @@ compiler standard-conformance, including a test for each scenario in which the
 the Fortran 2018 standard requires that an object be finalized.  The table below
 summarizes the observed compiler behaviors:
 
-| _Compiler_   | _Test failures_      | _Version tested_                                    |
-| :---         |       :---:          | :---                                                |
-| NAG          |         0            | `nagfor` 7.1 Build 7113                             |
-| IBM          |         1            | `xlf2003_r` 17.1.0 on AIX                           |
-| Intel        |         2            | `ifort` 2021.5.0 Build 20211109\_000000             |
-| NVIDIA       |         2            | `nvfortran` 22.7-0                                  |
-| Cray         |         3            | `ftn` 13.0.1                                        |
-| GCC          |         6            | `gfortran` 12.2.0                                   |
-| AMD          | Fails to build (ICE) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
+| _Compiler_   | _Test failures_    | _Version tested_                                    |
+| :---         |       :---:        | :---                                                |
+| NAG          |         0          | `nagfor` 7.1 Build 7113                             |
+| IBM          |         1          | `xlf2003_r` 17.1.0 on AIX                           |
+| Intel        |         2          | `ifort` 2021.5.0 Build 20211109\_000000             |
+| NVIDIA       |         2          | `nvfortran` 22.7-0                                  |
+| Cray         |         3          | `ftn` 13.0.1                                        |
+| GCC          |         6          | `gfortran` 12.2.0                                   |
+| AMD          | Fails to build [1] | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
+| LLVM         | Fails to build [2] | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   |
+
+[1] Internal compiler error (ICE).
+[2] Type finalization not yet supported.
 
 See the [test suite README.md](./test/README.md) for more details on each compiler's test
 results.
@@ -120,16 +124,16 @@ fpm test --compiler flang --flag -cpp
 Documentation
 -------------
 See [Reference Counter's GitHub Pages site] for HTML documentation generated with [`ford`].
-See the [doc/] subdirectory for a [PlantUML] script that generates the Unified Modeling Langauge (UML) 
-class diagram below of the three derived types in reference-counter.
+See the [doc/] subdirectory for a [PlantUML] script that generates the Unified Modeling Language (UML) 
+class diagram below of the three derived types in Smart-Pointers.
 
 [1]: https://doi.org/10.1016/j.procs.2010.04.166
 [2]: https://doi.org/10.1017/cbo9780511977381 
 [3]: https://doi.org/10.1109/MCSE.2012.33
 [Fortran Package Manager]: https://github.com/fortran-lang/fpm
-[Vegetables]: https://gitlab.com/everythingfunctional/vegetables
+[Veggies]: https://gitlab.com/everythingfunctional/veggies
 [`ford`]: https://github.com/Fortran-FOSS-Programmers/ford
-[Reference Counter's GitHub Pages site]: https://sourceryinstitute.github.io/reference-counter
+[Smart Pointer's GitHub Pages site]: https://sourceryinstitute.github.io/smart-pointer
 [Atom]: https://atom.io
 [PlantUML]: https://plantuml.com
 [doc/]: ./doc
