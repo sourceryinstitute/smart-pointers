@@ -140,7 +140,7 @@ place an exclamation mark (`!`) at the beginning of the following line in the
 ```
 ,test_result_t("finalizes a specification expression function result", specification_expression()) &
 ```
-which removes the one failing test.  Compiling and excuting the same file then
+which removes the one failing test.  Compiling and executing the same file then
 
 ```
 xlf2003_r compile_me_only.f90
@@ -156,7 +156,7 @@ xlf2003_r compile_me_only.f90
  Pass: finalizes an allocatable component object
 ```
 **Fail:** Separately compiling `specification_expression_finalization.f90` with
-`xlf2003_r` causes a core dump. This is a compiler bug that has been reported to
+`xlf2003_r` causes a core dump. This is a compiler bug that has been reported 
 via the Oak Ridge Leadership Computing Facility (OLCF) under ticket OLCFHELP-9069.
 
 [NAG]: #nag

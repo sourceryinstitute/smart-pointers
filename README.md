@@ -120,14 +120,14 @@ fpm test --compiler flang --flag -cpp
 Documentation
 -------------
 See [Reference Counter's GitHub Pages site] for HTML documentation generated with [`ford`].
-See the [doc/] subdirectory for a [PlantUML] script that generates the Unified Modeling Langauge (UML) 
+See the [doc/] subdirectory for a [PlantUML] script that generates the Unified Modeling Language (UML) 
 class diagram below of the three derived types in reference-counter.
 
 [1]: https://doi.org/10.1016/j.procs.2010.04.166
 [2]: https://doi.org/10.1017/cbo9780511977381 
 [3]: https://doi.org/10.1109/MCSE.2012.33
 [Fortran Package Manager]: https://github.com/fortran-lang/fpm
-[Vegetables]: https://gitlab.com/everythingfunctional/vegetables
+[Veggies]: https://gitlab.com/everythingfunctional/veggies
 [`ford`]: https://github.com/Fortran-FOSS-Programmers/ford
 [Reference Counter's GitHub Pages site]: https://sourceryinstitute.github.io/reference-counter
 [Atom]: https://atom.io
