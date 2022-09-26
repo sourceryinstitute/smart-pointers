@@ -58,23 +58,24 @@ This repository also adds
 
 Supported Compilers
 -------------------
-Correct execution of the Smart Pointers library code requires comprehensive
-compiler support for Fortran's type finalization feature.  The unit test suite
-verifies the relevant compiler standard-conformance, including a test for each 
-scenario in which the Fortran 2018 standard requires that an object be finalized.
-The table below summarizes the observed compiler behaviors:
+Correct execution of the Smart Pointers library depends critically on comprehensive
+compiler support for type finalization.  The unit test suite verifies the relevant
+compiler standard-conformance, including a test for each scenario in which the
+the Fortran 2018 standard requires that an object be finalized.  The table below
+summarizes the observed compiler behaviors:
 
 | _Compiler_   | _Test failures_      | _Version tested_                                    |
 | :---         |       :---:          | :---                                                |
 | NAG          |         0            | `nagfor` 7.1 Build 7113                             |
+| IBM          |         1            | `xlf2003_r` 17.1.0 on AIX                           |
 | Intel        |         2            | `ifort` 2021.5.0 Build 20211109\_000000             |
+| NVIDIA       |         2            | `nvfortran` 22.7-0                                  |
 | Cray         |         3            | `ftn` 13.0.1                                        |
 | GCC          |         6            | `gfortran` 12.2.0                                   |
-| NVIDIA       | Fails to build (ICE) | `nvfortran` 2022.2                                  |
 | AMD          | Fails to build (ICE) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
 
 See the [test suite README.md](./test/README.md) for more details on each compiler's test
-failures.
+results.
 
 Downloading, Building, and Testing
 ----------------------------------
@@ -91,14 +92,19 @@ followed by one of the commands below corresponding to your compiler choice.
 fpm test --compiler nagfor --flag -fpp
 ```
 
-### GCC (`gfortran`)
+### IBM (`xlf2003_r`)
 ```
-fpm test
+fpm test --compiler xlf2003_r
 ```
 
 ### Intel (`ifort`)
 ```
 fpm test --compiler ifort --flag -coarray=shared
+```
+
+### GCC (`gfortran`)
+```
+fpm test
 ```
 
 ### NVIDIA (`nvfortran`)
