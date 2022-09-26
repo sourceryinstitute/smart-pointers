@@ -72,11 +72,12 @@ summarizes the observed compiler behaviors:
 | NVIDIA       |         2          | `nvfortran` 22.7-0                                  |
 | Cray         |         3          | `ftn` 13.0.1                                        |
 | GCC          |         6          | `gfortran` 12.2.0                                   |
-| AMD          | Fails to build [1] | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
-| LLVM         | Fails to build [2] | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   |
+| AMD          | N.A. (see Note 1.) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
+| LLVM         | N.A. (see Note 2.) | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   
 
-[1] Internal compiler error (ICE).
-[2] Type finalization not yet supported.
+**Notes**
+1. Fails to build due to an internal compiler error (ICE).
+2. Fails to build due to type finalization not yet being supported.
 
 See the [test suite README.md](./test/README.md) for more details on each compiler's test
 results.
