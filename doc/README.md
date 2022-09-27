@@ -8,5 +8,4 @@ binding according to the `free_interface` abstract interface defined in
 `sp_resource_m`.  The user-defined `free` subroutine must free the associated
 resource, which usually means deallocating the associated memory.
 
-![class_diagram](https://user-images.githubusercontent.com/13108868/165135689-4d2e85fe-6946-472f-a154-aaabebf6d4f5.png)
-
+![smart-pointers-class-diagram](https://user-images.githubusercontent.com/13108868/192410592-19c6e194-ac3e-4f5c-a308-33b2e10d69a7.png)
