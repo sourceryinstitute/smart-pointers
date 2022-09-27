@@ -124,7 +124,7 @@ fpm test --compiler flang --flag -cpp
 
 Documentation
 -------------
-See [Reference Counter's GitHub Pages site] for HTML documentation generated with [`ford`].
+See Smart Pointer's GitHub Pages [site] for HTML documentation generated with [`ford`].
 See the [doc/] subdirectory for a [PlantUML] script that generates the Unified Modeling Language (UML) 
 class diagram below of the three derived types in Smart-Pointers.
 
@@ -134,7 +134,7 @@ class diagram below of the three derived types in Smart-Pointers.
 [Fortran Package Manager]: https://github.com/fortran-lang/fpm
 [Veggies]: https://gitlab.com/everythingfunctional/veggies
 [`ford`]: https://github.com/Fortran-FOSS-Programmers/ford
-[Smart Pointer's GitHub Pages site]: https://sourceryinstitute.github.io/smart-pointer
+[site]: https://sourceryinstitute.github.io/smart-pointers
 [Atom]: https://atom.io
 [PlantUML]: https://plantuml.com
 [doc/]: ./doc
