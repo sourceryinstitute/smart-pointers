@@ -40,3 +40,5 @@ should produce the following output:
  smart_pointer_1 and smart_pointer_2 going out of scope
  free(): user_object deallocated
 ```
+
+[user_object_smart_pointer.f90]: user_object_smart_pointer.f90
