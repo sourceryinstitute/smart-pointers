@@ -104,14 +104,29 @@
 <g id="module~~graph~~ModuleGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 111)">
 <title>module~~graph~~ModuleGraph</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-111 599,-111 599,4 -4,4"/>
-<!-- module~sp_reference_counter_s -->
+<!-- module~sp_resource_m -->
 <g id="module~~graph~~ModuleGraph_node1" class="node">
-<title>module~sp_reference_counter_s</title>
-<g id="a_module~~graph~~ModuleGraph_node1"><a xlink:href=".././module/sp_reference_counter_s.html" xlink:title="sp_reference_counter_s">
-<polygon fill="#5bc0de" stroke="#5bc0de" points="444,-97 306,-97 306,-73 444,-73 444,-97"/>
-<text text-anchor="middle" x="375" y="-82.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_reference_counter_s</text>
+<title>module~sp_resource_m</title>
+<g id="a_module~~graph~~ModuleGraph_node1"><a xlink:href=".././module/sp_resource_m.html" xlink:title="sp_resource_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="91,-45 0,-45 0,-21 91,-21 91,-45"/>
+<text text-anchor="middle" x="45.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_resource_m</text>
 </a>
 </g>
+</g>
+<!-- module~sp_smart_pointer_m -->
+<g id="module~~graph~~ModuleGraph_node2" class="node">
+<title>module~sp_smart_pointer_m</title>
+<g id="a_module~~graph~~ModuleGraph_node2"><a xlink:href=".././module/sp_smart_pointer_m.html" xlink:title="sp_smart_pointer_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="435,-45 315,-45 315,-21 435,-21 435,-45"/>
+<text text-anchor="middle" x="375" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_m</text>
+</a>
+</g>
+</g>
+<!-- module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m -->
+<g id="module~~graph~~ModuleGraph_edge1" class="edge">
+<title>module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M314.88,-32.33C300.21,-32.19 284.54,-32.07 270,-32 206.45,-31.69 190.55,-31.61 127,-32 118.66,-32.05 109.84,-32.13 101.21,-32.23"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="101.17,-28.73 91.21,-32.35 101.25,-35.73 101.17,-28.73"/>
 </g>
 <!-- module~sp_reference_counter_m -->
 <g id="module~~graph~~ModuleGraph_node6" class="node">
@@ -122,11 +137,41 @@
 </a>
 </g>
 </g>
-<!-- module~sp_reference_counter_s&#45;&gt;module~sp_reference_counter_m -->
+<!-- module~sp_smart_pointer_m&#45;&gt;module~sp_reference_counter_m -->
 <g id="module~~graph~~ModuleGraph_edge2" class="edge">
+<title>module~sp_smart_pointer_m&#45;&gt;module~sp_reference_counter_m</title>
+<path fill="none" stroke="#ffff00" stroke-dasharray="5,2" d="M314.92,-39.77C303.83,-41.04 292.06,-42.39 280.45,-43.72"/>
+<polygon fill="#ffff00" stroke="#ffff00" points="279.83,-40.27 270.3,-44.89 280.63,-47.22 279.83,-40.27"/>
+</g>
+<!-- module~sp_smart_pointer_s -->
+<g id="module~~graph~~ModuleGraph_node3" class="node">
+<title>module~sp_smart_pointer_s</title>
+<g id="a_module~~graph~~ModuleGraph_node3"><a xlink:href=".././module/sp_smart_pointer_s.html" xlink:title="sp_smart_pointer_s">
+<polygon fill="#5bc0de" stroke="#5bc0de" points="595,-66 480,-66 480,-42 595,-42 595,-66"/>
+<text text-anchor="middle" x="537.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_s</text>
+</a>
+</g>
+</g>
+<!-- module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m -->
+<g id="module~~graph~~ModuleGraph_edge3" class="edge">
+<title>module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m</title>
+<path fill="none" stroke="#00ff00" d="M479.91,-46.6C468.68,-45.13 456.76,-43.57 445.15,-42.05"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="445.43,-38.55 435.06,-40.73 444.52,-45.5 445.43,-38.55"/>
+</g>
+<!-- module~sp_reference_counter_s -->
+<g id="module~~graph~~ModuleGraph_node4" class="node">
+<title>module~sp_reference_counter_s</title>
+<g id="a_module~~graph~~ModuleGraph_node4"><a xlink:href=".././module/sp_reference_counter_s.html" xlink:title="sp_reference_counter_s">
+<polygon fill="#5bc0de" stroke="#5bc0de" points="444,-97 306,-97 306,-73 444,-73 444,-97"/>
+<text text-anchor="middle" x="375" y="-82.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_reference_counter_s</text>
+</a>
+</g>
+</g>
+<!-- module~sp_reference_counter_s&#45;&gt;module~sp_reference_counter_m -->
+<g id="module~~graph~~ModuleGraph_edge5" class="edge">
 <title>module~sp_reference_counter_s&#45;&gt;module~sp_reference_counter_m</title>
-<path fill="none" stroke="#ff0000" d="M308.53,-72.99C297.64,-71 286.27,-68.91 275.16,-66.88"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="275.52,-63.38 265.05,-65.02 274.26,-70.27 275.52,-63.38"/>
+<path fill="none" stroke="#00ffff" d="M308.53,-72.99C297.64,-71 286.27,-68.91 275.16,-66.88"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="275.52,-63.38 265.05,-65.02 274.26,-70.27 275.52,-63.38"/>
 </g>
 <!-- assert_m -->
 <g id="module~~graph~~ModuleGraph_node7" class="node">
@@ -135,70 +180,25 @@
 <text text-anchor="middle" x="198.5" y="-92.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assert_m</text>
 </g>
 <!-- module~sp_reference_counter_s&#45;&gt;assert_m -->
-<g id="module~~graph~~ModuleGraph_edge1" class="edge">
+<g id="module~~graph~~ModuleGraph_edge4" class="edge">
 <title>module~sp_reference_counter_s&#45;&gt;assert_m</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M305.78,-88.91C283.26,-90.2 258.95,-91.59 239.28,-92.72"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="238.94,-89.23 229.16,-93.3 239.34,-96.22 238.94,-89.23"/>
-</g>
-<!-- module~sp_resource_m -->
-<g id="module~~graph~~ModuleGraph_node2" class="node">
-<title>module~sp_resource_m</title>
-<g id="a_module~~graph~~ModuleGraph_node2"><a xlink:href=".././module/sp_resource_m.html" xlink:title="sp_resource_m">
-<polygon fill="#337ab7" stroke="#337ab7" points="91,-45 0,-45 0,-21 91,-21 91,-45"/>
-<text text-anchor="middle" x="45.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_resource_m</text>
-</a>
-</g>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M305.78,-88.91C283.26,-90.2 258.95,-91.59 239.28,-92.72"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="238.94,-89.23 229.16,-93.3 239.34,-96.22 238.94,-89.23"/>
 </g>
 <!-- module~smart_pointer_m -->
-<g id="module~~graph~~ModuleGraph_node3" class="node">
-<title>module~smart_pointer_m</title>
-<g id="a_module~~graph~~ModuleGraph_node3"><a xlink:href=".././module/smart_pointer_m.html" xlink:title="smart_pointer_m">
-<polygon fill="#337ab7" stroke="#337ab7" points="589,-66 486,-66 486,-42 589,-42 589,-66"/>
-<text text-anchor="middle" x="537.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">smart_pointer_m</text>
-</a>
-</g>
-</g>
-<!-- module~sp_smart_pointer_m -->
 <g id="module~~graph~~ModuleGraph_node5" class="node">
-<title>module~sp_smart_pointer_m</title>
-<g id="a_module~~graph~~ModuleGraph_node5"><a xlink:href=".././module/sp_smart_pointer_m.html" xlink:title="sp_smart_pointer_m">
-<polygon fill="#337ab7" stroke="#337ab7" points="435,-45 315,-45 315,-21 435,-21 435,-45"/>
-<text text-anchor="middle" x="375" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_m</text>
+<title>module~smart_pointer_m</title>
+<g id="a_module~~graph~~ModuleGraph_node5"><a xlink:href=".././module/smart_pointer_m.html" xlink:title="smart_pointer_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="589,-24 486,-24 486,0 589,0 589,-24"/>
+<text text-anchor="middle" x="537.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">smart_pointer_m</text>
 </a>
 </g>
 </g>
 <!-- module~smart_pointer_m&#45;&gt;module~sp_smart_pointer_m -->
-<g id="module~~graph~~ModuleGraph_edge3" class="edge">
-<title>module~smart_pointer_m&#45;&gt;module~sp_smart_pointer_m</title>
-<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M485.72,-47.36C472.91,-45.68 458.94,-43.85 445.39,-42.08"/>
-<polygon fill="#00ff00" stroke="#00ff00" points="445.51,-38.56 435.14,-40.74 444.6,-45.51 445.51,-38.56"/>
-</g>
-<!-- module~sp_smart_pointer_s -->
-<g id="module~~graph~~ModuleGraph_node4" class="node">
-<title>module~sp_smart_pointer_s</title>
-<g id="a_module~~graph~~ModuleGraph_node4"><a xlink:href=".././module/sp_smart_pointer_s.html" xlink:title="sp_smart_pointer_s">
-<polygon fill="#5bc0de" stroke="#5bc0de" points="595,-24 480,-24 480,0 595,0 595,-24"/>
-<text text-anchor="middle" x="537.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_s</text>
-</a>
-</g>
-</g>
-<!-- module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m -->
-<g id="module~~graph~~ModuleGraph_edge4" class="edge">
-<title>module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m</title>
-<path fill="none" stroke="#00ffff" d="M479.91,-19.4C468.68,-20.87 456.76,-22.43 445.15,-23.95"/>
-<polygon fill="#00ffff" stroke="#00ffff" points="444.52,-20.5 435.06,-25.27 445.43,-27.45 444.52,-20.5"/>
-</g>
-<!-- module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m -->
-<g id="module~~graph~~ModuleGraph_edge5" class="edge">
-<title>module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m</title>
-<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M314.88,-32.33C300.21,-32.19 284.54,-32.07 270,-32 206.45,-31.69 190.55,-31.61 127,-32 118.66,-32.05 109.84,-32.13 101.21,-32.23"/>
-<polygon fill="#0000ff" stroke="#0000ff" points="101.17,-28.73 91.21,-32.35 101.25,-35.73 101.17,-28.73"/>
-</g>
-<!-- module~sp_smart_pointer_m&#45;&gt;module~sp_reference_counter_m -->
 <g id="module~~graph~~ModuleGraph_edge6" class="edge">
-<title>module~sp_smart_pointer_m&#45;&gt;module~sp_reference_counter_m</title>
-<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M314.92,-39.77C303.83,-41.04 292.06,-42.39 280.45,-43.72"/>
-<polygon fill="#0000ff" stroke="#0000ff" points="279.83,-40.27 270.3,-44.89 280.63,-47.22 279.83,-40.27"/>
+<title>module~smart_pointer_m&#45;&gt;module~sp_smart_pointer_m</title>
+<path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M485.72,-18.64C472.91,-20.32 458.94,-22.15 445.39,-23.92"/>
+<polygon fill="#0000ff" stroke="#0000ff" points="444.6,-20.49 435.14,-25.26 445.51,-27.44 444.6,-20.49"/>
 </g>
 <!-- module~sp_reference_counter_m&#45;&gt;module~sp_resource_m -->
 <g id="module~~graph~~ModuleGraph_edge7" class="edge">
@@ -280,7 +280,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2022-09-27 06:01            </p>
+ on 2022-09-28 16:50            </p>
         </div>
       </div>
       <br>
