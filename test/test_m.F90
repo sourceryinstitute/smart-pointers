@@ -38,6 +38,9 @@ module test_m
 end module test_m
 
 submodule(test_m) test_s
+#ifdef XLF
+  use test_result_m, only : test_result_t
+#endif
   implicit none
 
 contains

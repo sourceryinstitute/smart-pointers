@@ -1,4 +1,7 @@
 submodule(sp_smart_pointer_m) sp_smart_pointer_s
+#ifdef XLF
+  use sp_reference_counter_m, only : sp_reference_counter_t 
+#endif
   implicit none
 
 contains

@@ -1,7 +1,15 @@
 module finalizable_m
-  !! This module supports the specification_expression_finalization main program 
-  !! (at the bottom of this file), which in turn supports the check_specification_expression 
-  !! unit-test function in ../test/compiler_test.f90.
+  !! This module supports the main program at the bottom of this file, which
+  !! tests compiler conformance with clause 7.5.6.3, paragraph 6 in the Fortran
+  !! Interpretation Document (https://j3-fortran.org/doc/year/18/18-007r1.pdf):
+  !! "If a specification expression in a scoping unit references
+  !! a function, the result is finalized before execution of the executable
+  !! constructs in the scoping unit."  (The same statement appears in clause
+  !! 4.5.5.2, paragraph 5 of the Fortran 2003 standard.) In such a scenario,
+  !! the final subroutine must be pure.  The only way to observe output from
+  !! a pure final subroutine is for the subroutine to execute an error stop
+  !! statement.  A correct execution of this test will error-terminate and ouput 
+  !! the text "finalize: intentional error termination to verify finalization".
   implicit none
 
   private
@@ -29,14 +37,22 @@ contains
   pure function component(self) result(self_component)
     type(finalizable_t), intent(in) :: self
     integer self_component
+#ifdef XLF
+    if (.not. associated(self%component_)) error stop 1 ! work around xlf2003_r bug reported via OLCF (Ticket OLCFHELP-9069)
+#else
     if (.not. associated(self%component_)) error stop "component: unassociated component"
+#endif
     self_component = self%component_
   end function
 
   pure subroutine finalize(self)
     type(finalizable_t), intent(inout) :: self
     if (associated(self%component_)) deallocate(self%component_)
+#ifdef XLF
+    error stop 2 ! work around xlf2003_r bug reported via OLCF (Ticket OLCFHELP-9069)
+#else
     error stop "finalize: intentional error termination to verify finalization"
+#endif
   end subroutine
 
 end module
@@ -52,6 +68,8 @@ contains
 
   subroutine finalize_specification_expression_result
     real tmp(component(finalizable_t(component=0))) !! Finalizes the finalizable_t function result
+    real eliminate_unused_variable_warning 
+    tmp = eliminate_unused_variable_warning 
   end subroutine
 
 end program

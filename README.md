@@ -99,12 +99,12 @@ fpm test --compiler nagfor --flag -fpp
 
 ### IBM (`xlf2003_r`)
 ```
-fpm test --compiler xlf2003_r
+fpm test --compiler xlf2003_r --flag -DXLF
 ```
 
 ### Intel (`ifort`)
 ```
-fpm test --compiler ifort --flag -coarray=shared
+fpm test --compiler ifort --flag
 ```
 
 ### GCC (`gfortran`)
