@@ -99,7 +99,7 @@ fpm test --compiler nagfor --flag -fpp
 
 ### IBM (`xlf2003_r`)
 ```
-fpm test --compiler xlf2003_r
+fpm test --compiler xlf2003_r --flag -DXLF
 ```
 
 ### Intel (`ifort`)
