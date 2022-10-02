@@ -232,7 +232,9 @@ contains
         else if (scan(compiler_identity, "NAG")==1) then
           args = "--compiler nagfor --flag -fpp"
         else if (scan(compiler_identity, "Intel")==1) then
-          args = "--compiler ifort --flag -coarray=shared"
+          args = "--compiler ifort --flag"
+        else if (scan(compiler_identity, "IBM")==1) then
+          args = "--compiler xlf2003_r --flag -DXLF"
         else
           error stop "----> Unrecognized compiler_version() in function fpm_compiler_arguments. <----"
         end if
