@@ -101,7 +101,7 @@ contains
 
             if (scan(compiler_version(),"GCC ")==1) then
               test_passes = associated(original%ref, reference%ref) .and. .false. ! intentional failure due to the message below
-              print *, "skipped copy of declared reference due to a gfortran bug that would cause a segmentation fault"
+              print *, "  (skipped copy of declared reference due to a gfortran bug that would cause a segmentation fault)"
             else
 #ifndef __GFORTRAN__
               declared = object_t() ! compiling with gfortran generates a runtime error even when this line doesn't execute

@@ -45,7 +45,7 @@ contains
       ,test_result_t("finalizes a target when the associated pointer is deallocated", check_target_deallocation()) &
       ,test_result_t("finalizes an object upon explicit deallocation", check_finalize_on_deallocate()) &
       ,test_result_t("finalizes a non-pointer non-allocatable object at the END statement", check_finalize_on_end()) &
-      ,test_result_t("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization()) &
+      ,test_result_t("finalizes a non-pointer non-allocatable object at END BLOCK statement", check_block_finalization()) &
       ,test_result_t("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference()) &
       ,test_result_t("finalizes a specification expression function result", check_specification_expression()) &
       ,test_result_t("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization()) &
