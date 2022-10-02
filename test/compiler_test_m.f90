@@ -1,12 +1,19 @@
-module compiler_test
+module compiler_test_m
   !! Test compiler conformance with each scenario in which the Fortran 2018
   !! standard mandates type finalization.
-  use veggies, only: result_t, test_item_t, describe, it, assert_equals, assert_that
+  use test_m, only : test_t
+  use test_result_m, only : test_result_t
   use iso_fortran_env, only : compiler_version
   implicit none
 
   private
-  public :: test_sp_smart_pointer
+  public :: compiler_test_t
+
+  type, extends(test_t) :: compiler_test_t
+  contains
+    procedure, nopass :: subject
+    procedure, nopass :: results
+  end type
 
   type object_t
     integer dummy
@@ -24,23 +31,26 @@ module compiler_test
 
 contains
 
-  function test_sp_smart_pointer() result(tests)
-    type(test_item_t) tests
+  pure function subject() result(specimen)
+    character(len=:), allocatable :: specimen
+    specimen = "The compiler" 
+  end function
 
-    tests = &
-      describe( &
-        "The compiler", &
-        [ it("finalizes a non-allocatable object on the LHS of an intrinsic assignment", check_lhs_object) &
-         ,it("finalizes an allocated allocatable LHS of an intrinsic assignment", check_allocated_allocatable_lhs) &
-         ,it("finalizes a target when the associated pointer is deallocated", check_target_deallocation) &
-         ,it("finalizes an object upon explicit deallocation", check_finalize_on_deallocate) &
-         ,it("finalizes a non-pointer non-allocatable object at the END statement", check_finalize_on_end) &
-         ,it("finalizes a non-pointer non-allocatable object at the end of a block construct", check_block_finalization) &
-         ,it("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference) &
-         ,it("finalizes a specification expression function result", check_specification_expression) &
-         ,it("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization) &
-         ,it("finalizes an allocatable component object", check_allocatable_component_finalization) &
-      ])
+  function results() result(test_results)
+    type(test_result_t), allocatable :: test_results(:)
+
+    test_results = [ &
+       test_result_t("finalizes a non-allocatable object on the LHS of an intrinsic assignment", check_lhs_object()) &
+      ,test_result_t("finalizes an allocated allocatable LHS of an intrinsic assignment", check_allocated_allocatable_lhs()) &
+      ,test_result_t("finalizes a target when the associated pointer is deallocated", check_target_deallocation()) &
+      ,test_result_t("finalizes an object upon explicit deallocation", check_finalize_on_deallocate()) &
+      ,test_result_t("finalizes a non-pointer non-allocatable object at the END statement", check_finalize_on_end()) &
+      ,test_result_t("finalizes a non-pointer non-allocatable object at END BLOCK statement", check_block_finalization()) &
+      ,test_result_t("finalizes a function reference on the RHS of an intrinsic assignment", check_rhs_function_reference()) &
+      ,test_result_t("finalizes a specification expression function result", check_specification_expression()) &
+      ,test_result_t("finalizes an intent(out) derived type dummy argument", check_intent_out_finalization()) &
+      ,test_result_t("finalizes an allocatable component object", check_allocatable_component_finalization()) &
+    ]
   end function
 
   function construct_object() result(object)
@@ -56,27 +66,27 @@ contains
     self % dummy = avoid_unused_variable_warning
   end subroutine
 
-  function check_lhs_object() result(result_)
+  function check_lhs_object() result(test_passes)
     !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 1 behavior:
     !! "not an unallocated allocatable variable"
     type(object_t) lhs, rhs
-    type(result_t) result_
+    logical test_passes
     integer initial_tally
 
     rhs%dummy = avoid_unused_variable_warning
     initial_tally = finalizations
     lhs = rhs ! finalizes lhs
     associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
+      test_passes = delta == 1
     end associate
   end function
 
-  function check_allocated_allocatable_lhs() result(result_)
+  function check_allocated_allocatable_lhs() result(test_passes)
     !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 1 behavior:
     !! "allocated allocatable variable"
     type(object_t), allocatable :: lhs
     type(object_t) rhs
-    type(result_t) result_
+    logical test_passes
     integer initial_tally
 
     rhs%dummy = avoid_unused_variable_warning
@@ -84,30 +94,30 @@ contains
     allocate(lhs)
     lhs = rhs ! finalizes lhs
     associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
+      test_passes = delta == 1
     end associate
   end function
 
-  function check_target_deallocation() result(result_)
+  function check_target_deallocation() result(test_passes)
     !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 2 behavior:
     !! "pointer is deallocated"
-    type(object_t), pointer :: object_ptr => null()
-    type(result_t) result_
+    type(object_t), pointer :: object_ptr
+    logical test_passes
     integer initial_tally
 
     allocate(object_ptr, source=object_t(dummy=0))
     initial_tally = finalizations
     deallocate(object_ptr) ! finalizes object
     associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
+      test_passes = delta == 1 
     end associate
   end function
 
-  function check_allocatable_component_finalization() result(result_)
+  function check_allocatable_component_finalization() result(test_passes)
     !! Test conformance with Fortran 2018 clause 7.5.6.3, para. 2 ("allocatable entity is deallocated")
     !! + 9.7.3.2, para. 6 ("INTENT(OUT) allocatable dummy argument is deallocated")
     type(wrapper_t), allocatable :: wrapper
-    type(result_t) result_
+    logical test_passes
     integer initial_tally
 
     initial_tally = finalizations
@@ -116,7 +126,7 @@ contains
     allocate(wrapper%object)
     call finalize_intent_out_component(wrapper)
     associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
+      test_passes = delta == 1
     end associate
 
   contains
@@ -129,11 +139,11 @@ contains
 
   end function
 
-  function check_finalize_on_deallocate() result(result_)
+  function check_finalize_on_deallocate() result(test_passes)
     !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 2:
     !! "allocatable entity is deallocated"
     type(object_t), allocatable :: object
-    type(result_t) result_
+    logical test_passes
     integer initial_tally
 
     initial_tally = finalizations
@@ -141,20 +151,20 @@ contains
     object%dummy = 1
     deallocate(object)          ! finalizes object
     associate(final_tally => finalizations - initial_tally)
-      result_ = assert_equals(1, final_tally)
+      test_passes = final_tally == 1
     end associate
   end function
 
-  function check_finalize_on_end() result(result_)
+  function check_finalize_on_end() result(test_passes)
     !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 3:
     !! "before return or END statement"
-    type(result_t) result_
+    logical test_passes
     integer initial_tally
 
     initial_tally = finalizations
     call finalize_on_end_subroutine() ! Finalizes local_obj
     associate(final_tally => finalizations - initial_tally)
-      result_ = assert_equals(1, final_tally)
+      test_passes = final_tally == 1
     end associate
 
   contains
@@ -166,10 +176,10 @@ contains
 
   end function
 
-  function check_block_finalization() result(result_)
+  function check_block_finalization() result(test_passes)
     !! Test conformance with Fortran 2018 clause  7.5.6.3, paragraph 4:
     !! "termination of the BLOCK construct"
-    type(result_t) result_
+    logical test_passes
     integer initial_tally
 
     initial_tally = finalizations
@@ -178,28 +188,28 @@ contains
       object % dummy = avoid_unused_variable_warning
     end block ! Finalizes object
     associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
+      test_passes = delta == 1
     end associate
   end function
 
-  function check_rhs_function_reference() result(result_)
+  function check_rhs_function_reference() result(test_passes)
     !! Test conformance with Fortran 2018 clause 7.5.6.3, paragraph 5 behavior:
     !! "nonpointer function result"
     type(object_t), allocatable :: object
-    type(result_t) result_
+    logical test_passes
     integer initial_tally
 
     initial_tally = finalizations
     object = construct_object() ! finalizes object_t result
     associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
+      test_passes = delta == 1
     end associate
   end function
 
-  function check_specification_expression() result(result_)
+  function check_specification_expression() result(test_passes)
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
-    type(result_t) result_
+    logical test_passes
     integer exit_status
     logical error_termination_occurred
 
@@ -209,18 +219,20 @@ contains
       exitstat = exit_status &
     )
     error_termination_occurred = exit_status /=0
-    result_ = assert_that(error_termination_occurred)
+    test_passes = error_termination_occurred
 
   contains
 
-    pure function fpm_compiler_arguments() result(args)
+    function fpm_compiler_arguments() result(args)
       character(len=:), allocatable :: args
 
       associate(compiler_identity=>compiler_version())
-        if (scan(compiler_identity, "GCC ")==1) then
+        if (scan(compiler_identity, "GCC")==1) then
           args = " "
-        else if (scan(compiler_identity, "NAG Fortran ")==1) then
+        else if (scan(compiler_identity, "NAG")==1) then
           args = "--compiler nagfor --flag -fpp"
+        else if (scan(compiler_identity, "Intel")==1) then
+          args = "--compiler ifort --flag -coarray=shared"
         else
           error stop "----> Unrecognized compiler_version() in function fpm_compiler_arguments. <----"
         end if
@@ -229,18 +241,17 @@ contains
 
   end function
 
-
-  function check_intent_out_finalization() result(result_)
+  function check_intent_out_finalization() result(test_passes)
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 7:
     !! "nonpointer, nonallocatable, INTENT (OUT) dummy argument"
-    type(result_t) result_
+    logical test_passes
     type(object_t) object
     integer initial_tally
 
     initial_tally = finalizations
     call finalize_intent_out_arg(object)
     associate(delta => finalizations - initial_tally)
-      result_ = assert_equals(1, delta)
+      test_passes = delta == 1
     end associate
   contains
     subroutine finalize_intent_out_arg(output)
@@ -249,4 +260,4 @@ contains
     end subroutine
   end function
 
-end module compiler_test
+end module compiler_test_m
