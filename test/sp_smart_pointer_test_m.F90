@@ -3,12 +3,13 @@ module sp_smart_pointer_test_m
     use sp_smart_pointer_m, only: sp_smart_pointer_t
     use shallow_m, only : shallow_t, resource_freed
     use test_result_m, only : test_result_t
+    use test_m, only : test_t
 
     implicit none
     private
     public :: sp_smart_pointer_test_t
 
-  type sp_smart_pointer_test_t
+  type, extends(test_t) :: sp_smart_pointer_test_t
   contains
     procedure, nopass :: subject
     procedure, nopass :: results

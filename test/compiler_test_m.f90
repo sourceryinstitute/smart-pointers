@@ -1,6 +1,7 @@
 module compiler_test_m
   !! Test compiler conformance with each scenario in which the Fortran 2018
   !! standard mandates type finalization.
+  use test_m, only : test_t
   use test_result_m, only : test_result_t
   use iso_fortran_env, only : compiler_version
   implicit none
@@ -8,7 +9,7 @@ module compiler_test_m
   private
   public :: compiler_test_t
 
-  type compiler_test_t
+  type, extends(test_t) :: compiler_test_t
   contains
     procedure, nopass :: subject
     procedure, nopass :: results
