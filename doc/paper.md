@@ -1,30 +1,28 @@
 ---
-title: 'Gala: A Python package for galactic dynamics'
+title: 'Smart-Pointers: An abstract base class for encapsulated, reference-counted pointers in Fortran'
 tags:
-  - Python
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - Fortran
+  - memory management
+  - object-oriented design patterns
 authors:
-  - name: Adrian M. Price-Whelan
-    orcid: 0000-0000-0000-0000
+  - name: Damian Rouson 
+    orcid: 0000-0002-2344-868X
     equal-contrib: true
     affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
-    affiliation: 2
-  - name: Author with no affiliation
-    corresponding: true # (This is how to denote the corresponding author)
+  - name: Wileam Phan
+    equal-contrib: true
     affiliation: 3
+  - name: Brad Richardson
+    corresponding: true
+    affiliation: 2
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, USA
+ - name: Lawrence Berkeley National Laboratory, USA
    index: 1
- - name: Institution Name, Country
+ - name: Sourcery Institute, USA
    index: 2
- - name: Independent Researcher, Country
+ - name: Rice University, USA
    index: 3
-date: 13 August 2017
+date: 26 September 2022
 bibliography: paper.bib
 
 # Optional fields if submitting to a AAS journal too, see this blog post:
@@ -35,15 +33,15 @@ aas-journal: Astrophysical Journal <- The name of the AAS journal.
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+Fortran evolved to support formula translation in research software engineering
+and other forms of numerical computing.  While occupying an small share of software
+engineering overall, Fortran continues to see widespread use in fields that
+embraced computing early: weather prediction, climate modeling, nuclear energy,
+and aerospace engineerig. Such applications place extreme demands on computing
+resources in terms of time and memory.  Judicious use of the available memory
+in particlar requires avoiding unnecessary copying of data and a robust scheme
+for freeing memory when and only when it is safe to do so after all extant
+references to the objects in the corresponding memory have gone out of scope.
 
 # Statement of need
 
