@@ -91,12 +91,17 @@ contains
   function check_copy() result(test_passes)
     logical test_passes
     type(object_t) :: reference
+#ifdef XLF
+    type(object_t) :: original
 
+    original = object_t()
+#else
     associate(original => object_t())
+#endif
       reference = original
 
       block 
-        type(object_t) declared, reference_to_declared
+        type(object_t) :: declared, reference_to_declared
 
         if (scan(compiler_version(),"GCC ")==1) then
           test_passes = associated(original%ref, reference%ref) .and. .false. ! intentional failure due to the message below
@@ -109,13 +114,15 @@ contains
           test_passes = associated(original%ref, reference%ref) .and. associated(declared%ref, reference_to_declared%ref)
         end if
       end block
+#ifndef XLF
     end associate
+#endif
 
   end function
   
   function check_shallow_copy() result(test_passes)
      logical test_passes
-    
+   
     block 
       type(shallow_t) shallow_copy
 
