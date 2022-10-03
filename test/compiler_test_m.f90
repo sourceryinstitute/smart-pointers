@@ -210,13 +210,13 @@ contains
     !! Test conformance with Fortran 2018 standard clause 7.5.6.3, paragraph 6:
     !! "specification expression function result"
     logical test_passes
-    integer exit_status
+    integer exit_status, command_status
     logical error_termination_occurred
+    character(len=132) command_message
 
     call execute_command_line( &
       command = "fpm run --example specification_expression_finalization "// fpm_compiler_arguments() //" > /dev/null 2>&1", &
-      wait = .true., &
-      exitstat = exit_status &
+      wait = .true., exitstat = exit_status, cmdstat = command_status, cmdmsg = command_message &
     )
     error_termination_occurred = exit_status /=0
     test_passes = error_termination_occurred
@@ -227,14 +227,16 @@ contains
       character(len=:), allocatable :: args
 
       associate(compiler_identity=>compiler_version())
-        if (scan(compiler_identity, "GCC")==1) then
+        if (index(compiler_identity, "GCC")==1) then
           args = " "
-        else if (scan(compiler_identity, "NAG")==1) then
+        else if (index(compiler_identity, "NAG")==1) then
           args = "--compiler nagfor --flag -fpp"
-        else if (scan(compiler_identity, "Intel")==1) then
-          args = "--compiler ifort --flag"
-        else if (scan(compiler_identity, "IBM")==1) then
-          args = "--compiler xlf2003_r --flag -DXLF"
+        else if (index(compiler_identity, "Intel")==1) then
+          args = "--compiler ifort"
+        else if (index(compiler_identity, "IBM")==1) then
+          args = "--archiver ar --compiler xlf2008_r --flag -DXLF"
+        else if (index(compiler_identity, "Cray")==1) then
+          args = "--compiler ftn"
         else
           error stop "----> Unrecognized compiler_version() in function fpm_compiler_arguments. <----"
         end if
