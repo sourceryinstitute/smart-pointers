@@ -92,32 +92,32 @@ cd smart-pointer
 ```
 followed by one of the commands below corresponding to your compiler choice.
 
-### Numerical Algorithms Group (`nagfor`)
+### Numerical Algorithms Group
 ```
 fpm test --compiler nagfor --flag -fpp
 ```
 
-### IBM (`xlf2003_r`)
+### Intel
 ```
-fpm test --compiler xlf2003_r --flag -DXLF
-```
-
-### Intel (`ifort`)
-```
-fpm test --compiler ifort --flag
+fpm test --compiler ifort
 ```
 
-### GCC (`gfortran`)
+### IBM
+```
+fpm test --archiver ar --compiler xlf2008_r --flag -DXLF
+```
+
+### GCC
 ```
 fpm test
 ```
 
-### NVIDIA (`nvfortran`)
+### NVIDIA
 ```
 fpm test --compiler nvfortran --flag -Mpreprocess
 ```
 
-### AMD (`flang`)
+### AMD
 ```
 fpm test --compiler flang --flag -cpp
 ```
