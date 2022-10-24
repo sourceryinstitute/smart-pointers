@@ -237,6 +237,8 @@ contains
           args = "--archiver ar --compiler xlf2008_r --flag -DXLF"
         else if (index(compiler_identity, "Cray")==1) then
           args = "--compiler ftn"
+        else if (index(compiler_identity, "XLF")==1) then
+          args = "--compiler xlf2008_r"
         else
           error stop "----> Unrecognized compiler_version() in function fpm_compiler_arguments. <----"
         end if
