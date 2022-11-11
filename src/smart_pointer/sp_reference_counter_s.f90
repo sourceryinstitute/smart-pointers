@@ -22,13 +22,16 @@ contains
 
   module procedure release
 
-    call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
-
+    call assert(associated(self%count_),"sp_reference_counter_t%release: associated(self%count_)")
+    write(0,*) associated(self%count_)
     self%count_ = self%count_ - 1
-
+    write(0,*) 'self%count: ',self%count_
     if (self%count_ == 0) then
+      write(0,*) 'release: deallocating '
       call self%object_%free
       deallocate (self%count_, self%object_)
+      self%count_ => null()
+      self%object_ => null()
     else
       self%count_ => null()
       self%object_ => null()
