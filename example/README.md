@@ -22,11 +22,16 @@ This example exhibits several important subtleties:
    perform shallow copies, thereby creating new references to 
    `user_object` without copying the object.
 
-Run the example as follows:
+With `gfortran` 13.0.1 20230321 or later in your `PATH`, run the example
+as follows:
+```
+fpm run --example user_object_smart_pointer
+```
+or with the NAG Fortran compiler in your `PATH`, use
 ```
 fpm run --example user_object_smart_pointer --compiler nagfor --flag -fpp
 ```
-which should produce the following output:
+either of which should produce the following output:
 ```
  Allocating user_object pointer.
  Defining smart_pointer_1.
