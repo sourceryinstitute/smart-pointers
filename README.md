@@ -67,18 +67,19 @@ summarizes the observed compiler behaviors:
 | _Compiler_   | _Test failures_    | _Version tested_                                    |
 | :---         |       :---:        | :---                                                |
 | AMD          | N.A. (see Note 1.) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
-| Cray         | >= 3 (see Note 3.) | `ftn` 13.0.1                                        |
-| GCC          |         6          | `gfortran` 12.2.0                                   |
-| IBM          |         1          | `xlf2008_r` 17.1.0 on AIX                           |
-| Intel        |         1          | `ifort` 2021.7.0 Build 20220726_000000              |
-| LLVM         | N.A. (see Note 2.) | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   
-| NAG :trophy: |         0          | `nagfor` 7.1 Build 7113                             |
-| NVIDIA       |         2          | `nvfortran` 22.7-0                                  |
+| Cray         | >= 3 (see Note 2.) | `ftn` 13.0.1                                        |
+| GCC :trophy: | 0    (see Note 3.) | `gfortran` 13.0.1 20230321 (experimental)           |
+| IBM          | 1                  | `xlf2008_r` 17.1.0 on AIX                           |
+| Intel        | 1                  | `ifort` 2021.7.0 Build 20220726_000000              |
+| LLVM         | N.A. (see Note 4.) | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   
+| NAG :trophy: | 0                  | `nagfor` 7.1 Build 7113                             |
+| NVIDIA       | 2                  | `nvfortran` 22.7-0                                  |
 
 **Notes**
 1. Fails to build due to an internal compiler error (ICE).
-2. Fails to build due to type finalization not yet being supported.
 2. Fails to build due to `fpm` issue [767]. See [test/README.md#cray] for a lower bound on the Cray compiler test failures.
+3. See [test/README.md#gnu](./test/README.md#gnu) for instructions on building a current GCC from source.
+4. Fails to build due to type finalization not yet being supported.
 
 See the [test suite README.md](./test/README.md) for more details on each compiler's test
 results.

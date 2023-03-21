@@ -15,7 +15,7 @@ Summary
 
 * [AMD](#amd): unsupported (fails to build Smart-Pointers)
 * [Cray](#cray): partial support (3 test failures)
-* [GCC](#gnu): partial support (6 test failures)
+* [GCC](#gnu): full support :trophy:
 * [IBM](#ibm): partial support (1 test failure)
 * [Intel](#intel): partial support (1 test failure)
 * [LLVM](#llvm): unsupported (fails to build Smart-Pointers)
@@ -57,31 +57,43 @@ ftn compile_me_only.f90
 The number of unit test failures for the remainder of the Smart-Pointers test suite is unknown.
 
 ### GCC
-- Version: 12.2.0
-- Result: 4 test failures.
+- Version: 13.0.1 20230321 (experimental)
+- Result: 0 test failures.
 ```
  % fpm test
 Project is up to date
 
  The compiler
-   Fail: finalizes a non-allocatable object on the LHS of an intrinsic assignment
-   Fail: finalizes an allocated allocatable LHS of an intrinsic assignment
+   Pass: finalizes a non-allocatable object on the LHS of an intrinsic assignment
+   Pass: finalizes an allocated allocatable LHS of an intrinsic assignment
    Pass: finalizes a target when the associated pointer is deallocated
    Pass: finalizes an object upon explicit deallocation
    Pass: finalizes a non-pointer non-allocatable object at the END statement
    Pass: finalizes a non-pointer non-allocatable object at END BLOCK statement
-   Fail: finalizes a function reference on the RHS of an intrinsic assignment
-   Fail: finalizes a specification expression function result
+   Pass: finalizes a function reference on the RHS of an intrinsic assignment
+   Pass: finalizes a specification expression function result
    Pass: finalizes an intent(out) derived type dummy argument
    Pass: finalizes an allocatable component object
 
  A smart_pointer
-   (skipped copy of declared reference due to a gfortran bug that would cause a segmentation fault)
    Pass: creates a resource when constructed
    Pass: removes the resource when the object goes out of scope
-   Fail: copy points to the same resource as the original
-   Fail: has zero references after a shallow copy goes out of scope
+   Pass: copy points to the same resource as the original
+   Pass: has zero references after a shallow copy goes out of scope
 ```
+
+The above gfortran version was built from source using commands of the following form:
+```
+git clone git@github.com:sourceryinstitute/opencoarrays
+cd opencoarrays
+./install.sh -p gcc -b master -j <num-threads>
+export LD_LIBRARY_PATH="${PWD}/prerequisites/installations/lib"
+export PATH="${PWD}/prerequisites/installations/bin:$PATH"
+```
+after replacing `<num-threads>` with the desired number of threads for an accelerated,
+multithreaded build.  Producing the above test results requires GCC commit
+[d7caf313525a46f200d7f5db1ba893f853774aee], which reduced the number of gfortran test
+failures from six to zero.
 
 ### IBM
 - Version: IBM Open XL Fortran for AIX 17.1.0 
@@ -176,3 +188,4 @@ Project is up to date
 [compiler_test_m.f90]:  ./compiler_test_m.f90
 [sp_smart_pointer_test_m.f90]:  ./sp_smart_pointer_test_m.F90
 [branch]: https://github.com/BerkeleyLab/llvm-test-suite/tree/fortran-type-finalization/Fortran/UnitTests/finalization
+[d7caf313525a46f200d7f5db1ba893f853774aee]: https://github.com/gcc-mirror/gcc/commit/5889c7bd46a45dc07ffb77ec0d698e18e0b99840 

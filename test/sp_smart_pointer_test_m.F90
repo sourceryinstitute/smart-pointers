@@ -103,16 +103,9 @@ contains
       block 
         type(object_t) :: declared, reference_to_declared
 
-        if (scan(compiler_version(),"GCC ")==1) then
-          test_passes = associated(original%ref, reference%ref) .and. .false. ! intentional failure due to the message below
-          print *, "  (skipped copy of declared reference due to a gfortran bug that would cause a segmentation fault)"
-        else
-#ifndef __GFORTRAN__
-          declared = object_t() ! compiling with gfortran generates a runtime error even when this line doesn't execute
-#endif
-          reference_to_declared = declared
-          test_passes = associated(original%ref, reference%ref) .and. associated(declared%ref, reference_to_declared%ref)
-        end if
+        declared = object_t() ! compiling with gfortran generates a runtime error even when this line doesn't execute
+        reference_to_declared = declared
+        test_passes = associated(original%ref, reference%ref) .and. associated(declared%ref, reference_to_declared%ref)
       end block
 #ifndef XLF
     end associate
