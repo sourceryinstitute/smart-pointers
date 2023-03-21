@@ -261,18 +261,18 @@
 <path fill="none" stroke="#ff0000" d="M211.69,-86.05C226.17,-80.54 244.37,-73.62 260.16,-67.62"/>
 <polygon fill="#ff0000" stroke="#ff0000" points="261.51,-70.85 269.62,-64.03 259.03,-64.31 261.51,-70.85"/>
 </g>
-<!-- proc~reference_count~2 -->
+<!-- proc~reference_count -->
 <g id="interface~~assert~~CalledByGraph_node3" class="node">
-<title>proc~reference_count~2</title>
-<g id="a_interface~~assert~~CalledByGraph_node3"><a xlink:href=".././proc/reference_count~2.html" xlink:title="reference_count">
+<title>proc~reference_count</title>
+<g id="a_interface~~assert~~CalledByGraph_node3"><a xlink:href=".././proc/reference_count.html" xlink:title="reference_count">
 <polygon fill="#d94e8f" stroke="#d94e8f" points="234,-66 135,-66 135,-42 234,-42 234,-66"/>
 <text text-anchor="middle" x="184.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">reference_count</text>
 </a>
 </g>
 </g>
-<!-- proc~reference_count~2&#45;&gt;interface~assert -->
-<g id="interface~~assert~~CalledByGraph_edge3" class="edge">
-<title>proc~reference_count~2&#45;&gt;interface~assert</title>
+<!-- proc~reference_count&#45;&gt;interface~assert -->
+<g id="interface~~assert~~CalledByGraph_edge2" class="edge">
+<title>proc~reference_count&#45;&gt;interface~assert</title>
 <path fill="none" stroke="#ff0000" d="M234.29,-54C242.81,-54 251.54,-54 259.65,-54"/>
 <polygon fill="#ff0000" stroke="#ff0000" points="259.89,-57.5 269.89,-54 259.89,-50.5 259.89,-57.5"/>
 </g>
@@ -286,7 +286,7 @@
 </g>
 </g>
 <!-- proc~release&#45;&gt;interface~assert -->
-<g id="interface~~assert~~CalledByGraph_edge2" class="edge">
+<g id="interface~~assert~~CalledByGraph_edge3" class="edge">
 <title>proc~release&#45;&gt;interface~assert</title>
 <path fill="none" stroke="#ff0000" d="M211.69,-21.95C226.17,-27.46 244.37,-34.38 260.16,-40.38"/>
 <polygon fill="#ff0000" stroke="#ff0000" points="259.03,-43.69 269.62,-43.97 261.51,-37.15 259.03,-43.69"/>
@@ -306,10 +306,25 @@
 <path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M76.78,-96C96.91,-96 124.91,-96 147.18,-96"/>
 <polygon fill="#ff0000" stroke="#ff0000" points="147.28,-99.5 157.28,-96 147.28,-92.5 147.28,-99.5"/>
 </g>
-<!-- interface~release -->
+<!-- interface~reference_count -->
 <g id="interface~~assert~~CalledByGraph_node6" class="node">
+<title>interface~reference_count</title>
+<g id="a_interface~~assert~~CalledByGraph_node6"><a xlink:href=".././interface/reference_count.html" xlink:title="reference_count">
+<polygon fill="#a7506f" stroke="#a7506f" points="99,-66 0,-66 0,-42 99,-42 99,-66"/>
+<text text-anchor="middle" x="49.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">reference_count</text>
+</a>
+</g>
+</g>
+<!-- interface~reference_count&#45;&gt;proc~reference_count -->
+<g id="interface~~assert~~CalledByGraph_edge5" class="edge">
+<title>interface~reference_count&#45;&gt;proc~reference_count</title>
+<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M99.27,-54C107.49,-54 116.1,-54 124.55,-54"/>
+<polygon fill="#00ff00" stroke="#00ff00" points="124.74,-57.5 134.74,-54 124.74,-50.5 124.74,-57.5"/>
+</g>
+<!-- interface~release -->
+<g id="interface~~assert~~CalledByGraph_node7" class="node">
 <title>interface~release</title>
-<g id="a_interface~~assert~~CalledByGraph_node6"><a xlink:href=".././interface/release.html" xlink:title="release">
+<g id="a_interface~~assert~~CalledByGraph_node7"><a xlink:href=".././interface/release.html" xlink:title="release">
 <polygon fill="#a7506f" stroke="#a7506f" points="76.5,-24 22.5,-24 22.5,0 76.5,0 76.5,-24"/>
 <text text-anchor="middle" x="49.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">release</text>
 </a>
@@ -320,21 +335,6 @@
 <title>interface~release&#45;&gt;proc~release</title>
 <path fill="none" stroke="#0000ff" stroke-dasharray="5,2" d="M76.78,-12C96.91,-12 124.91,-12 147.18,-12"/>
 <polygon fill="#0000ff" stroke="#0000ff" points="147.28,-15.5 157.28,-12 147.28,-8.5 147.28,-15.5"/>
-</g>
-<!-- interface~reference_count~2 -->
-<g id="interface~~assert~~CalledByGraph_node7" class="node">
-<title>interface~reference_count~2</title>
-<g id="a_interface~~assert~~CalledByGraph_node7"><a xlink:href=".././interface/reference_count~2.html" xlink:title="reference_count">
-<polygon fill="#a7506f" stroke="#a7506f" points="99,-66 0,-66 0,-42 99,-42 99,-66"/>
-<text text-anchor="middle" x="49.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">reference_count</text>
-</a>
-</g>
-</g>
-<!-- interface~reference_count~2&#45;&gt;proc~reference_count~2 -->
-<g id="interface~~assert~~CalledByGraph_edge5" class="edge">
-<title>interface~reference_count~2&#45;&gt;proc~reference_count~2</title>
-<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M99.27,-54C107.49,-54 116.1,-54 124.55,-54"/>
-<polygon fill="#00ff00" stroke="#00ff00" points="124.74,-57.5 134.74,-54 124.74,-50.5 124.74,-57.5"/>
 </g>
 </g>
 </svg>
@@ -437,14 +437,14 @@ With IBM XL Fortran, the stop code is an integer due to for character stop codes
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p> was developed by Sourcery Institute<br>&copy; 2022 
+        <div class="col-xs-6 col-md-6"><p> was developed by Sourcery Institute<br>&copy; 2023 
 </p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2022-10-24 22:55            </p>
+ on 2023-03-21 01:32            </p>
         </div>
       </div>
       <br>
