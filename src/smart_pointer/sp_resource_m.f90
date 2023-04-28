@@ -11,7 +11,7 @@ module sp_resource_m
 
   abstract interface
 
-    subroutine free_interface(self)
+    impure elemental subroutine free_interface(self)
       import sp_resource_t
       class(sp_resource_t), intent(inout) :: self
     end subroutine
