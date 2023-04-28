@@ -57,7 +57,7 @@ ftn compile_me_only.f90
 The number of unit test failures for the remainder of the Smart-Pointers test suite is unknown.
 
 ### GCC
-- Version: 13.0.1 20230321 (experimental)
+- Version: 13.1.0
 - Result: 0 test failures.
 ```
  % fpm test
