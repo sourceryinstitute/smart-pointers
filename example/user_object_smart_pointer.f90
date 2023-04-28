@@ -26,7 +26,7 @@ module user_object_m
 
   interface
 
-    module subroutine free(self)
+    impure elemental module subroutine free(self)
       implicit none
       class(user_object_ptr_t), intent(inout) :: self
     end subroutine
