@@ -8,7 +8,11 @@ binding according to the `free_interface` abstract interface defined in
 `sp_resource_m`.  The user-defined `free` subroutine must free the associated
 resource, which usually means deallocating the associated memory.
 
-```mermaid
+
+
+<h2 align="center">smart-pointers-class-diagram</h2>
+
+  ```mermaid
 classDiagram
 sp_resource_t --* sp_reference_counter_t
 sp_resource_t : free()
