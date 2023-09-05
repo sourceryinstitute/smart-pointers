@@ -15,7 +15,7 @@ Summary
 
 * [AMD](#amd): unsupported (fails to build Smart-Pointers)
 * [Cray](#cray): partial support (3 test failures)
-* [GCC](#gcc): full support :trophy:
+* [GCC](#gcc): full support :trophy: (0 test failures)
 * [IBM](#ibm): partial support (1 test failure)
 * [Intel](#intel): partial support (1 test failure)
 * [LLVM](#llvm): unsupported (fails to build Smart-Pointers)
