@@ -56,7 +56,7 @@ contains
     call object%start_counter
   end function
 
-  subroutine free(self)
+  impure elemental subroutine free(self)
     class(object_t), intent(inout) :: self
 
     if (allocated(the_resource)) deallocate(the_resource)
