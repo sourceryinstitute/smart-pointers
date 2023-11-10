@@ -27,7 +27,7 @@ contains
         call shallow%start_counter
     end function
 
-    subroutine free(self)
+    impure elemental subroutine free(self)
         class(shallow_t), intent(inout) :: self
 
         deallocate(resource)
