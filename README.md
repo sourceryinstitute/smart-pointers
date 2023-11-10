@@ -64,21 +64,20 @@ compiler standard-conformance, including a test for each scenario in which the
 the Fortran 2018 standard requires that an object be finalized.  The table below
 summarizes the observed compiler behaviors:
 
-| _Compiler_   | _Test failures_    | _Version tested_                                    |
-| :---         |       :---:        | :---                                                |
-| AMD          | N.A. (see Note 1.) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
-| Cray         | >= 3 (see Note 2.) | `ftn` 13.0.1                                        |
-| GCC :trophy: | 0                  | `gfortran` 13.1.0                                   |
-| IBM          | 1                  | `xlf2008_r` 17.1.0 on AIX                           |
-| Intel        | 1                  | `ifort` 2021.7.0 Build 20220726_000000              |
-| LLVM         | N.A. (see Note 3.) | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   
-| NAG :trophy: | 0                  | `nagfor` 7.1 Build 7113                             |
-| NVIDIA       | 2                  | `nvfortran` 22.7-0                                  |
+| _Compiler_    | _Test failures_    | _Version tested_                                    |
+| :---          |       :---:        | :---                                                |
+| AMD           | N.A. (see Note 1.) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
+| Cray          | >= 3 (see Note 2.) | `ftn` 13.0.1                                        |
+| GCC :trophy:  | 0                  | `gfortran` 13.1.0                                   |
+| IBM           | 1                  | `xlf2008_r` 17.1.0 on AIX                           |
+| Intel         | 1                  | `ifort` 2021.7.0 Build 20220726_000000              |
+| LLVM :trophy: | 0                  | 18.0.0 `git` commit `beffc821e8` (10/17/2023)       |
+| NAG :trophy:  | 0                  | `nagfor` 7.1 Build 7113                             |
+| NVIDIA        | 2                  | `nvfortran` 22.7-0                                  |
 
 **Notes**
 1. Fails to build due to an internal compiler error (ICE).
 2. Fails to build due to `fpm` issue [767]. See [test/README.md#cray] for a lower bound on the Cray compiler test failures.
-3. Fails to build due to polymorphism not yet being supported. However, a refactored version of 10 the compiler tests in [./tests/compiler_test_m.f90] pass when incorporated into the [llvm-test-suite].
 
 See the [test suite README.md](./test/README.md) for more details on each compiler's test
 results.
