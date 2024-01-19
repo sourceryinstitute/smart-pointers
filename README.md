@@ -78,7 +78,7 @@ summarizes the observed compiler behaviors:
 **Notes**
 1. Fails to build due to an internal compiler error (ICE).
 2. Fails to build due to `fpm` issue [767]. See [test/README.md#cray] for a lower bound on the Cray compiler test failures.
-3. Fails to build due to polymorphism not yet being supported. However, a refactored version of 10 the compiler tests in [./tests/compiler_test_m.f90] pass when incorporated into the [llvm-test-suite].
+3. Fails to build due to polymorphism not yet being supported. However, a refactored version of the 10 compiler tests in [./tests/compiler_test_m.f90] pass when incorporated into the [llvm-test-suite].
 
 See the [test suite README.md](./test/README.md) for more details on each compiler's test
 results.
