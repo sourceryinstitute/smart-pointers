@@ -124,7 +124,9 @@ Project is up to date
 ```
 
 ### Intel
-- Version: 2021.7.0 Build 20220726_000000
+- Versions: 
+   - `ifx` 2024.0.0 Build 20231017
+   - `ifort` 2021.7.0 Build 20220726\_000000
 - Result: 1 test failure.
 ```
  % fpm test --compiler ifort
