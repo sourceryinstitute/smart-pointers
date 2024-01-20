@@ -71,7 +71,8 @@ summarizes the observed compiler behaviors:
 | GCC :trophy: | 0                  | `gfortran` 13.1.0                                   |
 | IBM          | 1                  | `xlf2008_r` 17.1.0 on AIX                           |
 | Intel        | 1                  | `ifort` 2021.7.0 Build 20220726_000000              |
-| LLVM         | N.A. (see Note 3.) | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   
+|              | 1                  | `ifx` 2024.0.0 Build 20231017                       |
+| LLVM         | N.A. (see Note 3.) | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   |
 | NAG :trophy: | 0                  | `nagfor` 7.1 Build 7113                             |
 | NVIDIA       | 2                  | `nvfortran` 22.7-0                                  |
 
@@ -102,6 +103,11 @@ fpm test --compiler nagfor --flag -fpp
 ```
 fpm test --compiler ifort
 ```
+or
+```
+fpm test --compiler ifx
+```
+where the latter requires `fpm` 0.10.0 or later.
 
 ### IBM
 ```
