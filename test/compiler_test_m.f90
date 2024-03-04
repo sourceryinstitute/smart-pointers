@@ -239,6 +239,8 @@ contains
           args = "--compiler ftn"
         else if (index(compiler_identity, "XLF")==1) then
           args = "--compiler xlf2008_r"
+        else if (index(compiler_identity, "flang")==1) then
+          args = "--compiler flang-new"
         else
           error stop "----> Unrecognized compiler_version() in function fpm_compiler_arguments. <----"
         end if
