@@ -153,8 +153,28 @@ Project is up to date
 ```
 
 ### LLVM
-- Version tested: `git` commit `76911b5f75907eef53a30cc3` (9/20/2022)
-- Result: Fails with the error message `not yet implemented: derived type finalization`
+- Version tested: 19.0.0 git commit 325f51237252e6dab8e4e1ea1fa7acbb4faee1cd
+- Result: 0 test failures. :trophy:
+```
+The compiler
+   Pass: finalizes a non-allocatable object on the LHS of an intrinsic assignme
+ nt
+   Pass: finalizes an allocated allocatable LHS of an intrinsic assignment
+   Pass: finalizes a target when the associated pointer is deallocated
+   Pass: finalizes an object upon explicit deallocation
+   Pass: finalizes a non-pointer non-allocatable object at the END statement
+   Pass: finalizes a non-pointer non-allocatable object at END BLOCK statement
+   Pass: finalizes a function reference on the RHS of an intrinsic assignment
+   Pass: finalizes a specification expression function result
+   Pass: finalizes an intent(out) derived type dummy argument
+   Pass: finalizes an allocatable component object
+
+ A smart_pointer
+   Pass: creates a resource when constructed
+   Pass: removes the resource when the object goes out of scope
+   Pass: copy points to the same resource as the original
+   Pass: has zero references after a shallow copy goes out of scope
+```
 
 ### NAG 
 - Version: 7.1 (Build 7113)
