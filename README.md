@@ -64,17 +64,17 @@ compiler standard-conformance, including a test for each scenario in which the
 the Fortran 2018 standard requires that an object be finalized.  The table below
 summarizes the observed compiler behaviors:
 
-| _Compiler_   | _Test failures_    | _Version tested_                                    |
-| :---         |       :---:        | :---                                                |
-| AMD          | N.A. (see Note 1.) | `flang` 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
-| Cray         | >= 3 (see Note 2.) | `ftn` 13.0.1                                        |
-| GCC :trophy: | 0                  | `gfortran` 13.1.0                                   |
-| IBM          | 1                  | `xlf2008_r` 17.1.0 on AIX                           |
-| Intel        | 1                  | `ifort` 2021.7.0 Build 20220726_000000              |
-|              | 1                  | `ifx` 2024.0.0 Build 20231017                       |
-| LLVM         | N.A. (see Note 3.) | `git` commit `f5253058144aca1e9fcacd` (9/20/2022)   |
-| NAG :trophy: | 0                  | `nagfor` 7.1 Build 7113                             |
-| NVIDIA       | 2                  | `nvfortran` 22.7-0                                  |
+| _Compiler_              | _Test failures_    | _Version tested_                                  |
+| :---                    |       :---:        | :---                                              |
+| AMD `flang`             | N.A. (see Note 1.) | 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12)       |
+| Cray `ftn`              | >= 3 (see Note 2.) | 13.0.1                                            |
+| GCC `gfortran` :trophy: | 0                  | 13.1.0                                            |
+| IBM  `xlf2008_r`        | 1                  | 17.1.0 on AIX                                     |
+| Intel `ifort`           | 1                  | 2021.7.0 Build 20220726_000000                    |
+|       `ifx`             | 1                  | 2024.0.0 Build 20231017                           |
+| LLVM `flang` :trophy:   | 0                  | `git` commit `f5253058144aca1e9fcacd` (9/20/2022) |
+| NAG `nagfor` :trophy:   | 0                  | 7.1 Build 7113                                    |
+| NVIDIA `nvfortran`      | 2                  |  22.7-0                                           |
 
 **Notes**
 1. Fails to build due to an internal compiler error (ICE).
@@ -117,6 +117,11 @@ fpm test --archiver ar --compiler xlf2008_r --flag -DXLF
 ### GCC
 ```
 fpm test
+```
+
+### LLVM
+```
+fpm test --compiler flang-new
 ```
 
 ### NVIDIA
