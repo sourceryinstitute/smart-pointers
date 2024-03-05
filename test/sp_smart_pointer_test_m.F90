@@ -91,7 +91,7 @@ contains
   function check_copy() result(test_passes)
     logical test_passes
     type(object_t) :: reference
-#ifdef XLF
+#if defined(XLF) || defined(_CRAYFTN)
     type(object_t) :: original
 
     original = object_t()
@@ -107,7 +107,7 @@ contains
         reference_to_declared = declared
         test_passes = associated(original%ref, reference%ref) .and. associated(declared%ref, reference_to_declared%ref)
       end block
-#ifndef XLF
+#if !defined(XLF) && !defined(_CRAYFTN)
     end associate
 #endif
 

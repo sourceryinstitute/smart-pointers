@@ -30,31 +30,27 @@ Detailed Results
 - Result: Fails to build due to an internal compiler error (ICE)
 
 ### Cray
-- Version: 13.0.1
-- Result: at least 3 test failures.
-The Smart-Pointers library does not currenlty build with the Cray Fortran compiler, but
-the compiler standard-conformance tests embodied in [compiler_test_m.f90] also exist in
-a standalone format in a type-finalization [branch] of the Berkely Lab fork of the
-llvm-test-suite repository.  The reslts of running those compiler test show three compiler
-test failures as follows:
+- Version: 17.0.0
+- Result: 4 test failures.
 ```
-git clone https://github.com/berkeleylab/llvm-test-suite
-cd llvm-test-suite/Fortran/UnitTests/finalization
-ftn compile_me_only.f90
-> ./a.out
- Cray Fortran : Version 13.0.1 fails to compile specification_expression_finalization.f90
- Pass: finalizes a non-allocatable object on the LHS of an intrinsic assignment
- Fail: finalizes an allocated allocatable LHS of an intrinsic assignment
- Pass: finalizes a target when the associated pointer is deallocated
- Pass: finalizes an object upon explicit deallocation
- Pass: finalizes a non-pointer non-allocatable object at the END statement
- Pass: finalizes a non-pointer non-allocatable object at the end of a block construct
- Pass: finalizes a function reference on the RHS of an intrinsic assignment
- Fail: finalizes a specification expression function result
- Fail: finalizes an intent(out) derived type dummy argument
- Pass: finalizes an allocatable component object
+ The compiler
+   Pass: finalizes a non-allocatable object on the LHS of an intrinsic assignment
+   Fail: finalizes an allocated allocatable LHS of an intrinsic assignment
+   Pass: finalizes a target when the associated pointer is deallocated
+   Pass: finalizes an object upon explicit deallocation
+   Pass: finalizes a non-pointer non-allocatable object at the END statement
+   Pass: finalizes a non-pointer non-allocatable object at END BLOCK statement
+   Pass: finalizes a function reference on the RHS of an intrinsic assignment
+   Pass: finalizes a specification expression function result
+   Fail: finalizes an intent(out) derived type dummy argument
+   Pass: finalizes an allocatable component object
+ 
+ A smart_pointer
+   Pass: creates a resource when constructed
+   Fail: removes the resource when the object goes out of scope
+   Pass: copy points to the same resource as the original
+   Fail: has zero references after a shallow copy goes out of scope
 ```
-The number of unit test failures for the remainder of the Smart-Pointers test suite is unknown.
 
 ### GCC
 - Version: 13.1.0
