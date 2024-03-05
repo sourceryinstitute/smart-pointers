@@ -108,44 +108,14 @@ To turn off assertions, building with the flag -DUSE_ASSERTIONS=.false.</p></td>
 <g id="module~~graph~~ModuleGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 133)">
 <title>module~~graph~~ModuleGraph</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-133 599,-133 599,4 -4,4"/>
-<!-- module~sp_smart_pointer_s -->
+<!-- module~sp_reference_counter_m -->
 <g id="module~~graph~~ModuleGraph_node1" class="node">
-<title>module~sp_smart_pointer_s</title>
-<g id="a_module~~graph~~ModuleGraph_node1"><a xlink:href=".././module/sp_smart_pointer_s.html" xlink:title="sp_smart_pointer_s">
-<polygon fill="#5bc0de" stroke="#5bc0de" points="595,-129 480,-129 480,-105 595,-105 595,-129"/>
-<text text-anchor="middle" x="537.5" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_s</text>
+<title>module~sp_reference_counter_m</title>
+<g id="a_module~~graph~~ModuleGraph_node1"><a xlink:href=".././module/sp_reference_counter_m.html" xlink:title="sp_reference_counter_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="270,-68 127,-68 127,-44 270,-44 270,-68"/>
+<text text-anchor="middle" x="198.5" y="-53.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_reference_counter_m</text>
 </a>
 </g>
-</g>
-<!-- module~sp_smart_pointer_m -->
-<g id="module~~graph~~ModuleGraph_node4" class="node">
-<title>module~sp_smart_pointer_m</title>
-<g id="a_module~~graph~~ModuleGraph_node4"><a xlink:href=".././module/sp_smart_pointer_m.html" xlink:title="sp_smart_pointer_m">
-<polygon fill="#337ab7" stroke="#337ab7" points="435,-108 315,-108 315,-84 435,-84 435,-108"/>
-<text text-anchor="middle" x="375" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_m</text>
-</a>
-</g>
-</g>
-<!-- module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m -->
-<g id="module~~graph~~ModuleGraph_edge1" class="edge">
-<title>module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m</title>
-<path fill="none" stroke="#ff0000" d="M479.91,-109.6C468.68,-108.13 456.76,-106.57 445.15,-105.05"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="445.43,-101.55 435.06,-103.73 444.52,-108.5 445.43,-101.55"/>
-</g>
-<!-- module~smart_pointer_m -->
-<g id="module~~graph~~ModuleGraph_node2" class="node">
-<title>module~smart_pointer_m</title>
-<g id="a_module~~graph~~ModuleGraph_node2"><a xlink:href=".././module/smart_pointer_m.html" xlink:title="smart_pointer_m">
-<polygon fill="#337ab7" stroke="#337ab7" points="589,-87 486,-87 486,-63 589,-63 589,-87"/>
-<text text-anchor="middle" x="537.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">smart_pointer_m</text>
-</a>
-</g>
-</g>
-<!-- module~smart_pointer_m&#45;&gt;module~sp_smart_pointer_m -->
-<g id="module~~graph~~ModuleGraph_edge2" class="edge">
-<title>module~smart_pointer_m&#45;&gt;module~sp_smart_pointer_m</title>
-<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M485.72,-81.64C472.91,-83.32 458.94,-85.15 445.39,-86.92"/>
-<polygon fill="#ffbf00" stroke="#ffbf00" points="444.6,-83.49 435.14,-88.26 445.51,-90.44 444.6,-83.49"/>
 </g>
 <!-- module~sp_resource_m -->
 <g id="module~~graph~~ModuleGraph_node3" class="node">
@@ -156,77 +126,107 @@ To turn off assertions, building with the flag -DUSE_ASSERTIONS=.false.</p></td>
 </a>
 </g>
 </g>
-<!-- module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m -->
-<g id="module~~graph~~ModuleGraph_edge3" class="edge">
-<title>module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m</title>
-<path fill="none" stroke="#00ff3f" stroke-dasharray="5,2" d="M314.69,-92.38C254.01,-88.67 160.47,-82.96 101.43,-79.35"/>
-<polygon fill="#00ff3f" stroke="#00ff3f" points="101.37,-75.84 91.18,-78.73 100.95,-82.83 101.37,-75.84"/>
+<!-- module~sp_reference_counter_m&#45;&gt;module~sp_resource_m -->
+<g id="module~~graph~~ModuleGraph_edge1" class="edge">
+<title>module~sp_reference_counter_m&#45;&gt;module~sp_resource_m</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M126.86,-65.36C118.24,-66.5 109.53,-67.65 101.19,-68.76"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="100.69,-65.29 91.24,-70.07 101.61,-72.23 100.69,-65.29"/>
 </g>
-<!-- module~sp_reference_counter_m -->
-<g id="module~~graph~~ModuleGraph_node8" class="node">
-<title>module~sp_reference_counter_m</title>
-<g id="a_module~~graph~~ModuleGraph_node8"><a xlink:href=".././module/sp_reference_counter_m.html" xlink:title="sp_reference_counter_m">
-<polygon fill="#337ab7" stroke="#337ab7" points="270,-68 127,-68 127,-44 270,-44 270,-68"/>
-<text text-anchor="middle" x="198.5" y="-53.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_reference_counter_m</text>
+<!-- module~sp_smart_pointer_m -->
+<g id="module~~graph~~ModuleGraph_node2" class="node">
+<title>module~sp_smart_pointer_m</title>
+<g id="a_module~~graph~~ModuleGraph_node2"><a xlink:href=".././module/sp_smart_pointer_m.html" xlink:title="sp_smart_pointer_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="435,-108 315,-108 315,-84 435,-84 435,-108"/>
+<text text-anchor="middle" x="375" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_m</text>
 </a>
 </g>
 </g>
 <!-- module~sp_smart_pointer_m&#45;&gt;module~sp_reference_counter_m -->
-<g id="module~~graph~~ModuleGraph_edge4" class="edge">
+<g id="module~~graph~~ModuleGraph_edge2" class="edge">
 <title>module~sp_smart_pointer_m&#45;&gt;module~sp_reference_counter_m</title>
-<path fill="none" stroke="#00ff3f" stroke-dasharray="5,2" d="M321.64,-84C302.92,-79.71 281.63,-74.83 262.13,-70.36"/>
-<polygon fill="#00ff3f" stroke="#00ff3f" points="262.65,-66.88 252.12,-68.06 261.09,-73.71 262.65,-66.88"/>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M321.64,-84C302.92,-79.71 281.63,-74.83 262.13,-70.36"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="262.65,-66.88 252.12,-68.06 261.09,-73.71 262.65,-66.88"/>
 </g>
-<!-- module~assert_m -->
-<g id="module~~graph~~ModuleGraph_node5" class="node">
-<title>module~assert_m</title>
-<g id="a_module~~graph~~ModuleGraph_node5"><a xlink:href=".././module/assert_m.html" xlink:title="assert_m">
-<polygon fill="#337ab7" stroke="#337ab7" points="229,-25 168,-25 168,-1 229,-1 229,-25"/>
-<text text-anchor="middle" x="198.5" y="-10.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assert_m</text>
-</a>
-</g>
+<!-- module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m -->
+<g id="module~~graph~~ModuleGraph_edge3" class="edge">
+<title>module~sp_smart_pointer_m&#45;&gt;module~sp_resource_m</title>
+<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M314.69,-92.38C254.01,-88.67 160.47,-82.96 101.43,-79.35"/>
+<polygon fill="#ffbf00" stroke="#ffbf00" points="101.37,-75.84 91.18,-78.73 100.95,-82.83 101.37,-75.84"/>
 </g>
 <!-- module~assert_s -->
-<g id="module~~graph~~ModuleGraph_node6" class="node">
+<g id="module~~graph~~ModuleGraph_node4" class="node">
 <title>module~assert_s</title>
-<g id="a_module~~graph~~ModuleGraph_node6"><a xlink:href=".././module/assert_s.html" xlink:title="assert_s">
+<g id="a_module~~graph~~ModuleGraph_node4"><a xlink:href=".././module/assert_s.html" xlink:title="assert_s">
 <polygon fill="#5bc0de" stroke="#5bc0de" points="402.5,-24 347.5,-24 347.5,0 402.5,0 402.5,-24"/>
 <text text-anchor="middle" x="375" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assert_s</text>
 </a>
 </g>
 </g>
+<!-- module~assert_m -->
+<g id="module~~graph~~ModuleGraph_node8" class="node">
+<title>module~assert_m</title>
+<g id="a_module~~graph~~ModuleGraph_node8"><a xlink:href=".././module/assert_m.html" xlink:title="assert_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="229,-25 168,-25 168,-1 229,-1 229,-25"/>
+<text text-anchor="middle" x="198.5" y="-10.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assert_m</text>
+</a>
+</g>
+</g>
 <!-- module~assert_s&#45;&gt;module~assert_m -->
-<g id="module~~graph~~ModuleGraph_edge5" class="edge">
+<g id="module~~graph~~ModuleGraph_edge4" class="edge">
 <title>module~assert_s&#45;&gt;module~assert_m</title>
-<path fill="none" stroke="#003fff" d="M347.5,-12.15C318.76,-12.32 272.58,-12.58 239.44,-12.77"/>
-<polygon fill="#003fff" stroke="#003fff" points="239.16,-9.27 229.18,-12.83 239.2,-16.27 239.16,-9.27"/>
+<path fill="none" stroke="#00ff3f" d="M347.5,-12.15C318.76,-12.32 272.58,-12.58 239.44,-12.77"/>
+<polygon fill="#00ff3f" stroke="#00ff3f" points="239.16,-9.27 229.18,-12.83 239.2,-16.27 239.16,-9.27"/>
+</g>
+<!-- module~smart_pointer_m -->
+<g id="module~~graph~~ModuleGraph_node5" class="node">
+<title>module~smart_pointer_m</title>
+<g id="a_module~~graph~~ModuleGraph_node5"><a xlink:href=".././module/smart_pointer_m.html" xlink:title="smart_pointer_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="589,-129 486,-129 486,-105 589,-105 589,-129"/>
+<text text-anchor="middle" x="537.5" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">smart_pointer_m</text>
+</a>
+</g>
+</g>
+<!-- module~smart_pointer_m&#45;&gt;module~sp_smart_pointer_m -->
+<g id="module~~graph~~ModuleGraph_edge5" class="edge">
+<title>module~smart_pointer_m&#45;&gt;module~sp_smart_pointer_m</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M485.72,-110.36C472.91,-108.68 458.94,-106.85 445.39,-105.08"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="445.51,-101.56 435.14,-103.74 444.6,-108.51 445.51,-101.56"/>
 </g>
 <!-- module~sp_reference_counter_s -->
-<g id="module~~graph~~ModuleGraph_node7" class="node">
+<g id="module~~graph~~ModuleGraph_node6" class="node">
 <title>module~sp_reference_counter_s</title>
-<g id="a_module~~graph~~ModuleGraph_node7"><a xlink:href=".././module/sp_reference_counter_s.html" xlink:title="sp_reference_counter_s">
+<g id="a_module~~graph~~ModuleGraph_node6"><a xlink:href=".././module/sp_reference_counter_s.html" xlink:title="sp_reference_counter_s">
 <polygon fill="#5bc0de" stroke="#5bc0de" points="444,-66 306,-66 306,-42 444,-42 444,-66"/>
 <text text-anchor="middle" x="375" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_reference_counter_s</text>
 </a>
 </g>
 </g>
-<!-- module~sp_reference_counter_s&#45;&gt;module~assert_m -->
-<g id="module~~graph~~ModuleGraph_edge6" class="edge">
-<title>module~sp_reference_counter_s&#45;&gt;module~assert_m</title>
-<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M322.59,-41.92C295.82,-35.63 263.59,-28.06 238.83,-22.24"/>
-<polygon fill="#7f00ff" stroke="#7f00ff" points="239.59,-18.83 229.06,-19.94 237.99,-25.64 239.59,-18.83"/>
-</g>
 <!-- module~sp_reference_counter_s&#45;&gt;module~sp_reference_counter_m -->
 <g id="module~~graph~~ModuleGraph_edge7" class="edge">
 <title>module~sp_reference_counter_s&#45;&gt;module~sp_reference_counter_m</title>
-<path fill="none" stroke="#7f00ff" d="M305.78,-54.78C297.49,-54.88 288.96,-54.97 280.51,-55.07"/>
-<polygon fill="#7f00ff" stroke="#7f00ff" points="280.22,-51.57 270.26,-55.19 280.3,-58.57 280.22,-51.57"/>
+<path fill="none" stroke="#003fff" d="M305.78,-54.78C297.49,-54.88 288.96,-54.97 280.51,-55.07"/>
+<polygon fill="#003fff" stroke="#003fff" points="280.22,-51.57 270.26,-55.19 280.3,-58.57 280.22,-51.57"/>
 </g>
-<!-- module~sp_reference_counter_m&#45;&gt;module~sp_resource_m -->
+<!-- module~sp_reference_counter_s&#45;&gt;module~assert_m -->
+<g id="module~~graph~~ModuleGraph_edge6" class="edge">
+<title>module~sp_reference_counter_s&#45;&gt;module~assert_m</title>
+<path fill="none" stroke="#003fff" stroke-dasharray="5,2" d="M322.59,-41.92C295.82,-35.63 263.59,-28.06 238.83,-22.24"/>
+<polygon fill="#003fff" stroke="#003fff" points="239.59,-18.83 229.06,-19.94 237.99,-25.64 239.59,-18.83"/>
+</g>
+<!-- module~sp_smart_pointer_s -->
+<g id="module~~graph~~ModuleGraph_node7" class="node">
+<title>module~sp_smart_pointer_s</title>
+<g id="a_module~~graph~~ModuleGraph_node7"><a xlink:href=".././module/sp_smart_pointer_s.html" xlink:title="sp_smart_pointer_s">
+<polygon fill="#5bc0de" stroke="#5bc0de" points="595,-87 480,-87 480,-63 595,-63 595,-87"/>
+<text text-anchor="middle" x="537.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sp_smart_pointer_s</text>
+</a>
+</g>
+</g>
+<!-- module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m -->
 <g id="module~~graph~~ModuleGraph_edge8" class="edge">
-<title>module~sp_reference_counter_m&#45;&gt;module~sp_resource_m</title>
-<path fill="none" stroke="#ff00bf" stroke-dasharray="5,2" d="M126.86,-65.36C118.24,-66.5 109.53,-67.65 101.19,-68.76"/>
-<polygon fill="#ff00bf" stroke="#ff00bf" points="100.69,-65.29 91.24,-70.07 101.61,-72.23 100.69,-65.29"/>
+<title>module~sp_smart_pointer_s&#45;&gt;module~sp_smart_pointer_m</title>
+<path fill="none" stroke="#7f00ff" d="M479.91,-82.4C468.68,-83.87 456.76,-85.43 445.15,-86.95"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="444.52,-83.5 435.06,-88.27 445.43,-90.45 444.52,-83.5"/>
 </g>
 </g>
 </svg>
@@ -302,7 +302,7 @@ To turn off assertions, building with the flag -DUSE_ASSERTIONS=.false.</p></td>
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2024-03-05 02:08            </p>
+ on 2024-03-05 02:33            </p>
         </div>
       </div>
       <br>
