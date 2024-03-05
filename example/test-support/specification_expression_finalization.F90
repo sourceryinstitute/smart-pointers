@@ -67,9 +67,11 @@ program specification_expression_finalization
 contains
 
   subroutine finalize_specification_expression_result
+#ifndef _CRAYFTN
     real tmp(component(finalizable_t(component=0))) !! Finalizes the finalizable_t function result
     real eliminate_unused_variable_warning 
     tmp = eliminate_unused_variable_warning 
+#endif
   end subroutine
 
 end program
