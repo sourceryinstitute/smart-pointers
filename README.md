@@ -91,42 +91,66 @@ cd smart-pointer
 ```
 followed by one of the commands below corresponding to your compiler choice.
 
-### Numerical Algorithms Group
+### Fully supported compilers
+The following compilers pass all Smart-Pointers tests.
+
+#### GCC `gfortran`
+```
+fpm test
+```
+
+#### LLVM `flang`
+```
+fpm test --compiler flang-new
+```
+
+#### NAG `nagfor`
 ```
 fpm test --compiler nagfor --flag -fpp
 ```
 
-### Intel
+### Partially supported compilers
+The following compilers pass most Smart-Pointers tests.
+
+#### HPE: Cray Compiler Environment (CCE)
+Building with `fpm` using the CCE `ftn` compiler wrapper requires an additional
+wrapper to identify the wrapped compiler.  Place a file named `crayftn.sh` at the
+front of your `PATH` environment variable containing the following contents:
+```
+#!/bin/bash
+
+ftn "$@"
+```
+Then test with the following command
+```
+fpm test --compiler crayftn.sh
+```
+
+#### IBM
+```
+fpm test --archiver ar --compiler xlf2008_r --flag -DXLF
+```
+
+#### Intel `ifort`
 ```
 fpm test --compiler ifort
 ```
-or
+
+#### Intel `ifx`
 ```
 fpm test --compiler ifx
 ```
 where the latter requires `fpm` 0.10.0 or later.
 
-### IBM
-```
-fpm test --archiver ar --compiler xlf2008_r --flag -DXLF
-```
-
-### GCC
-```
-fpm test
-```
-
-### LLVM
-```
-fpm test --compiler flang-new
-```
-
-### NVIDIA
+#### NVIDIA `nvfortran`
 ```
 fpm test --compiler nvfortran --flag -Mpreprocess
 ```
 
-### AMD
+### Unsupported compiler
+The following compiler cannot build the Smart-Pointers library.
+
+#### AMD `flang`
 ```
 fpm test --compiler flang --flag -cpp
 ```
