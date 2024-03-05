@@ -58,25 +58,37 @@ This repository also adds
 
 Supported Compilers
 -------------------
-Correct execution of the Smart Pointers library depends critically on comprehensive
+Correct execution of the Smart-Pointers library depends critically on comprehensive
 compiler support for type finalization.  The unit test suite verifies the relevant
 compiler standard-conformance, including a test for each scenario in which the
-the Fortran 2023 standard requires that an object be finalized.  The table below
-summarizes the observed compiler behaviors:
+the Fortran 2023 standard requires that an object be finalized.  The following compilers
+pass all Smart-Pointers tests:
 
-| _Compiler_              | _Test failures_ | _Version tested_                            |
-| :---                    |       :---:     | :---                                        |
-| AMD `flang`             | N.A. (see Note) | 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
-| Cray `ftn`              | 4               | 17.0.0                                      |
-| GCC `gfortran` :trophy: | 0               | 13.1.0                                      |
-| IBM `xlf2008_r`         | 1               | 17.1.0 on AIX                               |
-| Intel `ifort`           | 1               | 2021.7.0 Build 20220726_000000              |
-| Intel `ifx`             | 1               | 2024.0.0 Build 20231017                     |
-| LLVM `flang` :trophy:   | 0               | 19.0.0 `git` commit 325f5123                |
-| NAG `nagfor` :trophy:   | 0               | 7.1 Build 7113                              |
-| NVIDIA `nvfortran`      | 2               | 22.7-0                                      |
+| _Compiler_              | _Test failures_ | _Version tested_             |
+| :---                    | :---            | :---                         |
+| GCC `gfortran` :trophy: | 0               | 13.1.0                       |
+| LLVM `flang` :trophy:   | 0               | 19.0.0 `git` commit 325f5123 |
+| NAG `nagfor` :trophy:   | 0               | 7.1 Build 7113               |
 
-Note: AMD `flang` fails to build Smart-Pointers due to an internal compiler error (ICE).
+Partially Supported Compilers
+-----------------------------
+The following compilers pass _most_ smart pointers tests:
+
+| _Compiler_              | _Test failures_ | _Version tested_               |
+| :---                    | :---:            | :---                          |
+| Cray `ftn`              | 4               | 17.0.0                         |
+| IBM `xlf2008_r`         | 1               | 17.1.0 on AIX                  |
+| Intel `ifort`           | 1               | 2021.7.0 Build 20220726_000000 |
+| Intel `ifx`             | 1               | 2024.0.0 Build 20231017        |
+| NVIDIA `nvfortran`      | 2               | 22.7-0                         |
+
+Unsupported Compiler
+--------------------
+The following compiler fails to build Smart-Pointers due to an internal compiler error (ICE):
+
+| _Compiler_  | _Test failures_ | _Version tested_                            |
+| :---        |       :---:     | :---                                        |
+| AMD `flang` | N.A. (see Note) | 13.0.0 (AOCC_3.2.0-Build\#128 2021\_11\_12) |
 
 See the [test suite README.md](./test/README.md) for more details on each compiler's test
 results.
@@ -157,7 +169,7 @@ fpm test --compiler flang --flag -cpp
 
 Documentation
 -------------
-See Smart Pointer's GitHub Pages [site] for HTML documentation generated with [`ford`].
+See the Smart-Pointers GitHub Pages [site] for HTML documentation generated with [`ford`].
 See the [doc/] subdirectory for a [PlantUML] script that generates the Unified Modeling Language (UML) 
 class diagram below of the three derived types in Smart-Pointers.
 
