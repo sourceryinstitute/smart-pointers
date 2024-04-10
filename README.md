@@ -150,9 +150,9 @@ fpm test --compiler ifort
 
 #### Intel `ifx`
 ```
-fpm test --compiler ifx
+fpm test --compiler ifx --flag "-check all,nouninit"
 ```
-where the latter requires `fpm` 0.10.0 or later.
+where `fpm` 0.10.0 or later is required and the `--flag` argument is required to circumvent what appears to be a bug in `ifx`'s Memory Sanitizer.
 
 #### NVIDIA `nvfortran`
 ```
