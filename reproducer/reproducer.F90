@@ -1,52 +1,29 @@
 module assert_m
-  !! Enforce logical assertions that can be toggled on/off at compile-time
-  !! To turn off assertions, building with the flag -DUSE_ASSERTIONS=.false.
   implicit none
-
-  private
-  public :: assert
-
-
-
-
   logical, parameter :: enforce_assertions = .true.
 
   interface 
-
      pure module subroutine assert(assertion, description)
-       !! Error terminate on .false. assertion with the stop code given by description
-       !! With IBM XL Fortran, the stop code is an integer due to character stop codes being unsupported.
        implicit none
        logical, intent(in) :: assertion
        character(len=*), intent(in) :: description
      end subroutine
-
   end interface
 
 end module assert_m
+
 submodule(assert_m) assert_s
   implicit none
-
 contains
-
   module procedure assert
-
     if (enforce_assertions) then
-
-
-
       if (.not. assertion) error stop description
-
     end if
-
   end procedure
-
 end submodule assert_s
+
 module sp_resource_m
   implicit none
-
-  private
-  public :: sp_resource_t
 
   type, abstract :: sp_resource_t
   contains
@@ -54,24 +31,18 @@ module sp_resource_m
   end type
 
   abstract interface
-
     impure elemental subroutine free_interface(self)
       import sp_resource_t
       class(sp_resource_t), intent(inout) :: self
     end subroutine
-
   end interface
-
 end module
+
 module sp_reference_counter_m
   use sp_resource_m, only : sp_resource_t
   implicit none
 
-  private
-  public :: sp_reference_counter_t
-
   type sp_reference_counter_t
-    private
     integer, pointer :: count_ => null()
     class(sp_resource_t), pointer :: object_ => null()
   contains
@@ -182,9 +153,6 @@ module sp_smart_pointer_m
   use sp_reference_counter_m, only: sp_reference_counter_t
   implicit none
 
-  private
-  public :: sp_smart_pointer_t
-
   type, abstract, extends(sp_resource_t) :: sp_smart_pointer_t
     private
     type(sp_reference_counter_t) :: counter
@@ -195,7 +163,6 @@ module sp_smart_pointer_m
   end type
 
   interface
-
     pure module function reference_count(self) result(counter)
       implicit none
       class(sp_smart_pointer_t), intent(in) :: self
@@ -211,16 +178,13 @@ module sp_smart_pointer_m
       implicit none
       class(sp_smart_pointer_t), intent(inout) :: self
     end subroutine
-
   end interface
 
 end module sp_smart_pointer_m
+
 module shallow_m
     use sp_smart_pointer_m, only: sp_smart_pointer_t
-
     implicit none
-    private
-    public :: shallow_t, resource_freed
 
     type, extends(sp_smart_pointer_t) :: shallow_t
         integer, pointer :: ref => null()
@@ -234,11 +198,9 @@ module shallow_m
 
     integer, allocatable, target, save :: resource
     logical, save :: resource_freed = .false.
-
 contains
     function construct() result(shallow)
         type(shallow_t) :: shallow
-
         resource = 42
         shallow%ref => resource
         call shallow%start_counter
@@ -246,21 +208,15 @@ contains
 
     impure elemental subroutine free(self)
         class(shallow_t), intent(inout) :: self
-
         deallocate(resource)
         nullify(self%ref)
         resource_freed = .true.
     end subroutine
-
 end module
+
 submodule(sp_smart_pointer_m) sp_smart_pointer_s
-
-
-
   implicit none
-
 contains
-
   module procedure reference_count
     counter = self%counter%reference_count()
   end procedure
@@ -273,7 +229,6 @@ contains
   module procedure start_counter
     self%counter = sp_reference_counter_t(self)
   end procedure
-
 end submodule
 
 module sp_smart_pointer_test_m
@@ -317,15 +272,11 @@ contains
   function check_creation() result(test_passes)
     logical test_passes
     type(object_t) :: object
-
     object = object_t()
-
     if (allocated(the_resource)) then
         test_passes = the_answer == the_resource
     else
         test_passes = .false.
     end if
   end function
-
-
 end
