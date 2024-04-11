@@ -150,11 +150,6 @@ module sp_smart_pointer_m
       class(sp_smart_pointer_t), intent(inout) :: self
     end subroutine
   end interface
-
-end module sp_smart_pointer_m
-
-submodule(sp_smart_pointer_m) sp_smart_pointer_s
-  implicit none
 contains
   module procedure reference_count
     counter = self%counter%reference_count()
@@ -168,7 +163,7 @@ contains
   module procedure start_counter
     self%counter = sp_reference_counter_t(self)
   end procedure
-end submodule
+end module
 
 module sp_smart_pointer_test_m
   use sp_smart_pointer_m, only: sp_smart_pointer_t
