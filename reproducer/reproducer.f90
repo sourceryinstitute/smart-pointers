@@ -11,11 +11,9 @@ module sp_resource_m
     end subroutine
   end interface
 end module
-
 module sp_reference_counter_m
   use sp_resource_m, only : sp_resource_t
   implicit none
-
   type sp_reference_counter_t
     integer, pointer :: count_ => null()
     class(sp_resource_t), pointer :: object_ => null()
@@ -26,13 +24,11 @@ module sp_reference_counter_m
     generic :: assignment(=) => assign_sp_reference_counter
     final :: finalize
   end type
-
 contains
   subroutine finalize(self)
     type(sp_reference_counter_t), intent(inout) :: self
     if (associated(self%count_)) call self%release
   end subroutine
-
   function construct_sp_reference_counter_t(object) result(sp_reference_counter)
     class(sp_resource_t), intent(in) :: object
     type(sp_reference_counter_t) sp_reference_counter
@@ -41,7 +37,6 @@ contains
     allocate(sp_reference_counter%object_, source=object)
     call sp_reference_counter%grab
   end function
-
   subroutine grab(self)
     class(sp_reference_counter_t), intent(inout) :: self
     if (.not. associated(self%count_)) error stop "sp_reference_counter_t%grab: associated(self%count_)"
@@ -49,7 +44,6 @@ contains
     self%count_ = self%count_ + 1
     print *,"sp_reference_counter_s(grab): self%count_ = ", self%count_
   end subroutine
-
   subroutine release(self)
     class (sp_reference_counter_t), intent(inout) :: self
     if (.not. associated(self%count_)) error stop "sp_reference_counter_t%grab: associated(self%count_)"
@@ -63,7 +57,6 @@ contains
       self%object_ => null()
     end if
   end subroutine
-
   subroutine assign_sp_reference_counter(lhs, rhs)
     class(sp_reference_counter_t), intent(inout) :: lhs
     class(sp_reference_counter_t), intent(in) :: rhs
@@ -73,34 +66,28 @@ contains
     lhs%object_ => rhs%object_
     call lhs%grab
   end subroutine
-
 end module
-
 module sp_smart_pointer_m
   use sp_resource_m, only: sp_resource_t
   use sp_reference_counter_m, only: sp_reference_counter_t, construct_sp_reference_counter_t
   implicit none
-
   type, abstract, extends(sp_resource_t) :: sp_smart_pointer_t
     type(sp_reference_counter_t) :: counter
   contains
     procedure, non_overridable :: release_handle
     procedure, non_overridable :: start_counter
   end type
-
 contains
   subroutine release_handle(self)
     class(sp_smart_pointer_t), intent(inout) :: self
     print *,"sp_smart_pointer_s(release_handle): call self%counter%release"
     call self%counter%release
   end subroutine
-
   subroutine start_counter(self)
     class(sp_smart_pointer_t), intent(inout) :: self
     self%counter = construct_sp_reference_counter_t(self)
   end subroutine
 end module
-
 module sp_smart_pointer_test_m
   use sp_smart_pointer_m, only: sp_smart_pointer_t
   implicit none
@@ -125,7 +112,6 @@ contains
     nullify(self%ref)
   end subroutine
 end module
-
   use sp_smart_pointer_test_m
   implicit none
   call check_creation
