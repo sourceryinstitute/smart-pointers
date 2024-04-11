@@ -1,118 +1,3 @@
-module test_result_m
-  !! Define a basic abstraction for describe test intentions and results
-  implicit none
-
-  private
-  public :: test_result_t
-
-  type test_result_t
-    private
-    character(len=:), allocatable :: description_
-    logical outcome_
-  contains
-    procedure :: characterize
-  end type
-
-  interface test_result_t
-
-    pure module function construct(description, outcome) result(test_result)
-      implicit none
-      character(len=*), intent(in) :: description
-      logical, intent(in) :: outcome
-      type(test_result_t) test_result 
-    end function
-
-  end interface
-
-  interface
-
-    pure module function characterize(self) result(characterization)
-      implicit none
-      class(test_result_t), intent(in) :: self
-      character(len=:), allocatable :: characterization
-    end function
-
-  end interface
-
-end module test_result_m
-
-submodule(test_result_m) test_result_s
-  implicit none
-
-contains
-
-    module procedure construct
-      test_result%description_ = description
-      test_result%outcome_ = outcome
-      !print *,"test_result_s(construct): ending"
-    end procedure
-
-    module procedure characterize
-      characterization = merge("Pass: ", "Fail: ", self%outcome_) // self%description_
-    end procedure
-
-end submodule test_result_s
-module test_m
-  !! Define an abstract test type and test-result template method
-  use test_result_m, only : test_result_t
-  implicit none
-
-  private
-  public :: test_t
-
-  type, abstract :: test_t
-  contains
-    procedure(subject_interface), nopass, deferred :: subject
-    procedure(results_interface), nopass, deferred :: results
-    procedure :: report
-  end type
-
-  abstract interface
-
-    pure function subject_interface() result(specimen)
-      character(len=:), allocatable :: specimen
-    end function
-
-    function results_interface() result(test_results)
-      import test_result_t
-      type(test_result_t), allocatable :: test_results(:)
-    end function
-
-  end interface
-
-  interface
-
-    module subroutine report(test)
-      implicit none
-      class(test_t), intent(in) :: test
-    end subroutine
-
-  end interface
-
-end module test_m
-
-submodule(test_m) test_s
-
-
-
-  implicit none
-
-contains
-
-  module procedure report
-    integer i
-    type(test_result_t), allocatable :: test_results(:)
-
-    print *
-    print *, test%subject()
-
-    test_results = test%results()
-    do i=1,size(test_results)
-      print *,"  ",test_results(i)%characterize()
-    end do
-  end procedure
-
-end submodule test_s
 module assert_m
   !! Enforce logical assertions that can be toggled on/off at compile-time
   !! To turn off assertions, building with the flag -DUSE_ASSERTIONS=.false.
@@ -390,19 +275,10 @@ contains
   end procedure
 
 end submodule
-module sp_smart_pointer_test_m
-  use iso_fortran_env, only : compiler_version
-  use sp_smart_pointer_m, only: sp_smart_pointer_t
-  use shallow_m, only : shallow_t, resource_freed
-  use test_result_m, only : test_result_t
-  use test_m, only : test_t
-  implicit none
 
-  type, extends(test_t) :: sp_smart_pointer_test_t
-  contains
-    procedure, nopass :: subject
-    procedure, nopass :: results
-  end type
+module sp_smart_pointer_test_m
+  use sp_smart_pointer_m, only: sp_smart_pointer_t
+  implicit none
 
     type, extends(sp_smart_pointer_t) :: object_t
       integer, pointer :: ref => null()
@@ -418,16 +294,6 @@ module sp_smart_pointer_test_m
     integer, parameter :: the_answer = 42
 
 contains
-
-  pure function subject() result(specimen)
-    character(len=:), allocatable :: specimen
-    specimen = "A smart_pointer"
-  end function
-
-  function results() result(test_results)
-    type(test_result_t), allocatable :: test_results(:)
-    test_results = [test_result_t("creates a resource when constructed", check_creation())]
-  end function
 
   function construct() result(object)
     type(object_t) :: object
