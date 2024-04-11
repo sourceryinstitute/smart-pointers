@@ -10,12 +10,10 @@ end module
 
 module sp_resource_m
   implicit none
-
   type, abstract :: sp_resource_t
   contains
       procedure(free_interface), deferred :: free
   end type
-
   abstract interface
     impure elemental subroutine free_interface(self)
       import sp_resource_t
@@ -42,62 +40,43 @@ module sp_reference_counter_m
   end type
 
   interface sp_reference_counter_t
-    module function construct(object) result(sp_reference_counter)
-      implicit none
-      class(sp_resource_t), intent(in) :: object
-      type(sp_reference_counter_t) sp_reference_counter
-     end function
+    module procedure construct
   end interface
 
-  interface
-    pure module function reference_count(self) result(counter)
-      implicit none
-      class(sp_reference_counter_t), intent(in) :: self
-      integer counter
-    end function
-
-    module subroutine grab(self)
-      implicit none
-      class(sp_reference_counter_t), intent(inout) :: self
-    end subroutine
-
-    module subroutine release(self)
-      implicit none
-      class (sp_reference_counter_t), intent(inout) :: self
-    end subroutine
-
-    module subroutine assign_sp_reference_counter(lhs, rhs)
-      implicit none
-      class(sp_reference_counter_t), intent(inout) :: lhs
-      class(sp_reference_counter_t), intent(in) :: rhs
-    end subroutine
-  end interface
 contains
+
   subroutine finalize(self)
     type(sp_reference_counter_t), intent(inout) :: self
     if (associated(self%count_)) call self%release
   end subroutine
 
-  module procedure reference_count
+  pure function reference_count(self) result(counter)
+    class(sp_reference_counter_t), intent(in) :: self
+    integer counter
+
     call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
     counter = self%count_
-  end procedure
+  end function
 
-  module procedure construct
+  function construct(object) result(sp_reference_counter)
+    class(sp_resource_t), intent(in) :: object
+    type(sp_reference_counter_t) sp_reference_counter
     print *,"sp_reference_counter_s(construct): allocate(sp_reference_counter%count_, source=0)"
     allocate(sp_reference_counter%count_, source=0)
     allocate(sp_reference_counter%object_, source=object)
     call sp_reference_counter%grab
-  end procedure
+  end function
 
-  module procedure grab
+  subroutine grab(self)
+    class(sp_reference_counter_t), intent(inout) :: self
     call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
     print *,"sp_reference_counter_s(grab): self%count_ = self%count_ + 1"
     self%count_ = self%count_ + 1
     print *,"sp_reference_counter_s(grab): self%count_ = ", self%count_
-  end procedure
+  end subroutine
 
-  module procedure release
+  subroutine release(self)
+    class (sp_reference_counter_t), intent(inout) :: self
     call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
     print *,"sp_reference_counter_s(release): self%count_ = self%count_ - 1"
     self%count_ = self%count_ - 1
@@ -108,15 +87,18 @@ contains
       self%count_ => null()
       self%object_ => null()
     end if
-  end procedure
+  end subroutine
 
-  module procedure assign_sp_reference_counter
+  subroutine assign_sp_reference_counter(lhs, rhs)
+    class(sp_reference_counter_t), intent(inout) :: lhs
+    class(sp_reference_counter_t), intent(in) :: rhs
     call assert(associated(rhs%count_),"sp_reference_counter_s(assign_sp_reference_counter): associated(self%count_)")
     print *,"sp_reference_counter_s(assign_sp_reference_counter): lhs%count_ => rhs%count_"
     lhs%count_ => rhs%count_
     lhs%object_ => rhs%object_
     call lhs%grab
-  end procedure
+  end subroutine
+
 end module
 
 module sp_smart_pointer_m
