@@ -280,24 +280,21 @@ module sp_smart_pointer_test_m
   use sp_smart_pointer_m, only: sp_smart_pointer_t
   implicit none
 
-    type, extends(sp_smart_pointer_t) :: object_t
-      integer, pointer :: ref => null()
-    contains
-      procedure :: free
-    end type
+  type, extends(sp_smart_pointer_t) :: object_t
+    integer, pointer :: ref => null()
+  contains
+    procedure :: free
+  end type
 
-    interface object_t
-      module procedure construct
-    end interface
+  interface object_t
+    module procedure construct
+  end interface
 
-    integer, allocatable, target :: the_resource
-    integer, parameter :: the_answer = 42
-
+  integer, allocatable, target :: the_resource
+  integer, parameter :: the_answer = 42
 contains
-
   function construct() result(object)
     type(object_t) :: object
-
     if (.not. allocated(the_resource)) allocate(the_resource, source=the_answer)
     object%ref => the_resource
     object%ref = the_answer
@@ -306,11 +303,17 @@ contains
 
   impure elemental subroutine free(self)
     class(object_t), intent(inout) :: self
-
     if (allocated(the_resource)) deallocate(the_resource)
     nullify(self%ref)
   end subroutine
+end module sp_smart_pointer_test_m
 
+  use sp_smart_pointer_test_m
+  implicit none
+  associate(check => check_creation())
+    print *,check
+  end associate
+contains
   function check_creation() result(test_passes)
     logical test_passes
     type(object_t) :: object
@@ -324,11 +327,5 @@ contains
     end if
   end function
 
-end module sp_smart_pointer_test_m
 
-  use sp_smart_pointer_test_m
-  implicit none
-  associate(check => check_creation())
-    print *,check
-  end associate
 end
