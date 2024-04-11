@@ -1,3 +1,7 @@
+# 1 "reproducer.F90"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "reproducer.F90"
 module test_result_m
   !! Define a basic abstraction for describe test intentions and results
   implicit none
@@ -92,9 +96,9 @@ module test_m
 end module test_m
 
 submodule(test_m) test_s
-#ifdef XLF
-  use test_result_m, only : test_result_t
-#endif
+
+
+
   implicit none
 
 contains
@@ -121,10 +125,10 @@ module assert_m
   private
   public :: assert
 
-#ifndef USE_ASSERTIONS
-# define USE_ASSERTIONS .true.
-#endif
-  logical, parameter :: enforce_assertions = USE_ASSERTIONS
+
+
+
+  logical, parameter :: enforce_assertions = .true.
 
   interface 
 
@@ -147,11 +151,11 @@ contains
   module procedure assert
 
     if (enforce_assertions) then
-#ifdef XLF
-      if (.not. assertion) error stop 999
-#else
+
+
+
       if (.not. assertion) error stop description
-#endif
+
     end if
 
   end procedure
@@ -369,9 +373,9 @@ contains
 
 end module
 submodule(sp_smart_pointer_m) sp_smart_pointer_s
-#ifdef XLF
-  use sp_reference_counter_m, only : sp_reference_counter_t 
-#endif
+
+
+
   implicit none
 
 contains
@@ -485,13 +489,13 @@ contains
   function check_copy() result(test_passes)
     logical test_passes
     type(object_t) :: reference
-#if defined(XLF) || defined(_CRAYFTN)
-    type(object_t) :: original
 
-    original = object_t()
-#else
+
+
+
+
     associate(original => object_t())
-#endif
+
       reference = original
 
       block 
@@ -501,9 +505,9 @@ contains
         reference_to_declared = declared
         test_passes = associated(original%ref, reference%ref) .and. associated(declared%ref, reference_to_declared%ref)
       end block
-#if !defined(XLF) && !defined(_CRAYFTN)
+
     end associate
-#endif
+
 
   end function
   
