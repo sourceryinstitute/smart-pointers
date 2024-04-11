@@ -104,36 +104,23 @@ module sp_smart_pointer_m
     procedure, non_overridable :: start_counter
   end type
 
-  interface
-    pure module function reference_count(self) result(counter)
-      implicit none
-      class(sp_smart_pointer_t), intent(in) :: self
-      integer counter
-    end function
-
-    module subroutine release_handle(self)
-      implicit none
-      class(sp_smart_pointer_t), intent(inout) :: self
-    end subroutine
-
-    module subroutine start_counter(self)
-      implicit none
-      class(sp_smart_pointer_t), intent(inout) :: self
-    end subroutine
-  end interface
 contains
-  module procedure reference_count
+  pure function reference_count(self) result(counter)
+    class(sp_smart_pointer_t), intent(in) :: self
+    integer counter
     counter = self%counter%reference_count()
-  end procedure
+  end function
 
-  module procedure release_handle
+  subroutine release_handle(self)
+    class(sp_smart_pointer_t), intent(inout) :: self
     print *,"sp_smart_pointer_s(release_handle): call self%counter%release"
     call self%counter%release
-  end procedure
+  end subroutine
 
-  module procedure start_counter
+  subroutine start_counter(self)
+    class(sp_smart_pointer_t), intent(inout) :: self
     self%counter = sp_reference_counter_t(self)
-  end procedure
+  end subroutine
 end module
 
 module sp_smart_pointer_test_m
