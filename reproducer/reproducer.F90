@@ -1,26 +1,12 @@
 module assert_m
   implicit none
-  logical, parameter :: enforce_assertions = .true.
-
-  interface 
-     pure module subroutine assert(assertion, description)
-       implicit none
-       logical, intent(in) :: assertion
-       character(len=*), intent(in) :: description
-     end subroutine
-  end interface
-
-end module assert_m
-
-submodule(assert_m) assert_s
-  implicit none
 contains
-  module procedure assert
-    if (enforce_assertions) then
-      if (.not. assertion) error stop description
-    end if
-  end procedure
-end submodule assert_s
+  pure subroutine assert(assertion, description)
+    logical, intent(in) :: assertion
+    character(len=*), intent(in) :: description
+    if (.not. assertion) error stop description
+  end subroutine
+end module
 
 module sp_resource_m
   implicit none
@@ -40,6 +26,7 @@ end module
 
 module sp_reference_counter_m
   use sp_resource_m, only : sp_resource_t
+  use assert_m, only : assert
   implicit none
 
   type sp_reference_counter_t
@@ -55,17 +42,14 @@ module sp_reference_counter_m
   end type
 
   interface sp_reference_counter_t
-
     module function construct(object) result(sp_reference_counter)
       implicit none
       class(sp_resource_t), intent(in) :: object
       type(sp_reference_counter_t) sp_reference_counter
      end function
-
   end interface
 
   interface
-
     pure module function reference_count(self) result(counter)
       implicit none
       class(sp_reference_counter_t), intent(in) :: self
@@ -87,22 +71,12 @@ module sp_reference_counter_m
       class(sp_reference_counter_t), intent(inout) :: lhs
       class(sp_reference_counter_t), intent(in) :: rhs
     end subroutine
-
   end interface
-
 contains
-
   subroutine finalize(self)
     type(sp_reference_counter_t), intent(inout) :: self
     if (associated(self%count_)) call self%release
   end subroutine
-
-end module sp_reference_counter_m
-submodule(sp_reference_counter_m) sp_reference_counter_s
-  use assert_m, only : assert
-  implicit none
-
-contains
 
   module procedure reference_count
     call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
@@ -124,12 +98,9 @@ contains
   end procedure
 
   module procedure release
-
     call assert(associated(self%count_),"sp_reference_counter_t%grab: associated(self%count_)")
-
     print *,"sp_reference_counter_s(release): self%count_ = self%count_ - 1"
     self%count_ = self%count_ - 1
-
     if (self%count_ == 0) then
       call self%object_%free
       deallocate (self%count_, self%object_)
@@ -146,8 +117,8 @@ contains
     lhs%object_ => rhs%object_
     call lhs%grab
   end procedure
+end module
 
-end submodule sp_reference_counter_s
 module sp_smart_pointer_m
   use sp_resource_m, only: sp_resource_t
   use sp_reference_counter_m, only: sp_reference_counter_t
@@ -181,38 +152,6 @@ module sp_smart_pointer_m
   end interface
 
 end module sp_smart_pointer_m
-
-module shallow_m
-    use sp_smart_pointer_m, only: sp_smart_pointer_t
-    implicit none
-
-    type, extends(sp_smart_pointer_t) :: shallow_t
-        integer, pointer :: ref => null()
-    contains
-        procedure :: free
-    end type
-
-    interface shallow_t
-        module procedure construct
-    end interface
-
-    integer, allocatable, target, save :: resource
-    logical, save :: resource_freed = .false.
-contains
-    function construct() result(shallow)
-        type(shallow_t) :: shallow
-        resource = 42
-        shallow%ref => resource
-        call shallow%start_counter
-    end function
-
-    impure elemental subroutine free(self)
-        class(shallow_t), intent(inout) :: self
-        deallocate(resource)
-        nullify(self%ref)
-        resource_freed = .true.
-    end subroutine
-end module
 
 submodule(sp_smart_pointer_m) sp_smart_pointer_s
   implicit none
