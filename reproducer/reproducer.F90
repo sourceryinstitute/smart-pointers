@@ -1,7 +1,3 @@
-# 1 "reproducer.F90"
-# 1 "<built-in>"
-# 1 "<command-line>"
-# 1 "reproducer.F90"
 module test_result_m
   !! Define a basic abstraction for describe test intentions and results
   implicit none
@@ -400,10 +396,7 @@ module sp_smart_pointer_test_m
   use shallow_m, only : shallow_t, resource_freed
   use test_result_m, only : test_result_t
   use test_m, only : test_t
-
   implicit none
-  private
-  public :: sp_smart_pointer_test_t
 
   type, extends(test_t) :: sp_smart_pointer_test_t
   contains
@@ -433,14 +426,7 @@ contains
 
   function results() result(test_results)
     type(test_result_t), allocatable :: test_results(:)
-
-    test_results = [ & 
-       test_result_t("creates a resource when constructed", check_creation()) &
-      !,test_result_t("removes the resource when the object goes out of scope", check_deletion()) &
-      !,test_result_t("copy points to the same resource as the original", check_copy()) &
-      !,test_result_t("has zero references after a shallow copy goes out of scope", check_shallow_copy()) &
-    ]   
-
+    test_results = [test_result_t("creates a resource when constructed", check_creation())]
   end function
 
   function construct() result(object)
@@ -463,7 +449,6 @@ contains
     logical test_passes
     type(object_t) :: object
 
-    print *,"object = object_t()"
     object = object_t()
 
     if (allocated(the_resource)) then
@@ -471,65 +456,13 @@ contains
     else
         test_passes = .false.
     end if
-    print *,"check_creation() ending"
-  end function
-
-  function check_deletion() result(test_passes)
-    logical test_passes
-
-    block
-        type(object_t) :: object
-
-        object = object_t()
-    end block
-
-    test_passes = .not. allocated(the_resource)
-  end function
-
-  function check_copy() result(test_passes)
-    logical test_passes
-    type(object_t) :: reference
-
-
-
-
-
-    associate(original => object_t())
-
-      reference = original
-
-      block 
-        type(object_t) :: declared, reference_to_declared
-
-        declared = object_t() ! compiling with gfortran generates a runtime error even when this line doesn't execute
-        reference_to_declared = declared
-        test_passes = associated(original%ref, reference%ref) .and. associated(declared%ref, reference_to_declared%ref)
-      end block
-
-    end associate
-
-
-  end function
-  
-  function check_shallow_copy() result(test_passes)
-     logical test_passes
-   
-    block 
-      type(shallow_t) shallow_copy
-
-      associate(original => shallow_t())
-        shallow_copy = original
-      end associate
-    end block
-
-    test_passes = resource_freed
-
   end function
 
 end module sp_smart_pointer_test_m
-program main
-  use sp_smart_pointer_test_m, only : sp_smart_pointer_test_t
+
+  use sp_smart_pointer_test_m
   implicit none
-  type(sp_smart_pointer_test_t) sp_smart_pointer_test
-  call sp_smart_pointer_test%report()
-end program
+  associate(check => check_creation())
+    print *,check
+  end associate
+end
