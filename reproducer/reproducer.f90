@@ -20,7 +20,6 @@ module sp_reference_counter_m
     integer, pointer :: count_ => null()
     class(sp_resource_t), pointer :: object_ => null()
   contains
-    procedure :: reference_count
     procedure, non_overridable :: grab
     procedure, non_overridable :: release
     procedure :: assign_sp_reference_counter
@@ -29,19 +28,10 @@ module sp_reference_counter_m
   end type
 
 contains
-
   subroutine finalize(self)
     type(sp_reference_counter_t), intent(inout) :: self
     if (associated(self%count_)) call self%release
   end subroutine
-
-  function reference_count(self) result(counter)
-    class(sp_reference_counter_t), intent(in) :: self
-    integer counter
-
-    if (.not. associated(self%count_)) error stop "sp_reference_counter_t%grab: associated(self%count_)"
-    counter = self%count_
-  end function
 
   function construct_sp_reference_counter_t(object) result(sp_reference_counter)
     class(sp_resource_t), intent(in) :: object
@@ -94,18 +84,11 @@ module sp_smart_pointer_m
   type, abstract, extends(sp_resource_t) :: sp_smart_pointer_t
     type(sp_reference_counter_t) :: counter
   contains
-    procedure :: reference_count
     procedure, non_overridable :: release_handle
     procedure, non_overridable :: start_counter
   end type
 
 contains
-  function reference_count(self) result(counter)
-    class(sp_smart_pointer_t), intent(in) :: self
-    integer counter
-    counter = self%counter%reference_count()
-  end function
-
   subroutine release_handle(self)
     class(sp_smart_pointer_t), intent(inout) :: self
     print *,"sp_smart_pointer_s(release_handle): call self%counter%release"
