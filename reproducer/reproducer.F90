@@ -181,18 +181,10 @@ end module sp_smart_pointer_test_m
 
   use sp_smart_pointer_test_m
   implicit none
-  associate(check => check_creation())
-    print *,check
-  end associate
+  call check_creation
 contains
-  function check_creation() result(test_passes)
-    logical test_passes
+  subroutine check_creation
     type(object_t) :: object
     object = object_t()
-    if (allocated(the_resource)) then
-        test_passes = the_answer == the_resource
-    else
-        test_passes = .false.
-    end if
-  end function
+  end subroutine
 end
