@@ -5,7 +5,7 @@ module sp_resource_m
       procedure(free_interface), deferred :: free
   end type
   abstract interface
-    impure elemental subroutine free_interface(self)
+    subroutine free_interface(self)
       import sp_resource_t
       class(sp_resource_t), intent(inout) :: self
     end subroutine
@@ -39,7 +39,7 @@ contains
     if (associated(self%count_)) call self%release
   end subroutine
 
-  pure function reference_count(self) result(counter)
+  function reference_count(self) result(counter)
     class(sp_reference_counter_t), intent(in) :: self
     integer counter
 
@@ -105,7 +105,7 @@ module sp_smart_pointer_m
   end type
 
 contains
-  pure function reference_count(self) result(counter)
+  function reference_count(self) result(counter)
     class(sp_smart_pointer_t), intent(in) :: self
     integer counter
     counter = self%counter%reference_count()
@@ -141,7 +141,7 @@ contains
     object%ref = the_answer
     call object%start_counter
   end function
-  impure elemental subroutine free(self)
+  subroutine free(self)
     class(object_t), intent(inout) :: self
     if (allocated(the_resource)) deallocate(the_resource)
     nullify(self%ref)
