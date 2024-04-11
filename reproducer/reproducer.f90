@@ -28,10 +28,6 @@ module sp_reference_counter_m
     final :: finalize
   end type
 
-  interface sp_reference_counter_t
-    module procedure construct
-  end interface
-
 contains
 
   subroutine finalize(self)
@@ -47,7 +43,7 @@ contains
     counter = self%count_
   end function
 
-  function construct(object) result(sp_reference_counter)
+  function construct_sp_reference_counter_t(object) result(sp_reference_counter)
     class(sp_resource_t), intent(in) :: object
     type(sp_reference_counter_t) sp_reference_counter
     print *,"sp_reference_counter_s(construct): allocate(sp_reference_counter%count_, source=0)"
@@ -92,11 +88,10 @@ end module
 
 module sp_smart_pointer_m
   use sp_resource_m, only: sp_resource_t
-  use sp_reference_counter_m, only: sp_reference_counter_t
+  use sp_reference_counter_m, only: sp_reference_counter_t, construct_sp_reference_counter_t
   implicit none
 
   type, abstract, extends(sp_resource_t) :: sp_smart_pointer_t
-    private
     type(sp_reference_counter_t) :: counter
   contains
     procedure :: reference_count
@@ -119,7 +114,7 @@ contains
 
   subroutine start_counter(self)
     class(sp_smart_pointer_t), intent(inout) :: self
-    self%counter = sp_reference_counter_t(self)
+    self%counter = construct_sp_reference_counter_t(self)
   end subroutine
 end module
 
@@ -146,7 +141,7 @@ contains
     if (allocated(the_resource)) deallocate(the_resource)
     nullify(self%ref)
   end subroutine
-end module sp_smart_pointer_test_m
+end module
 
   use sp_smart_pointer_test_m
   implicit none
