@@ -1,15 +1,18 @@
-module resource_m
+module smart_pointer_m
   implicit none
+
   type, abstract :: resource_t
   contains
       procedure(free_interface), deferred :: free
   end type
+
   abstract interface
     subroutine free_interface(self)
       import resource_t
       class(resource_t), intent(inout) :: self
     end subroutine
   end interface
+
   type reference_counter_t
     integer, pointer :: count_ => null()
     class(resource_t), pointer :: object_ => null()
@@ -20,13 +23,23 @@ module resource_m
     generic :: assignment(=) => assign_reference_counter
     final :: finalize
   end type
+
+  type, abstract, extends(resource_t) :: smart_pointer_t
+    type(reference_counter_t) :: counter
+  contains
+    procedure, non_overridable :: release_handle
+    procedure, non_overridable :: start_counter
+  end type
+
 contains
+
   subroutine finalize(self)
     type(reference_counter_t), intent(inout) :: self
     print *,"        reference_counter_t%finalize: start"
     if (associated(self%count_)) call self%release
     print *,"        reference_counter_t%finalize: end" // new_line('')
   end subroutine
+
   function construct_reference_counter_t(object) result(reference_counter)
     class(resource_t), intent(in) :: object
     type(reference_counter_t) reference_counter
@@ -36,6 +49,7 @@ contains
     call reference_counter%grab
     print *,"        construct_reference_counter_t: end" // new_line('')
   end function
+
   subroutine grab(self)
     class(reference_counter_t), intent(inout) :: self
     print *,"          reference_counter_t%grab: start"
@@ -43,6 +57,7 @@ contains
     self%count_ = self%count_ + 1
     print *,"          reference_counter_t%grab: end (self%count_ = ", self%count_,")"
   end subroutine
+
   subroutine release(self)
     class (reference_counter_t), intent(inout) :: self
     print *,"          reference_counter_t%release: start"
@@ -59,6 +74,7 @@ contains
     end if
     print *,"          reference_counter_t%release: end"
   end subroutine
+
   subroutine assign_reference_counter(lhs, rhs)
     class(reference_counter_t), intent(inout) :: lhs
     class(reference_counter_t), intent(in) :: rhs
@@ -69,68 +85,73 @@ contains
     call lhs%grab
     print *,"        reference_counter_t%assign_reference_counter: end" // new_line('')
   end subroutine
-end module
-module smart_pointer_m
-  use resource_m, only: resource_t, reference_counter_t, construct_reference_counter_t
-  implicit none
-  type, abstract, extends(resource_t) :: smart_pointer_t
-    type(reference_counter_t) :: counter
-  contains
-    procedure, non_overridable :: release_handle
-    procedure, non_overridable :: start_counter
-  end type
-contains
+
   subroutine release_handle(self)
     class(smart_pointer_t), intent(inout) :: self
     print *,"  smart_pointer_t%release_handle: start"
     call self%counter%release
     print *,"  smart_pointer_t%release_handle: end" // new_line('')
   end subroutine
+
   subroutine start_counter(self)
     class(smart_pointer_t), intent(inout) :: self
     print *,"      smart_pointer_t%start_counter: start" // new_line('')
     self%counter = construct_reference_counter_t(self)
     print *,"      smart_pointer_t%start_counter: end" // new_line('')
   end subroutine
+
 end module
-module smart_pointer_test_m
+
+module integer_pointer_m 
   use smart_pointer_m, only: smart_pointer_t
   implicit none
-  type, extends(smart_pointer_t) :: object_t
+
+  type, extends(smart_pointer_t) :: integer_pointer_t
     integer, pointer :: ref => null()
   contains
     procedure :: free
   end type
-  integer, allocatable, target :: referenced_memory
+
+  integer, allocatable, target :: allocatable_integer
   integer, parameter :: the_answer = 42
+
 contains
-  function construct_object_t() result(object)
-    type(object_t) object
-    print *,"    construct_object_t: start" // new_line('')
-    if (.not. allocated(referenced_memory)) allocate(referenced_memory, source=the_answer)
-    object%ref => referenced_memory
-    object%ref = the_answer
-    call object%start_counter
-    print *,"    construct_object_t: end" //new_line('')
+
+  function allocate_integer() result(integer_pointer)
+    type(integer_pointer_t) integer_pointer
+    print *,"    allocate_integer: start" // new_line('')
+    if (.not. allocated(allocatable_integer)) allocate(allocatable_integer, source=the_answer)
+    integer_pointer%ref => allocatable_integer
+    integer_pointer%ref = the_answer
+    call integer_pointer%start_counter
+    print *,"    allocate_integer: end" //new_line('')
   end function
+
   subroutine free(self)
-    class(object_t), intent(inout) :: self
-    print *,"          object_t%free: start"
-    if (allocated(referenced_memory)) deallocate(referenced_memory)
+    class(integer_pointer_t), intent(inout) :: self
+    print *,"          integer_pointer_t%free: start"
+    if (allocated(allocatable_integer)) deallocate(allocatable_integer)
     nullify(self%ref)
-    print *,"          object_t%free: end" // new_line('')
+    print *,"          integer_pointer_t%free: end" // new_line('')
   end subroutine
+
 end module
-  use smart_pointer_test_m
+
+program main
+  use integer_pointer_m, only : integer_pointer_t, allocate_integer
   implicit none
+
   print *,"main: start" // new_line('')
-  call check_creation
+  call test_reference_counting
   print *,"main: end" ! ---> this line is not reached <---
+
 contains
-  subroutine check_creation
-    type(object_t) object
+
+  subroutine test_reference_counting
+    type(integer_pointer_t) integer_pointer
     print *,"  main(check_creation): start" // new_line('')
-    object = construct_object_t()
+    integer_pointer = allocate_integer()
     print *,"  main(check_creation): end" // new_line('')
   end subroutine
-end
+
+end program
