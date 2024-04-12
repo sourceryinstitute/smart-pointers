@@ -10,10 +10,6 @@ module resource_m
       class(resource_t), intent(inout) :: self
     end subroutine
   end interface
-end module
-module reference_counter_m
-  use resource_m, only : resource_t
-  implicit none
   type reference_counter_t
     integer, pointer :: count_ => null()
     class(resource_t), pointer :: object_ => null()
@@ -75,8 +71,7 @@ contains
   end subroutine
 end module
 module smart_pointer_m
-  use resource_m, only: resource_t
-  use reference_counter_m, only: reference_counter_t, construct_reference_counter_t
+  use resource_m, only: resource_t, reference_counter_t, construct_reference_counter_t
   implicit none
   type, abstract, extends(resource_t) :: smart_pointer_t
     type(reference_counter_t) :: counter
