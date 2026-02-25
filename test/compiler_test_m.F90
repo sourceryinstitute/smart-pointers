@@ -241,6 +241,8 @@ contains
           args = "--compiler xlf2008_r"
         else if (index(compiler_identity, "flang")==1) then
           args = "--compiler flang-new"
+        else if (index(compiler_identity, "LFortran")==1) then
+          args = "--compiler lfortran"
         else
           error stop "----> Unrecognized compiler_version() in function fpm_compiler_arguments. <----"
         end if
