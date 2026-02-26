@@ -28,10 +28,11 @@ module test_m
 
   interface
 
-    module subroutine report(test)
+    module function report(test) result(failures)
       implicit none
       class(test_t), intent(in) :: test
-    end subroutine
+      integer :: failures
+    end function
 
   end interface
 
@@ -49,12 +50,14 @@ contains
     integer i
     type(test_result_t), allocatable :: test_results(:)
 
+    failures = 0
     print *
     print *, test%subject()
 
     test_results = test%results()
     do i=1,size(test_results)
       print *,"  ",test_results(i)%characterize()
+      if (.not. test_results(i)%outcome()) failures = failures + 1
     end do
   end procedure
 

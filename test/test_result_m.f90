@@ -11,6 +11,7 @@ module test_result_m
     logical outcome_
   contains
     procedure :: characterize
+    procedure :: outcome
   end type
 
   interface test_result_t
@@ -32,6 +33,12 @@ module test_result_m
       character(len=:), allocatable :: characterization
     end function
 
+    pure module function outcome(self) result(passes)
+      implicit none
+      class(test_result_t), intent(in) :: self
+      logical :: passes
+    end function
+
   end interface
 
 end module test_result_m
@@ -48,6 +55,10 @@ contains
 
     module procedure characterize
       characterization = merge("Pass: ", "Fail: ", self%outcome_) // self%description_
+    end procedure
+
+    module procedure outcome
+      passes = self%outcome_
     end procedure
 
 end submodule test_result_s
