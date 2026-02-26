@@ -24,11 +24,23 @@ jobs:
             compiler: gfortran
             compiler-version: 14
             fpm-compiler: gfortran
+          - os: ubuntu-latest
+            compiler: gfortran
+            compiler-version: 15
+            fpm-compiler: gfortran
 
           # gfortran on macOS
           - os: macos-latest
             compiler: gfortran
             compiler-version: 13
+            fpm-compiler: gfortran
+          - os: macos-latest
+            compiler: gfortran
+            compiler-version: 14
+            fpm-compiler: gfortran
+          - os: macos-latest
+            compiler: gfortran
+            compiler-version: 15
             fpm-compiler: gfortran
 
     steps:
@@ -38,6 +50,7 @@ jobs:
       - name: Install gfortran (Linux)
         if: matrix.compiler == 'gfortran' && runner.os == 'Linux'
         run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update -y
           sudo apt-get install -y gfortran-${{ matrix.compiler-version }}
           sudo update-alternatives --install /usr/bin/gfortran gfortran \
@@ -65,7 +78,13 @@ jobs:
           ln -sf /opt/homebrew/opt/llvm@${{ matrix.compiler-version }}/bin/flang \
             /opt/homebrew/bin/flang
 
-      - name: Install fpm
+      - name: Install fpm (macOS, from source)
+        if: runner.os == 'macOS'
+        run: |
+          brew install fpm
+
+      - name: Install fpm (Linux, from source)
+        if: runner.os == 'Linux'
         uses: fortran-lang/setup-fpm@v7
         with:
           fpm-version: 'v0.13.0'
