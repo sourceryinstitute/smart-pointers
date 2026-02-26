@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: ${{ matrix.compiler }}-${{ matrix.compiler-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # gfortran on Linux
+          - os: ubuntu-latest
+            compiler: gfortran
+            compiler-version: 13
+            fpm-compiler: gfortran
+          - os: ubuntu-latest
+            compiler: gfortran
+            compiler-version: 14
+            fpm-compiler: gfortran
+          - os: ubuntu-latest
+            compiler: gfortran
+            compiler-version: 15
+            fpm-compiler: gfortran
+
+          # gfortran on macOS
+          - os: macos-latest
+            compiler: gfortran
+            compiler-version: 13
+            fpm-compiler: gfortran
+          - os: macos-latest
+            compiler: gfortran
+            compiler-version: 14
+            fpm-compiler: gfortran
+          - os: macos-latest
+            compiler: gfortran
+            compiler-version: 15
+            fpm-compiler: gfortran
+
+          # flang on Linux
+          - os: ubuntu-latest
+            compiler: flang
+            compiler-version: 21
+            fpm-compiler: flang
+          - os: ubuntu-latest
+            compiler: flang
+            compiler-version: 22
+            fpm-compiler: flang
+
+          # flang on macOS
+          - os: macos-latest
+            compiler: flang
+            compiler-version: 21
+            fpm-compiler: flang
+          - os: macos-latest
+            compiler: flang
+            compiler-version: 22
+            fpm-compiler: flang
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install gfortran (Linux)
+        if: matrix.compiler == 'gfortran' && runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gfortran-${{ matrix.compiler-version }}
+          sudo update-alternatives --install /usr/bin/gfortran gfortran \
+            /usr/bin/gfortran-${{ matrix.compiler-version }} 100
+
+      - name: Install gfortran (macOS)
+        if: matrix.compiler == 'gfortran' && runner.os == 'macOS'
+        run: |
+          brew install gcc@${{ matrix.compiler-version }}
+          ln -sf /opt/homebrew/bin/gfortran-${{ matrix.compiler-version }} \
+            /opt/homebrew/bin/gfortran
+
+      - name: Install flang (Linux)
+        if: matrix.compiler == 'flang' && runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y flang-${{ matrix.compiler-version }}
+          sudo update-alternatives --install /usr/bin/flang flang \
+            /usr/bin/flang-${{ matrix.compiler-version }} 100
+
+      - name: Install flang (macOS)
+        if: matrix.compiler == 'flang' && runner.os == 'macOS'
+        run: |
+          brew install llvm@${{ matrix.compiler-version }}
+          ln -sf /opt/homebrew/opt/llvm@${{ matrix.compiler-version }}/bin/flang \
+            /opt/homebrew/bin/flang
+
+      - name: Install fpm
+        uses: fortran-lang/setup-fpm@v7
+        with:
+          fpm-version: 'v0.13.0'
+
+      - name: Build and test
+        run: fpm test --compiler ${{ matrix.fpm-compiler }} --profile release
