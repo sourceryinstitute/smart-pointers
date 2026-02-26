@@ -39,6 +39,16 @@ jobs:
             compiler-version: 15
             fpm-compiler: gfortran
 
+          # flang on macOS
+          - os: macos-latest
+            compiler: llvm
+            compiler-version: 21
+            fpm-compiler: flang
+          - os: macos-latest
+            compiler: llvm
+            compiler-version: 22
+            fpm-compiler: flang
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
