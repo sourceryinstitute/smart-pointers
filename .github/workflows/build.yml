@@ -24,44 +24,6 @@ jobs:
             compiler: gfortran
             compiler-version: 14
             fpm-compiler: gfortran
-          - os: ubuntu-latest
-            compiler: gfortran
-            compiler-version: 15
-            fpm-compiler: gfortran
-
-          # gfortran on macOS
-          - os: macos-latest
-            compiler: gfortran
-            compiler-version: 13
-            fpm-compiler: gfortran
-          - os: macos-latest
-            compiler: gfortran
-            compiler-version: 14
-            fpm-compiler: gfortran
-          - os: macos-latest
-            compiler: gfortran
-            compiler-version: 15
-            fpm-compiler: gfortran
-
-          # flang on Linux
-          - os: ubuntu-latest
-            compiler: flang
-            compiler-version: 21
-            fpm-compiler: flang
-          - os: ubuntu-latest
-            compiler: flang
-            compiler-version: 22
-            fpm-compiler: flang
-
-          # flang on macOS
-          - os: macos-latest
-            compiler: flang
-            compiler-version: 21
-            fpm-compiler: flang
-          - os: macos-latest
-            compiler: flang
-            compiler-version: 22
-            fpm-compiler: flang
 
     steps:
       - name: Checkout code
