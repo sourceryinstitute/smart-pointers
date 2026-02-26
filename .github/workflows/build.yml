@@ -25,6 +25,12 @@ jobs:
             compiler-version: 14
             fpm-compiler: gfortran
 
+          # gfortran on macOS
+          - os: macos-latest
+            compiler: gfortran
+            compiler-version: 13
+            fpm-compiler: gfortran
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
